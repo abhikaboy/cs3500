@@ -8,5 +8,6 @@ public class Main {
     // poop.getStock("GOOG");
     poop.addStockToPortfolio("GOOG");
     System.out.println(poop.getPortfolio());
+    System.out.println(poop.getPortfolioValue());
   }
 }

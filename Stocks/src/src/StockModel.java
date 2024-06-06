@@ -131,7 +131,7 @@ public class StockModel {
       portfolio.remove(symbol);
     }
   }
-  public void getPortfolioValue(){
+  public double getPortfolioValue(){
     double total = 0;
     for (String symbol : portfolio.keySet()) {
       HashMap<String, StockRow> stock = portfolio.get(symbol);
@@ -141,7 +141,7 @@ public class StockModel {
       lastRow = stock.get(date);
       total += lastRow.getClose();
     }
-    System.out.println("Total portfolio value: " + total);
+    return total;
   }
   public StockModel() {
     portfolio = new HashMap<>();
