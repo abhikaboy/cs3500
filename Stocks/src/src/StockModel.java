@@ -20,6 +20,9 @@ public class StockModel {
     FileWriter writer = null;
     try {
       file = new File("./stocks/" + stockSymbol + ".csv");
+      if (!file.exists()) {
+        file.createNewFile();
+      }
       writer = new FileWriter(file);
     } catch (IOException e) {
       e.printStackTrace();
@@ -27,21 +30,22 @@ public class StockModel {
     stocksCache.put(stockSymbol, new HashMap<>());
     for (String row : rows) {
       String[] items = row.split(",");
-      if (writer != null) {
-        try {
-          writer.write(row + "\n");
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-      }
-      // items[0] = date
-      StockRow stockRow = new StockRow(Double.parseDouble(items[1]),
-              Double.parseDouble(items[2]),
-              Double.parseDouble(items[3]),
-              Double.parseDouble(items[4]));
-      stocksCache.get(stockSymbol).put(items[0], stockRow);
+      if(!items[1].equals("open")) {
 
+        if (writer != null) {
+          try {
+            writer.write(row + "\n");
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+        StockRow stockRow = new StockRow(Double.parseDouble(items[1]),
+                Double.parseDouble(items[2]),
+                Double.parseDouble(items[3]),
+                Double.parseDouble(items[4]));
+        stocksCache.get(stockSymbol).put(items[0], stockRow);
+      }
     }
 
   }
@@ -75,8 +79,7 @@ public class StockModel {
     } catch (IOException e) {
       throw new IllegalArgumentException("No price data found for " + stockSymbol);
     }
-    System.out.println("Return value: ");
-    System.out.println(output.toString());
+    System.out.println("Queried Stock : " + stockSymbol);
     writeStockToFile(output.toString(), stockSymbol);
   }
   public HashMap<String, StockRow> loadLocalStock(String stockSymbol) {
@@ -139,5 +142,23 @@ public class StockModel {
       total += lastRow.getClose();
     }
     System.out.println("Total portfolio value: " + total);
+  }
+  public StockModel() {
+    portfolio = new HashMap<>();
+    stocksCache = new HashMap<>();
+    File file = new File("./stocks");
+    if (!file.exists()) {
+      file.mkdir();
+    } else {
+      // go through each file in the stocks directory and load it in
+      for (File f : file.listFiles()) {
+        System.out.println("Loading local stock data: "+ f.getName());
+        String stockSymbol = f.getName().replace(".csv", "");
+        stocksCache.put(stockSymbol, loadLocalStock(stockSymbol));
+      }
+    }
+  }
+  public HashMap<String, HashMap<String, StockRow>> getPortfolio(){
+    return portfolio;
   }
 }

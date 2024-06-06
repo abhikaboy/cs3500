@@ -5,6 +5,8 @@ package src;
 public class Main {
   public static void main(String[] args) {
     StockModel poop = new StockModel();
-    poop.getStock("GOOG");
+    // poop.getStock("GOOG");
+    poop.addStockToPortfolio("GOOG");
+    System.out.println(poop.getPortfolio());
   }
 }
