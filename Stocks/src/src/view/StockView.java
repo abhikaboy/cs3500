@@ -65,8 +65,8 @@ public class StockView implements StockViewInterface {
    * Prints out prompt, welcoming the user :).
    */
   public void printWelcome() {
-     out.print("Welcome to the Stock Portfolio Manager!" + System.lineSeparator());
-   }
+    out.print("Welcome to the Stock Portfolio Manager!" + System.lineSeparator());
+  }
 
   /**
    * Prints out prompt, telling user to either create a portfolio or quit due to not having a
@@ -75,7 +75,7 @@ public class StockView implements StockViewInterface {
   public void printMenuNoPortfolios() {
     out.print("1) Create A Portfolio" + System.lineSeparator());
     out.print("2) Quit" + System.lineSeparator());
-   }
+  }
 
   /**
    * Prints out prompt, telling user to choose one of the 6 menu options regarding their
@@ -84,16 +84,16 @@ public class StockView implements StockViewInterface {
    */
   public void printMenu(Portfolio portfolio) {
     out.println("====================== Menu ======================");
-      out.println("Please Select An Option:");
-      out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
-      out.println("1) Add/Remove Item to Portfolio");
-      out.println("2) View Portfolio Contents");
-      out.println("3) Analyze Current Stocks");
-      out.println("4) View Portfolio Value");
-      out.println("5) Change/Create Portfolio");
-      out.println("6) Exit");
+    out.println("Please Select An Option:");
+    out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
+    out.println("1) Add/Remove Item to Portfolio");
+    out.println("2) View Portfolio Contents");
+    out.println("3) Analyze Current Stocks");
+    out.println("4) View Portfolio Value");
+    out.println("5) Change/Create Portfolio");
+    out.println("6) Exit");
     out.println("======================================================");
-   }
+  }
 
   /**
    * Prints out prompt, telling user to select their desired portfolio.
@@ -127,8 +127,8 @@ public class StockView implements StockViewInterface {
    * Prints out prompt telling user to inpuit Stock Ticker.
    */
   public void printSpecifyStockToTransact() {
-    out.println("============== Choose A Stock Option =================");
-    out.println("Type The Stock Ticker Symbol To Add/Remove");
+    out.println("============== Input Desired Stock =================");
+    out.println("Type The Desired Stock Ticker Symbol");
     out.println("Write 'Quit' To Cancel");
     out.println("======================================================");
 
