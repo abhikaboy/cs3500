@@ -2,15 +2,25 @@ package src.model;
 
 import java.util.HashMap;
 
+/**
+ * A class that represents a portfolio of stocks.
+ */
 public class Portfolio {
 
   // Symbol, Stock
   HashMap<String, Stock> stocks;
 
+  /**
+   * Constructor for a new portfolio.
+   */
   public Portfolio() {
     stocks = new HashMap<>();
   }
 
+  /**
+   * Constructor for a new portfolio.
+   * @param portfolio  Portfolio to copy.
+   */
   public Portfolio(Portfolio portfolio) {
     stocks = new HashMap<>();
     for (String symbol : portfolio.stocks.keySet()) {
@@ -22,6 +32,11 @@ public class Portfolio {
   }
 
 
+  /**
+   * Get the quantity of a stock in the portfolio.
+   * @param symbol  Symbol representing a stock.
+   * @return  The quantity of the stock in the portfolio.
+   */
   public int getStockQuantity(String symbol) {
     if(stocks.containsKey(symbol)) {
       return stocks.get(symbol).getQuantity();
@@ -30,6 +45,12 @@ public class Portfolio {
     }
   }
 
+  /**
+   * Buy a stock in the portfolio.
+   * @param symbol  Symbol representing a stock.
+   * @param stock  Stock data for the stock.
+   * @param quantity  Quantity of the stock to buy.
+   */
   public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity) {
     System.out.println("Buying " + quantity + " shares of " + symbol);
     System.out.println(this.portfolioAString());
@@ -42,6 +63,11 @@ public class Portfolio {
     }
   }
 
+  /**
+   * Sell a stock in the portfolio.
+   * @param symbol  Symbol representing a stock.
+   * @param quantity  Quantity of the stock to sell.
+   */
   public void sellStock(String symbol, int quantity) {
     if(stocks.containsKey(symbol)) {
       stocks.get(symbol).sell(quantity);
@@ -52,6 +78,11 @@ public class Portfolio {
       throw new IllegalArgumentException("Stock not found in portfolio");
     }
   }
+
+  /**
+   * Get the value of the portfolio.
+   * @return  The value of the portfolio.
+   */
 
   public double getPortfolioValue() {
     double total = 0;
@@ -65,6 +96,12 @@ public class Portfolio {
     }
     return total;
   }
+  
+  /**
+   * Get the value of the portfolio for a given date.
+   * @param date  Date to get the value for.
+   * @return  The value of the portfolio for the given date.
+   */
   public double getPortfolioValue(String date) {
     double total = 0;
     for (String symbol : stocks.keySet()) {
@@ -94,6 +131,11 @@ public class Portfolio {
     return stocks.keySet().toArray(new String[0]);
   }
 
+  /**
+   * The string representation of the portfolio.
+   * @return  A string representation of the portfolio.
+   * @see Portfolio#portfolioAString()
+   */ 
   public String portfolioAString() {
     String output = "";
     for (String symbol : stocks.keySet()) {

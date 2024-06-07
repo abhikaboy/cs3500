@@ -11,16 +11,31 @@ public class Stock {
   private int quantity;
   private HashMap<String, StockRow> data;
 
+  /**
+   * Constructor for a new stock.
+   * @param symbol  Symbol representing the stock.
+   * @param quantity  Quantity of the stock.
+   * @param data  Stock data for the stock.
+   */
   public Stock(String symbol, int quantity, HashMap<String, StockRow> data) {
     this.symbol = symbol;
     this.quantity = quantity;
     this.data = data;
   }
 
+  /**
+   *  Purchase a quantity of the stock.
+   * @param quantity  Quantity to purchase.
+   */
+
   public void purchase(int quantity) {
     this.quantity += quantity;
   }
 
+  /**
+   * Sell a quantity of the stock.
+   * @param quantity  Quantity to sell.
+   */
   public void sell(int quantity) {
     if(this.quantity < quantity) {
       throw new IllegalArgumentException("Cannot sell more than you have");
@@ -28,10 +43,19 @@ public class Stock {
     this.quantity -= quantity;
   }
 
+  /**
+   * Get the data copy for the stock.
+   * @return  The data for the stock.
+   */
   public HashMap<String, StockRow> getData() {
-    return data;
+    // return a copy of the data
+    return new HashMap<>(data);
   }
 
+  /**
+   * Get the quantity of the stock.
+   * @return  The quantity of the stock.
+   */
   public int getQuantity() {
     return quantity;
   }
