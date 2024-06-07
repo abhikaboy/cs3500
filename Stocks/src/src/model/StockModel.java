@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class StockModel implements StockModelInterface {
-  HashMap<String, Portfolio> portfolios;
-  HashMap<String, HashMap<String, StockRow>> stocksCache;
+  private HashMap<String, Portfolio> portfolios;
+  private HashMap<String, HashMap<String, StockRow>> stocksCache;
 
   /**
    * Writes the stock data to a file in the stocks directory.

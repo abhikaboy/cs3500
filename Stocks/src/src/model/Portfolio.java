@@ -11,6 +11,15 @@ public class Portfolio {
     stocks = new HashMap<>();
   }
 
+
+  public int getStockQuantity(String symbol) {
+    if(stocks.containsKey(symbol)) {
+      return stocks.get(symbol).getQuantity();
+    } else {
+      throw new IllegalArgumentException("Stock not found in portfolio");
+    }
+  }
+
   public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity) {
     if(stocks.containsKey(symbol)) {
       stocks.get(symbol).purchase(quantity);
