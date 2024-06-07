@@ -1,13 +1,18 @@
 package src;
 
+import java.util.Date;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
   public static void main(String[] args) {
     StockModel poop = new StockModel();
     // poop.getStock("GOOG");
-    poop.addStockToPortfolio("GOOG");
-    System.out.println(poop.getPortfolio());
-    System.out.println(poop.getPortfolioValue());
+    poop.addPortfolio("poop");
+    poop.addStockToPortfolio("GOOG", "poop");
+    System.out.println(poop.getPortfolio("poop"));
+    System.out.println(poop.getPortfolioValue("poop"));
+    System.out.println(poop.getStockChange("GOOG", "2024-05-06", "2024-06-06"));
+    System.out.println("moving average: " + poop.getStockMovingAverage("GOOG", new Date(), 100));
   }
 }

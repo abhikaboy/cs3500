@@ -7,14 +7,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class StockModel {
-  HashMap<String, HashMap<String, StockRow>> portfolio;
+  HashMap<String, Portfolio> portfolios;
   HashMap<String, HashMap<String, StockRow>> stocksCache;
 
-  public void writeStockToFile(String output, String stockSymbol){
+  public void writeStockToFile(String output, String stockSymbol) {
     String[] rows = output.toString().split("\n");
     File file;
     FileWriter writer = null;
@@ -30,7 +32,7 @@ public class StockModel {
     stocksCache.put(stockSymbol, new HashMap<>());
     for (String row : rows) {
       String[] items = row.split(",");
-      if(!items[1].equals("open")) {
+      if (!items[1].equals("open")) {
 
         if (writer != null) {
           try {
@@ -49,6 +51,7 @@ public class StockModel {
     }
 
   }
+
   public void queryStock(String symbol) {
     String apiKey = "W0M1JOKC82EZEQA8";
     String stockSymbol = "GOOG"; //ticker symbol for Google
@@ -82,6 +85,7 @@ public class StockModel {
     System.out.println("Queried Stock : " + stockSymbol);
     writeStockToFile(output.toString(), stockSymbol);
   }
+
   public HashMap<String, StockRow> loadLocalStock(String stockSymbol) {
     // checks the local directory for the stock csv 
     // file and loads it into the cache
@@ -109,6 +113,7 @@ public class StockModel {
     }
     return stock;
   }
+
   public HashMap<String, StockRow> getStock(String symbol) {
     if (stocksCache.containsKey(symbol)) {
       return stocksCache.get(symbol);
@@ -117,34 +122,23 @@ public class StockModel {
       return stocksCache.get(symbol);
     }
   }
-  public void addStockToPortfolio(String symbol){
-    if (portfolio.containsKey(symbol)) {
-      return;
-    }
-    HashMap<String, StockRow> stock = getStock(symbol);
-    if (stock != null) {
-      portfolio.put(symbol, stock);
-    }
+
+  public void addStockToPortfolio(String symbol, String portfolioName) {
+    Portfolio portfolio = getPortfolio(portfolioName);
+    portfolio.addStock(symbol, getStock(symbol));
   }
-  public void removeStockFromPortfolio(String symbol){
-    if (portfolio.containsKey(symbol)) {
-      portfolio.remove(symbol);
-    }
+
+  public void removeStockFromPortfolio(String symbol, String portfolioName) {
+    Portfolio portfolio = getPortfolio(portfolioName);
+    portfolio.removeStock(symbol, getStock(symbol));
   }
-  public double getPortfolioValue(){
-    double total = 0;
-    for (String symbol : portfolio.keySet()) {
-      HashMap<String, StockRow> stock = portfolio.get(symbol);
-      StockRow lastRow = null;
-      // todays date: 
-      String date = "2024-06-06";
-      lastRow = stock.get(date);
-      total += lastRow.getClose();
-    }
-    return total;
+
+  public double getPortfolioValue(String name) {
+    return getPortfolio(name).getPortfolioValue();
   }
+
   public StockModel() {
-    portfolio = new HashMap<>();
+    portfolios = new HashMap<>();
     stocksCache = new HashMap<>();
     File file = new File("./stocks");
     if (!file.exists()) {
@@ -152,13 +146,55 @@ public class StockModel {
     } else {
       // go through each file in the stocks directory and load it in
       for (File f : file.listFiles()) {
-        System.out.println("Loading local stock data: "+ f.getName());
+        System.out.println("Loading local stock data: " + f.getName());
         String stockSymbol = f.getName().replace(".csv", "");
         stocksCache.put(stockSymbol, loadLocalStock(stockSymbol));
       }
     }
   }
-  public HashMap<String, HashMap<String, StockRow>> getPortfolio(){
-    return portfolio;
+
+  public Portfolio getPortfolio(String name) {
+    if (portfolios.containsKey(name)) {
+      return portfolios.get(name);
+    } else {
+      throw new IllegalArgumentException("Portfolio does not exist");
+    }
+  }
+
+  public void addPortfolio(String name) {
+    if (portfolios.containsKey(name)) {
+      return;
+    }
+    portfolios.put(name, new Portfolio());
+  }
+
+  public double getStockChange(String symbol, String startDate, String endDate) {
+    HashMap<String, StockRow> stock = getStock(symbol);
+    StockRow startRow = stock.get(startDate);
+    StockRow endRow = stock.get(endDate);
+    return endRow.getClose() - startRow.getClose();
+  }
+
+  public double getStockMovingAverage(String symbol, Date date, int x) {
+    HashMap<String, StockRow> stock = getStock(symbol);
+    // get the date in the format yyyy-mm-dd
+    String dateString = date.toString();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    dateString = formatter.format(date);
+    double sum = 0;
+    StockRow currentRow = stock.get(dateString);
+    for (int i = 0; i < x; i++) {
+      System.out.println(dateString);
+      if (stock.containsKey(dateString)) {
+        currentRow = stock.get(dateString);
+      }
+      if (currentRow != null) {
+        sum += currentRow.getClose();
+      }
+      date = new Date(date.getTime() - 86400000); // subtract a day
+      dateString = formatter.format(date);
+      System.out.println(sum);
+    }
+    return sum / x;
   }
 }
