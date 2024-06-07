@@ -319,11 +319,7 @@ public class StockModel {
    */
   public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate, String endDate) {
     HashMap<String, StockRow> stock = getStock(symbol);
-    StockRow startRow = findClosestRecordedDate(stock, startDate);
-    StockRow endRow = findClosestRecordedDate(stock, endDate);
-    // Return all the dates that are considered a crossover day
     double movingAverageX = getStockMovingAverage(symbol, formatDateString(endDate), x);
-    // begin at start date and add to return if the closing price is greater than the moving average
     ArrayList<String> crossoverDays = new ArrayList<>();
     String currentDate = startDate;
     while(!currentDate.equals(endDate)){
