@@ -54,6 +54,13 @@ public class StockModel {
 
   }
 
+  public int countPortfolios() {
+    return portfolios.size();
+  }
+  public String[] getPortfolioNames() {
+    return portfolios.keySet().toArray(new String[0]);
+  }
+
   public void queryStock(String symbol) {
     String apiKey = "W0M1JOKC82EZEQA8";
     String stockSymbol = symbol; //ticker symbol for Google
@@ -102,6 +109,9 @@ public class StockModel {
         while (scanner.hasNextLine()) {
           String line = scanner.nextLine();
           String[] items = line.split(",");
+          if(items.length < 5){
+            continue;
+          }
           StockRow stockRow = new StockRow(Double.parseDouble(items[1]),
                   Double.parseDouble(items[2]),
                   Double.parseDouble(items[3]),
