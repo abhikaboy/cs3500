@@ -72,6 +72,7 @@ public class StockViewTest {
             "Please Select A Portfolio: [1-2]\r\n" +
             "1) Portfolio1\r\n" +
             "2) Portfolio2\r\n" +
+            "3) Create New Portfolio\r\n" +
             "======================================================\r\n", outContent.toString());
   }
 

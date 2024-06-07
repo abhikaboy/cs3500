@@ -110,6 +110,7 @@ public class StockView implements StockViewInterface {
     for (int x = 0; x < portfolios.length; x++) {
       out.println((x + 1) + ") " + portfolios[x]);
     }
+    out.println(portfolios.length + 1 + ") Create New Portfolio");
     out.println("======================================================");
   }
 

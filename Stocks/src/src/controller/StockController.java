@@ -130,7 +130,7 @@ public class StockController implements StockControllerInterface {
     } else {
       model.addPortfolio(name);
       portfolio = model.getPortfolio(name);
-
+      handleChangePortfolio(true);
     }
   }
 
@@ -262,12 +262,16 @@ public class StockController implements StockControllerInterface {
 
   private void handleChangePortfolio(boolean menu) {
     String[] portfolioNames = model.getPortfolioNames();
-    view.printPortfolioChanger(model.getPortfolioNames());
+    view.printPortfolioChanger(portfolioNames);
     int choice = getValidatedUserChoice(1, portfolioNames.length + 1);
 
-    portfolio = model.getPortfolio(portfolioNames[choice - 1]);
-    if(menu){
-      createMenu(portfolio);
+    if (choice == portfolioNames.length + 1) {
+      handleCreatePortfolio();
+    } else {
+      portfolio = model.getPortfolio(portfolioNames[choice - 1]);
+      if (menu) {
+        createMenu(portfolio);
+      }
     }
   }
 
