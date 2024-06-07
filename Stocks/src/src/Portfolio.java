@@ -22,6 +22,9 @@ public class Portfolio {
   public void sellStock(String symbol, int quantity) {
     if(stocks.containsKey(symbol)) {
       stocks.get(symbol).sell(quantity);
+      if(stocks.get(symbol).getQuantity() == 0) {
+        stocks.remove(symbol);
+      }
     } else {
       throw new IllegalArgumentException("Stock not found in portfolio");
     }
