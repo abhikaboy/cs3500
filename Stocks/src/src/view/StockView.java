@@ -1,9 +1,11 @@
 package src.view;
 
 import src.model.Portfolio;
+import src.model.Stock;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class that represents the visual representation of the Stock Portfolio Manager.
@@ -63,7 +65,7 @@ public class StockView implements StockViewInterface {
    * Prints out prompt, welcoming the user :).
    */
   public void printWelcome() {
-     out.print("Welcome to the Stock Portfolio Manager! " + System.lineSeparator());
+     out.print("Welcome to the Stock Portfolio Manager!" + System.lineSeparator());
    }
 
   /**
@@ -85,10 +87,11 @@ public class StockView implements StockViewInterface {
       out.println("Please Select An Option:");
       out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
       out.println("1) Add/Remove Item to Portfolio");
-      out.println("2) View Stocks");
-      out.println("3) View Portfolio Value");
-      out.println("4) Change/Create Portfolio");
-      out.println("5) Exit");
+      out.println("2) View Portfolio Contents");
+      out.println("3) Analyze Current Stocks");
+      out.println("4) View Portfolio Value");
+      out.println("5) Change/Create Portfolio");
+      out.println("6) Exit");
     out.println("======================================================");
    }
 
@@ -154,18 +157,25 @@ public class StockView implements StockViewInterface {
    */
   public void printViewStocks(Portfolio portfolio) {
     String[] names = portfolio.getStockNames();
-    out.println("Select Which Stock To Examine");
-    for (int x = 0; x < portfolio.getPortfolioSize(); x++) {
-      out.println((x + 1) + ") " + names[x]);
+    Arrays.sort(names); // Sort the stock names alphabetically
+    out.println("============== Portfolio Contents =================");
+    for (String stockName : names) {
+      Stock stock = portfolio.getStock(stockName);
+      if (stock != null) {
+        int quantity = stock.getQuantity();
+        out.println(stockName + ": " + quantity);
+      } else {
+        out.println(stockName + ": Stock not found");
+      }
     }
-    out.println("Write 'Quit' To Cancel");
+    out.println("======================================================");
   }
 
   /**
    * Prints out options to choose while observing a specific stock.
    */
   public void printChooseStockOption() {
-    out.println("============== Choose A Stock Option =================");
+    out.println("============== Choose A Stock Analysis Option =================");
     out.println("1) View Stock Performance Over Specified Period");
     out.println("2) View Stock X-Day Moving Average");
     out.println("3) View Stock X-Day Crossovers");
