@@ -127,8 +127,8 @@ public class StockView implements StockViewInterface {
    * Prints out prompt telling user to inpuit Stock Ticker.
    */
   public void printSpecifyStockToTransact() {
-    out.println("============== Choose A Stock Option =================");
-    out.println("Type The Stock Ticker Symbol To Add/Remove");
+    out.println("============== Input Desired Stock =================");
+    out.println("Type The Desired Stock Ticker Symbol");
     out.println("Write 'Quit' To Cancel");
     out.println("======================================================");
 
