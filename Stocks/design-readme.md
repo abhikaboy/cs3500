@@ -6,7 +6,7 @@ Part one design explained
 
 Our program uses the Model View Controller System to operate.
 
-# Model
+## Model
 
 The model of our program stores the user portfolios in a hashmap
 The Portfolio class presents an individual portfolio and is a container for all the
@@ -15,12 +15,12 @@ Stock data is represented in a hashmap where each key is a date, and value is th
 Each query of a new stock will call the Alpha Vantage API and store the result in a csv locally.
 Upon the creation of a new model, we will load all the local csv's into the program within the Stock Cache
 
-# View
+## View
 
 The view handles all menus and UI in the application.
 Uses output stream and prints to user
 
-# Controller
+## Controller
 
 The controller acts as a mediary between the Model and Controller and calls functions from
 both classes in order to drive all user functionality.
