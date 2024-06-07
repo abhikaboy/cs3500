@@ -8,7 +8,8 @@ import java.util.Scanner;
 //  Also, there is a problem with my method of setting up control, because whenever you change
 //  the portfolio, it increases the amount of times you are told farewell when quitting, the base
 //  times is 2 for a reason I cant find out.
-//  Choice 1: To purchase/sell stocks also just doesn't work.
+//  Choice 1: To purchase/sell stocks also just doesn't work. It'll always say its wrong. I prob
+//  Just messed up in separating the String and number but I'm unable to see in my current state.
 /**
  * Class representing the controller for the Stock Portfolio Manager.
  */
