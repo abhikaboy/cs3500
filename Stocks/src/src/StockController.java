@@ -10,6 +10,8 @@ import java.util.Scanner;
 //  times is 2 for a reason I cant find out.
 //  Choice 1: To purchase/sell stocks also just doesn't work. It'll always say its wrong. I prob
 //  Just messed up in separating the String and number but I'm unable to see in my current state.
+//  Finally: There's a lot of public methods with no comments and style errors:
+//  and we got no tests... :(
 /**
  * Class representing the controller for the Stock Portfolio Manager.
  */
@@ -189,17 +191,12 @@ public class StockController {
   }
 
   private void handleChangePortfolio() {
-    boolean portfolioExit = false;
+    String[] portfolioNames = model.getPortfolioNames();
+    view.printPortfolioChanger(model.getPortfolioNames());
+    int choice = getValidatedUserChoice(1, portfolioNames.length + 1);
 
-    while (!portfolioExit && !exit) {
-      String[] portfolioNames = model.getPortfolioNames();
-      view.printPortfolioChanger(model.getPortfolioNames());
-      int choice = getValidatedUserChoice(1, portfolioNames.length + 1);
-
-      portfolio = model.getPortfolio(portfolioNames[choice - 1]);
-      portfolioExit = true;
-      createMenu(portfolio);
-    }
+    portfolio = model.getPortfolio(portfolioNames[choice - 1]);
+    createMenu(portfolio);
   }
 
   private void exitProgram() {

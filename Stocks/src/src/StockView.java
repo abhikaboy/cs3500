@@ -61,7 +61,7 @@ public class StockView {
    * Prints out prompt, welcoming the user :).
    */
   public void printWelcome() {
-     out.print("Welcome to the Stock Portfolio Manager");
+     out.print("Welcome to the Stock Portfolio Manager! " + System.lineSeparator());
    }
 
   /**
