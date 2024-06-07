@@ -15,6 +15,7 @@ public class StockController implements StockControllerInterface {
   private Scanner scan;
   private Portfolio portfolio;
   private boolean exit;
+  private boolean returned;
 
 
   /**
@@ -61,7 +62,10 @@ public class StockController implements StockControllerInterface {
    * When the program starts, this is called.
    */
   public void control() {
-    this.view.printWelcome();
+
+    if (returned == false) {
+      this.view.printWelcome();
+    }
 
     while (!exit) {
       if (model.countPortfolios() == 0) {
@@ -77,6 +81,8 @@ public class StockController implements StockControllerInterface {
             break;
           default:
             view.displayError("Invalid Input. Please Try Again.");
+            returned = true;
+            control();
         }
       } else {
         handleChangePortfolio(true);
