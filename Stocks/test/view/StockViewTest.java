@@ -1,4 +1,4 @@
-package src.view;
+package view;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,6 +6,7 @@ import org.junit.Test;
 import src.model.Portfolio;
 import src.model.Stock;
 import src.model.StockRow;
+import src.view.StockView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
