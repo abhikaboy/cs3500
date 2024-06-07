@@ -47,8 +47,10 @@ public class StockModelTest {
   @Test
   public void testAddStockToPortfolio() {
     model.addPortfolio("ABC");
-    model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(100, model.getPortfolio("ABC").getStockQuantity("AAPL"));
+    Portfolio portfolio = model.getPortfolio("ABC");
+
+    model.addStockToPortfolio("AAPL", portfolio, 100);
+    assertEquals(100, portfolio.getStockQuantity("AAPL"));
   }
 
   @Test

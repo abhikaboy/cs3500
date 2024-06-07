@@ -3,13 +3,10 @@ package src.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import src.view.StockView;
+
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -102,7 +99,6 @@ public class StockPortfolioTest {
     portfolio.buyStock("AAPL", stockData, 100);
     assertEquals(stock, portfolio.getStock("AAPL"));
   }
-
 
 
 }
