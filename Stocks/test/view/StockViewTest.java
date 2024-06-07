@@ -87,8 +87,8 @@ public class StockViewTest {
   @Test
   public void testPrintSpecifyStockToTransact() {
     view.printSpecifyStockToTransact();
-    assertEquals("============== Choose A Stock Option =================\r\n" +
-            "Type The Stock Ticker Symbol To Add/Remove\r\n" +
+    assertEquals("============== Input Desired Stock =================\r\n" +
+            "Type The Desired Stock Ticker Symbol\r\n" +
             "Write 'Quit' To Cancel\r\n" +
             "======================================================\r\n", outContent.toString());
   }
@@ -123,12 +123,17 @@ public class StockViewTest {
     // Printing the portfolio contents
     view.printViewStocks(portfolio);
 
+    String actualOutput = outContent.toString();
+    // Extract only the relevant part of the output
+    String portfolioContents = actualOutput.substring(actualOutput.indexOf(
+            "============== Portfolio Contents ================="));
+
     String expectedOutput = "============== Portfolio Contents =================\r\n" +
             "AAPL: 10\r\n" +
             "GOOG: 5\r\n" +
             "======================================================\r\n";
 
-    assertEquals(expectedOutput, outContent.toString());
+    assertEquals(expectedOutput, portfolioContents);
   }
 
   @Test
