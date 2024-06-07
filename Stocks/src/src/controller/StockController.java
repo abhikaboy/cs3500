@@ -10,9 +10,9 @@ import java.util.Scanner;
  * Class representing the controller for the Stock Portfolio Manager.
  */
 public class StockController implements StockControllerInterface {
-  private final StockModel model;
-  private final StockView view;
-  private final Scanner scan;
+  private StockModel model;
+  private StockView view;
+  private Scanner scan;
   private Portfolio portfolio;
   private boolean exit;
 
@@ -89,7 +89,7 @@ public class StockController implements StockControllerInterface {
     view.printMenu(portfolio);
 
     while (!exit) {
-      int choice = getValidatedUserChoice(1, 5);
+      int choice = getValidatedUserChoice(1, 6);
 
       switch (choice) {
         case 1:
