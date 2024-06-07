@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 import javax.sound.sampled.Port;
 
-public class StockModel {
+public class StockModel implements StockModelInterface {
   HashMap<String, Portfolio> portfolios;
   HashMap<String, HashMap<String, StockRow>> stocksCache;
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Class that represents the visual representation of the Stock Portfolio Manager.
  * Contains all methods related to creating visual output.
  */
-public class StockView {
+public class StockView implements StockViewInterface {
   private final PrintStream out;
 
   /**
@@ -240,5 +240,6 @@ public class StockView {
   public void displayFarewell() {
     out.println("Thank You For Using The Stock Portfolio Manager!");
   }
+
 
 }

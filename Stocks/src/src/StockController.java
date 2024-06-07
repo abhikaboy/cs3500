@@ -16,7 +16,7 @@ import java.util.Scanner;
 /**
  * Class representing the controller for the Stock Portfolio Manager.
  */
-public class StockController {
+public class StockController implements StockControllerInterface {
   StockModel model;
   StockView view;
   Scanner scan;
