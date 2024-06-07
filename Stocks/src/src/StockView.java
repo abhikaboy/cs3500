@@ -1,6 +1,24 @@
 package src;
 
+import java.io.PrintStream;
+import java.util.Scanner;
+
+/**
+ * Class that represents the visual representation of the Stock Portfolio Manager.
+ * Contains all methods related to creating visual output.
+ */
 public class StockView {
+  private final PrintStream out;
+  private final Scanner scan;
+
+  /**
+   *
+   * @param out
+   */
+  public StockView(PrintStream out) {
+    this.out = out;
+    this.scan = new Scanner(System.in);
+  }
   /**
    *
    * Allow a user to examine the gain or loss of a stock over a specified period.
@@ -40,20 +58,49 @@ public class StockView {
    * Portfolios should be stored locally as a CSV or JSON
    */
 
-   public void printWelcome(){
-     System.out.println("Welcome to the Stock Portfolio Manager");
-     printMenu();
-     String option = System.console().readLine();
-
+  /**
+   * TODO:Once a method is able to count total portfolios, direct controller methods to this
+   */
+  protected void printWelcome() {
+     out.print("Welcome to the Stock Portfolio Manager");
    }
 
-   public void printMenu(){
-      System.out.println("Please select an option:");
-      System.out.println("You have [x] items in your portfolio");
-      System.out.println("1) Add Item to Portfolio");
-      System.out.println("2) View Stocks");
-      System.out.println("3) View Portfolio Value");
-      System.out.println("4) View Crossover");
-      System.out.println("5) Quit");
+  /**
+   * TODO:Once a method is able to count total portfolios, direct controller methods to this
+   */
+
+   private void printMenuNoPortfolios() {
+    out.print("1) Create A Portfolio");
+    out.print("2) Quit");
    }
+
+  /**
+   * TODO:Once a method is able to count total portfolios, direct controller methods to this
+   *      specifically, replace the [x] with the amount of items in portfolio
+   */
+  private void printMenu() {
+      out.println("Please Select An Option:");
+      out.println("You Have [x] Items In Your Portfolio");
+      out.println("1) Add Item to Portfolio");
+      out.println("2) View Stocks");
+      out.println("3) View Portfolio Value");
+      out.println("4) View Crossover");
+      out.println("5) Change/Create Portfolio");
+      out.println("6) Quit");
+   }
+
+  /**
+   * TODO: Once a method is able to count total portfolios, use a getter to identify the number
+   *       of portfolios and complete the forLoop of creating the menu indices.
+   */
+  private void printPortfolioChanger() {
+    out.println("Please Select A Portfolio:");
+    for (int x = 0; x < 5; x++) {
+      out.println((x + 1) + ") " + "Portfolio Name");
+    }
+  }
+
+  private void printPortfolioMaker() {
+
+  }
 }
