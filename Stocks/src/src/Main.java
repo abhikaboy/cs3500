@@ -9,16 +9,6 @@ public class Main {
     StockModel poop = new StockModel();
     StockView piss = new StockView(System.out);
     // poop.getStock("GOOG");
-    poop.addPortfolio("poop");
-    poop.addPortfolio("two");
-    poop.addPortfolio("three");
-    poop.addStockToPortfolio("GOOG", poop.getPortfolio("poop"), 10);
-    poop.addStockToPortfolio("AAPL", poop.getPortfolio("poop"), 1);
-    System.out.println(poop.getPortfolio("poop"));
-    System.out.println(poop.getPortfolioValue("poop"));
-    System.out.println(poop.getStockChange("GOOG", "2024-05-06", "2024-06-06"));
-    System.out.println("moving average: " + poop.getStockMovingAverage("GOOG", new Date(), 100));
-    System.out.println(poop.countPortfolios());
     for(String s : poop.getPortfolioNames()){
       System.out.println(s);
     }

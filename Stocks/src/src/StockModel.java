@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.sound.sampled.Port;
+
 public class StockModel {
   HashMap<String, Portfolio> portfolios;
   HashMap<String, HashMap<String, StockRow>> stocksCache;
@@ -187,8 +189,8 @@ public class StockModel {
    * @param name the portfolio name
    * @return the value of the portfolio
    */
-  public double getPortfolioValue(String name) {
-    return getPortfolio(name).getPortfolioValue();
+  public double getPortfolioValue(String date, Portfolio portfolio) {
+    return portfolio.getPortfolioValue(date);
   }
 
   /**

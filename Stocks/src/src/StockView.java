@@ -69,8 +69,8 @@ public class StockView {
    * portfolio in store.
    */
   public void printMenuNoPortfolios() {
-    out.print("1) Create A Portfolio");
-    out.print("2) Quit");
+    out.print("1) Create A Portfolio" + System.lineSeparator());
+    out.print("2) Quit" + System.lineSeparator());
    }
 
   /**
@@ -93,7 +93,12 @@ public class StockView {
    * @param portfolios  List of portfolios stored in the model to be chosen from.
    */
   public void printPortfolioChanger(String[] portfolios) {
-    out.println("Please Select A Portfolio:");
+    int start = 1;
+    if(portfolios.length == 0) {
+      out.println("No Portfolios Found");
+      return;
+    }
+    out.println("Please Select A Portfolio: [1-" + portfolios.length + "]");
     for (int x = 0; x < portfolios.length; x++) {
       out.println((x + 1) + ") " + portfolios[x]);
     }
@@ -121,7 +126,7 @@ public class StockView {
    */
   public void printAddOrSellStock() {
     out.println("Type The Action And Then Quantity");
-    out.println("Ex: Sell 30 OR Buy 102");
+    out.println("Ex: Sell:30 OR Buy:102");
     out.println("Write 'Quit' To Cancel");
   }
 
@@ -175,6 +180,10 @@ public class StockView {
    */
   public void printPortfolioValueResult(Double value) {
     out.println("The Portfolio Value Was " + value);
+  }
+
+  public void printPortfolioValuePrompt() {
+    out.println("Please Specify the date you wish to view the value of the portfolio DD-MM-YYYY");
   }
 
   /**

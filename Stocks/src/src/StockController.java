@@ -85,13 +85,10 @@ public class StockController {
             view.displayError("Invalid Input. Please Try Again.");
         }
       } else {
-        handleChangePortfolio();
+        handleChangePortfolio(true);
       }
-
-      if (exit) {
-        exitProgram();
       }
-    }
+    exitProgram();
   }
 
   private void createMenu(Portfolio portfolio) {
@@ -108,10 +105,10 @@ public class StockController {
           //handleViewStocks();
           break;
         case 3:
-          //handleViewPortfolioValue();
+          handleViewPortfolioValue();
           break;
         case 4:
-          handleChangePortfolio();
+          handleChangePortfolio(true);
           break;
         case 5:
           exit = true;
@@ -121,8 +118,6 @@ public class StockController {
           createMenu(portfolio);
       }
     }
-
-    exitProgram();
   }
 
   private void handleError(String msg) {
@@ -142,6 +137,14 @@ public class StockController {
     }
   }
 
+  private void handleViewPortfolioValue() {
+    this.handleChangePortfolio(false);
+    view.printPortfolioValuePrompt();
+    String date = getUserInput();
+    view.printPortfolioValueResult(portfolio.getPortfolioValue(date));
+    createMenu(portfolio);
+  }
+
   private void handleTransaction() {
     view.printSpecifyStockToTransact();
     String ticker = getUserInput();
@@ -151,7 +154,7 @@ public class StockController {
     if (!ticker.equalsIgnoreCase("Quit")) {
       view.printAddOrSellStock();
       String transaction = getUserInput();
-      String[] parts = transaction.split(" ");
+      String[] parts = transaction.split(":");
 
       //if the split has two parts we keep going
       if (parts.length == 2) {
@@ -183,20 +186,24 @@ public class StockController {
         }
         //Overall ass formatting
       } else {
-        handleError("Invalid input format. Please enter 'Buy <quantity>' or 'Sell <quantity>'.");
+        System.out.println("transaction: " + transaction);
+        System.out.println(parts);
+        handleError("Invalid input format. Please enter 'Buy:<quantity>' or 'Sell:<quantity>'.");
       }
     } else {
       createMenu(portfolio);
     }
   }
 
-  private void handleChangePortfolio() {
+  private void handleChangePortfolio(boolean menu) {
     String[] portfolioNames = model.getPortfolioNames();
     view.printPortfolioChanger(model.getPortfolioNames());
     int choice = getValidatedUserChoice(1, portfolioNames.length + 1);
 
     portfolio = model.getPortfolio(portfolioNames[choice - 1]);
-    createMenu(portfolio);
+    if(menu){
+      createMenu(portfolio);
+    }
   }
 
   private void exitProgram() {

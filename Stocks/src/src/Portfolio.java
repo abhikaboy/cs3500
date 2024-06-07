@@ -42,6 +42,16 @@ public class Portfolio {
     }
     return total;
   }
+  public double getPortfolioValue(String date) {
+    double total = 0;
+    for (String symbol : stocks.keySet()) {
+      HashMap<String, StockRow> stock = stocks.get(symbol).getData();
+      StockRow lastRow = stock.get(date);
+      // todays date: 
+      total += lastRow.getClose() * stocks.get(symbol).getQuantity();
+    }
+    return total;
+  }
 
   /**
    * Get the size of this portfolio by counting the size of the HashMap. Essentially, returns
