@@ -168,9 +168,9 @@ public class StockModel {
    * @param symbol the stock symbol
    * @param portfolioName the portfolio name
    */
-  public void addStockToPortfolio(String symbol, String portfolioName) {
+  public void addStockToPortfolio(String symbol, String portfolioName, int shares) {
     Portfolio portfolio = getPortfolio(portfolioName);
-    portfolio.addStock(symbol, getStock(symbol));
+    portfolio.buyStock(symbol, getStock(symbol), shares);
   }
 
   /**
@@ -178,9 +178,9 @@ public class StockModel {
    * @param symbol the stock symbol
    * @param portfolioName the portfolio name
    */
-  public void removeStockFromPortfolio(String symbol, String portfolioName) {
+  public void sellStockFromPortfolio(String symbol, String portfolioName, int quantity) {
     Portfolio portfolio = getPortfolio(portfolioName);
-    portfolio.removeStock(symbol, getStock(symbol));
+    portfolio.sellStock(symbol, quantity);
   }
 
   /**

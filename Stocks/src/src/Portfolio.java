@@ -3,34 +3,39 @@ package src;
 import java.util.HashMap;
 
 public class Portfolio {
-  HashMap<String, HashMap<String, StockRow>> stocks;
+
+  // Symbol, Stock
+  HashMap<String, Stock> stocks;
 
   public Portfolio() {
     stocks = new HashMap<>();
   }
 
-  public void addStock(String symbol, HashMap<String, StockRow> stock) {
+  public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity) {
     if(stocks.containsKey(symbol)) {
-      return;
+      stocks.get(symbol).purchase(quantity);
+    } else {
+      stocks.put(symbol, new Stock(symbol, quantity, stock));
     }
-    stocks.put(symbol, stock);
   }
 
-  public void removeStock(String symbol, HashMap<String, StockRow> stock) {
+  public void sellStock(String symbol, int quantity) {
     if(stocks.containsKey(symbol)) {
-      stocks.remove(symbol);
+      stocks.get(symbol).sell(quantity);
+    } else {
+      throw new IllegalArgumentException("Stock not found in portfolio");
     }
   }
 
   public double getPortfolioValue() {
     double total = 0;
     for (String symbol : stocks.keySet()) {
-      HashMap<String, StockRow> stock = stocks.get(symbol);
+      HashMap<String, StockRow> stock = stocks.get(symbol).getData();
       StockRow lastRow = null;
       // todays date: 
       String date = "2024-06-06";
       lastRow = stock.get(date);
-      total += lastRow.getClose();
+      total += lastRow.getClose() * stocks.get(symbol).getQuantity();
     }
     return total;
   }

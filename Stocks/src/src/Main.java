@@ -11,8 +11,8 @@ public class Main {
     poop.addPortfolio("poop");
     poop.addPortfolio("two");
     poop.addPortfolio("three");
-    poop.addStockToPortfolio("GOOG", "poop");
-    poop.addStockToPortfolio("AAPL", "poop");
+    poop.addStockToPortfolio("GOOG", "poop", 10);
+    poop.addStockToPortfolio("AAPL", "poop", 1);
     System.out.println(poop.getPortfolio("poop"));
     System.out.println(poop.getPortfolioValue("poop"));
     System.out.println(poop.getStockChange("GOOG", "2024-05-06", "2024-06-06"));
