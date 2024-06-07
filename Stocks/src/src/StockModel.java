@@ -18,6 +18,11 @@ public class StockModel {
   HashMap<String, Portfolio> portfolios;
   HashMap<String, HashMap<String, StockRow>> stocksCache;
 
+  /**
+   * Writes the stock data to a file in the stocks directory.
+   * @param output all the stock data
+   * @param stockSymbol the stock symbol
+   */
   public void writeStockToFile(String output, String stockSymbol) {
     String[] rows = output.toString().split("\n");
     File file;
@@ -54,13 +59,26 @@ public class StockModel {
 
   }
 
+  /**
+   * Count the number of portfolios.
+   * @return the number of portfolios
+   */
   public int countPortfolios() {
     return portfolios.size();
   }
+  
+  /**
+   * Get the names of all the portfolios.
+   * @return the names of all the portfolios
+   */
   public String[] getPortfolioNames() {
     return portfolios.keySet().toArray(new String[0]);
   }
 
+  /**
+   * Query the stock data from the API.
+   * @param symbol the stock symbol
+   */
   public void queryStock(String symbol) {
     String apiKey = "W0M1JOKC82EZEQA8";
     String stockSymbol = symbol; //ticker symbol for Google
@@ -95,6 +113,11 @@ public class StockModel {
     writeStockToFile(output.toString(), stockSymbol);
   }
 
+  /**
+   * Load a given stock from the local directory.
+   * @param stockSymbol the stock symbol
+   * @return the stock data
+   */
   public HashMap<String, StockRow> loadLocalStock(String stockSymbol) {
     // checks the local directory for the stock csv 
     // file and loads it into the cache
@@ -126,6 +149,11 @@ public class StockModel {
     return stock;
   }
 
+  /**
+   * Get the stock data for a given symbol.
+   * @param symbol
+   * @return the stock data
+   */
   public HashMap<String, StockRow> getStock(String symbol) {
     if (stocksCache.containsKey(symbol)) {
       return stocksCache.get(symbol);
@@ -135,20 +163,38 @@ public class StockModel {
     }
   }
 
+  /**
+   * Add a stock to a portfolio.
+   * @param symbol the stock symbol
+   * @param portfolioName the portfolio name
+   */
   public void addStockToPortfolio(String symbol, String portfolioName) {
     Portfolio portfolio = getPortfolio(portfolioName);
     portfolio.addStock(symbol, getStock(symbol));
   }
 
+  /**
+   * Remove a stock from a portfolio.
+   * @param symbol the stock symbol
+   * @param portfolioName the portfolio name
+   */
   public void removeStockFromPortfolio(String symbol, String portfolioName) {
     Portfolio portfolio = getPortfolio(portfolioName);
     portfolio.removeStock(symbol, getStock(symbol));
   }
 
+  /**
+   * Get the value of a portfolio.
+   * @param name the portfolio name
+   * @return the value of the portfolio
+   */
   public double getPortfolioValue(String name) {
     return getPortfolio(name).getPortfolioValue();
   }
 
+  /**
+   * Constructor for the StockModel.
+   */
   public StockModel() {
     portfolios = new HashMap<>();
     stocksCache = new HashMap<>();
@@ -165,6 +211,11 @@ public class StockModel {
     }
   }
 
+  /**
+   * Get a portfolio by name.
+   * @param name the portfolio name
+   * @return the portfolio
+   */
   public Portfolio getPortfolio(String name) {
     if (portfolios.containsKey(name)) {
       return portfolios.get(name);
@@ -173,6 +224,10 @@ public class StockModel {
     }
   }
 
+  /**
+   * Creates a portfolio.
+   * @param name the portfolio name
+   */
   public void addPortfolio(String name) {
     if (portfolios.containsKey(name)) {
       return;
@@ -180,6 +235,13 @@ public class StockModel {
     portfolios.put(name, new Portfolio());
   }
 
+  /**
+   * Get the change in stock price over a given period.
+   * @param symbol the stock symbol
+   * @param startDate the start date
+   * @param endDate the end date
+   * @return the change in stock price
+   */
   public double getStockChange(String symbol, String startDate, String endDate) {
     HashMap<String, StockRow> stock = getStock(symbol);
     StockRow startRow = findClosestRecordedDate(stock, startDate);
@@ -187,10 +249,22 @@ public class StockModel {
     return endRow.getClose() - startRow.getClose();
   }
 
+  /**
+   * Covert String date into object.
+   * @param date the date string
+   * @return the formatted date
+   */
   private Date formatDateString(String date){
     String[] dateParts = date.split("-");
     return new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
   }
+  
+  /**
+   * Find the closest stock row to a given date.
+   * @param stock the stock data
+   * @param date the date
+   * @return the closest recorded date
+   */
   private StockRow findClosestRecordedDate(HashMap<String, StockRow> stock , String date){
     StockRow stockRow = stock.get(date);
     if(stockRow != null){
@@ -208,6 +282,13 @@ public class StockModel {
     return stockRow;
   }
 
+  /**
+   * Get the moving average of a stock.
+   * @param symbol the stock symbol
+   * @param date the date
+   * @param x the number of days
+   * @return the moving average
+   */
   public double getStockMovingAverage(String symbol, Date date, int x) {
     HashMap<String, StockRow> stock = getStock(symbol);
     // get the date in the format yyyy-mm-dd
@@ -227,6 +308,15 @@ public class StockModel {
     return sum / x;
   }
 
+  /**
+   * Gets a list of dates that are considered crossover days.
+   * @param symbol the stock symbol
+   * @param x the number of days
+   * @param startDate the start date
+   * @param endDate the end date
+   * @return the list of crossover days
+   * @throws IllegalArgumentException if the stock symbol is not found
+   */
   public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate, String endDate) {
     HashMap<String, StockRow> stock = getStock(symbol);
     StockRow startRow = findClosestRecordedDate(stock, startDate);
