@@ -53,4 +53,12 @@ public class Portfolio {
     return stocks.size();
   }
 
+  /**
+   * Get the names of all the stocks.
+   * @return the names of all the stocks
+   */
+  public String[] getStockNames() {
+    return stocks.keySet().toArray(new String[0]);
+  }
+
 }

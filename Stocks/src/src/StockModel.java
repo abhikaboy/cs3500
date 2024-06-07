@@ -75,6 +75,7 @@ public class StockModel {
     return portfolios.keySet().toArray(new String[0]);
   }
 
+
   /**
    * Query the stock data from the API.
    * @param symbol the stock symbol
@@ -166,20 +167,18 @@ public class StockModel {
   /**
    * Add a stock to a portfolio.
    * @param symbol the stock symbol
-   * @param portfolioName the portfolio name
+   * @param portfolio the portfolio
    */
-  public void addStockToPortfolio(String symbol, String portfolioName, int shares) {
-    Portfolio portfolio = getPortfolio(portfolioName);
+  public void addStockToPortfolio(String symbol, Portfolio portfolio, int shares) {
     portfolio.buyStock(symbol, getStock(symbol), shares);
   }
 
   /**
    * Remove a stock from a portfolio.
    * @param symbol the stock symbol
-   * @param portfolioName the portfolio name
+   * @param portfolio the portfolio
    */
-  public void sellStockFromPortfolio(String symbol, String portfolioName, int quantity) {
-    Portfolio portfolio = getPortfolio(portfolioName);
+  public void sellStockFromPortfolio(String symbol, Portfolio portfolio, int quantity) {
     portfolio.sellStock(symbol, quantity);
   }
 
