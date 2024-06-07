@@ -183,7 +183,6 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get the value of a portfolio.
-   * @param name the portfolio name
    * @return the value of the portfolio
    */
   public double getPortfolioValue(String date, Portfolio portfolio) {
