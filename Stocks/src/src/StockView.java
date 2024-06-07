@@ -152,27 +152,30 @@ public class StockView {
 
   /**
    * Prints out options to choose while observing a specific stock.
-   * @param stock  Chosen stock to be observed.
    */
-  public void printChooseStockOption(Stock stock) {
+  public void printChooseStockOption() {
     out.println("1) View Stock Performance Over Specified Period");
     out.println("2) View Stock X-Day Moving Average");
     out.println("3) View Stock X-Day Crossovers");
-    out.println("4) Quit");
+    out.println("4) Back");
+  }
+
+  public void printStockPerformance(Double change) {
+    out.println("The Stock Change Was: " + change);
   }
 
   /**
    * Prints out message, telling user to input a start date.
    */
   public void printSpecifyStartDate() {
-    out.println("Please Specify Start Date DD-MM-YYYY");
+    out.println("Please Specify Start Date YYYY-MM-DD");
   }
 
   /**
    * Prints out message, telling user to input an end date.
    */
   public void printSpecifyEndDate() {
-    out.println("Please Specify End Date DD-MM-YYYY");
+    out.println("Please Specify End Date YYYY-MM-DD");
   }
 
   /**
@@ -183,7 +186,7 @@ public class StockView {
   }
 
   public void printPortfolioValuePrompt() {
-    out.println("Please Specify the date you wish to view the value of the portfolio DD-MM-YYYY");
+    out.println("Please Specify the date you wish to view the value of the portfolio YYYY-MM-DD");
   }
 
   /**

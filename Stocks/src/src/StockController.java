@@ -102,7 +102,7 @@ public class StockController {
           handleTransaction();
           break;
         case 2:
-          //handleViewStocks();
+          handleViewStocks();
           break;
         case 3:
           handleViewPortfolioValue();
@@ -143,6 +143,50 @@ public class StockController {
     String date = getUserInput();
     view.printPortfolioValueResult(portfolio.getPortfolioValue(date));
     createMenu(portfolio);
+  }
+
+  private void handleViewStocks(){
+    view.printChooseStockOption();
+    int choice = getValidatedUserChoice(1, 4);
+
+    switch (choice) {
+      case 1:
+        handleViewStockPerformance();
+        break;
+      case 2:
+        // handleViewStockMovingAverage();
+        break;
+      case 3:
+        // handleViewStockCrossovers();
+        break;
+      case 4:
+        createMenu(portfolio);
+        break;
+      default:
+        view.displayError("Invalid Input. Please Try Again.");
+        this.handleViewStocks();
+    }
+  }
+
+  // Prompt user for a ticker symbol and a start and end date; use model to display the change/performance
+  // of the stock over that period.
+  private void handleViewStockPerformance() {
+    view.printSpecifyStockToTransact();
+    String ticker = getUserInput();
+
+    if (!ticker.equalsIgnoreCase("Quit")) {
+      model.getStock(ticker);
+      view.printSpecifyStartDate();
+      String startDate = getUserInput();
+
+      view.printSpecifyEndDate();
+      String endDate = getUserInput();
+
+      view.printStockPerformance(model.getStockChange(ticker, startDate, endDate));
+      createMenu(portfolio);
+    } else {
+      createMenu(portfolio);
+    }
   }
 
   private void handleTransaction() {

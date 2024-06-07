@@ -247,6 +247,8 @@ public class StockModel {
     HashMap<String, StockRow> stock = getStock(symbol);
     StockRow startRow = findClosestRecordedDate(stock, startDate);
     StockRow endRow = findClosestRecordedDate(stock, endDate);
+    System.out.println("Start Row: " + startRow.getClose());
+    System.out.println("End Row: " + endRow.getClose());
     return endRow.getClose() - startRow.getClose();
   }
 
@@ -280,6 +282,7 @@ public class StockModel {
       dateString = formatter.format(dateObj);
       stockRow = stock.get(dateString);
     }
+    System.out.println(date + " Closest Recorded Date: " + dateString);
     return stockRow;
   }
 
