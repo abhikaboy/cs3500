@@ -54,7 +54,7 @@ public class StockModel {
 
   public void queryStock(String symbol) {
     String apiKey = "W0M1JOKC82EZEQA8";
-    String stockSymbol = "GOOG"; //ticker symbol for Google
+    String stockSymbol = symbol; //ticker symbol for Google
     // replace 
     URL url = null;
 
@@ -170,9 +170,26 @@ public class StockModel {
 
   public double getStockChange(String symbol, String startDate, String endDate) {
     HashMap<String, StockRow> stock = getStock(symbol);
-    StockRow startRow = stock.get(startDate);
-    StockRow endRow = stock.get(endDate);
+    StockRow startRow = findClosestRecordedDate(stock, startDate);
+    StockRow endRow = findClosestRecordedDate(stock, endDate);
     return endRow.getClose() - startRow.getClose();
+  }
+
+  private StockRow findClosestRecordedDate(HashMap<String, StockRow> stock , String date){
+    StockRow stockRow = stock.get(date);
+    if(stockRow != null){
+      return stockRow;
+    }
+    String[] dateParts = date.split("-");
+    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    String dateString = formatter.format(dateObj);
+    while(stockRow == null){
+      dateObj = new Date(dateObj.getTime() - 86400000); // subtract a day
+      dateString = formatter.format(dateObj);
+      stockRow = stock.get(dateString);
+    }
+    return stockRow;
   }
 
   public double getStockMovingAverage(String symbol, Date date, int x) {
@@ -182,19 +199,16 @@ public class StockModel {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     dateString = formatter.format(date);
     double sum = 0;
-    StockRow currentRow = stock.get(dateString);
+    StockRow currentRow = findClosestRecordedDate(stock, dateString);
     for (int i = 0; i < x; i++) {
-      System.out.println(dateString);
-      if (stock.containsKey(dateString)) {
-        currentRow = stock.get(dateString);
-      }
+      currentRow = findClosestRecordedDate(stock, dateString);
       if (currentRow != null) {
         sum += currentRow.getClose();
       }
       date = new Date(date.getTime() - 86400000); // subtract a day
       dateString = formatter.format(date);
-      System.out.println(sum);
     }
     return sum / x;
   }
+
 }
