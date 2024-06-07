@@ -346,4 +346,13 @@ public class StockModel implements StockModelInterface {
     Portfolio portfolio = getPortfolio(portfolioName);
     return portfolioName + ": \n" + portfolio.portfolioAString();
   }
+
+  /**
+   * Checks if the given ticker is valid.
+   * @param ticker the ticker symbol to check
+   * @return true if the ticker is valid, false otherwise
+   */
+  public boolean isValidTicker(String ticker) {
+    return stocksCache.keySet().stream().anyMatch(key -> key.equalsIgnoreCase(ticker));
+  }
 }
