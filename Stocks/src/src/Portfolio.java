@@ -35,4 +35,14 @@ public class Portfolio {
     return total;
   }
 
+  /**
+   * Get the size of this portfolio by counting the size of the HashMap. Essentially, returns
+   * the total amount of stocks present.
+   *
+   * @return  int. The total amount of stocks in this portfolio.
+   */
+  public int getPortfolioSize() {
+    return stocks.size();
+  }
+
 }
