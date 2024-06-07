@@ -216,7 +216,8 @@ public class StockModel implements StockModelInterface {
    */
   public Portfolio getPortfolio(String name) {
     if (portfolios.containsKey(name)) {
-      return portfolios.get(name);
+      // return a hard copy of the portfolio
+      return new Portfolio(portfolios.get(name));
     } else {
       throw new IllegalArgumentException("Portfolio does not exist");
     }

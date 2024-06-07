@@ -11,6 +11,16 @@ public class Portfolio {
     stocks = new HashMap<>();
   }
 
+  public Portfolio(Portfolio portfolio) {
+    stocks = new HashMap<>();
+    for (String symbol : portfolio.stocks.keySet()) {
+      stocks.put(symbol, 
+      new Stock(symbol, 
+      portfolio.stocks.get(symbol).getQuantity(), 
+      portfolio.stocks.get(symbol).getData()));
+    }
+  }
+
 
   public int getStockQuantity(String symbol) {
     if(stocks.containsKey(symbol)) {
@@ -21,9 +31,13 @@ public class Portfolio {
   }
 
   public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity) {
+    System.out.println("Buying " + quantity + " shares of " + symbol);
+    System.out.println(this.portfolioAString());
     if(stocks.containsKey(symbol)) {
+      System.out.println("Stock already in portfolio");
       stocks.get(symbol).purchase(quantity);
     } else {
+      System.out.println("Adding stock to portfolio");
       stocks.put(symbol, new Stock(symbol, quantity, stock));
     }
   }
