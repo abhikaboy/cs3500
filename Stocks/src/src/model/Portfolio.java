@@ -102,4 +102,13 @@ public class Portfolio {
     return output;
   }
 
+  /**
+   * Returns the stock given the symbol.
+   * @param symbol  Symbol representing a stock.
+   * @return Stock with the corresponding inputted symbol.
+   */
+  public Stock getStock(String symbol) {
+    return stocks.get(symbol);
+  }
+
 }

@@ -6,17 +6,6 @@ import src.view.StockView;
 
 import java.util.Date;
 import java.util.Scanner;
-// TODO: I Kinda did my own thing for the controller, but I realised I kind of messed it up
-//  I did not Implement choices 2 and 3 yet:
-//  - View Stocks
-//  - View Portfolio Value
-//  Also, there is a problem with my method of setting up control, because whenever you change
-//  the portfolio, it increases the amount of times you are told farewell when quitting, the base
-//  times is 2 for a reason I cant find out.
-//  Choice 1: To purchase/sell stocks also just doesn't work. It'll always say its wrong. I prob
-//  Just messed up in separating the String and number but I'm unable to see in my current state.
-//  Finally: There's a lot of public methods with no comments and style errors:
-//  and we got no tests... :(
 /**
  * Class representing the controller for the Stock Portfolio Manager.
  */
@@ -107,15 +96,18 @@ public class StockController implements StockControllerInterface {
           handleTransaction();
           break;
         case 2:
-          handleViewStocks();
+          handleViewPortfolioContents();
           break;
         case 3:
-          handleViewPortfolioValue();
+          handleAnalyzeStocks();
           break;
         case 4:
-          handleChangePortfolio(true);
+          handleViewPortfolioValue();
           break;
         case 5:
+          handleChangePortfolio(true);
+          break;
+        case 6:
           exit = true;
           break;
         default:
@@ -150,7 +142,12 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  private void handleViewStocks(){
+  private void handleViewPortfolioContents() {
+    view.printViewStocks(portfolio);
+    createMenu(portfolio);
+  }
+
+  private void handleAnalyzeStocks(){
     view.printChooseStockOption();
     int choice = getValidatedUserChoice(1, 4);
 
@@ -169,7 +166,7 @@ public class StockController implements StockControllerInterface {
         break;
       default:
         view.displayError("Invalid Input. Please Try Again.");
-        this.handleViewStocks();
+        this.handleAnalyzeStocks();
     }
   }
 
