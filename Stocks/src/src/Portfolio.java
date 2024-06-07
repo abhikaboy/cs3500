@@ -71,4 +71,12 @@ public class Portfolio {
     return stocks.keySet().toArray(new String[0]);
   }
 
+  public String portfolioAString() {
+    String output = "";
+    for (String symbol : stocks.keySet()) {
+      output += symbol + " " + stocks.get(symbol).getQuantity() + "\n";
+    }
+    return output;
+  }
+
 }

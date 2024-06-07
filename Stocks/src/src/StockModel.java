@@ -338,4 +338,14 @@ public class StockModel implements StockModelInterface {
     }
     return crossoverDays;
   }
+
+  /**
+   * Get the portfolio as a string.
+   * @param portfolioName the portfolio name
+   * @return the portfolio as a string
+   */
+  public String getPortfolioAsString(String portfolioName) {
+    Portfolio portfolio = getPortfolio(portfolioName);
+    return portfolioName + ": \n" + portfolio.portfolioAString();
+  }
 }
