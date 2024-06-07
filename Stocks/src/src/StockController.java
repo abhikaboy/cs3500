@@ -1,5 +1,6 @@
 package src;
 
+import java.util.Date;
 import java.util.Scanner;
 // TODO: I Kinda did my own thing for the controller, but I realised I kind of messed it up
 //  I did not Implement choices 2 and 3 yet:
@@ -154,7 +155,7 @@ public class StockController {
         handleViewStockPerformance();
         break;
       case 2:
-        // handleViewStockMovingAverage();
+        handleViewStockMovingAverage();
         break;
       case 3:
         // handleViewStockCrossovers();
@@ -166,6 +167,26 @@ public class StockController {
         view.displayError("Invalid Input. Please Try Again.");
         this.handleViewStocks();
     }
+  }
+
+  private void handleViewStockMovingAverage() {
+    view.printSpecifyStockToTransact();
+    String ticker = getUserInput();
+
+    if (!ticker.equalsIgnoreCase("Quit")) {
+      model.getStock(ticker);
+      view.printSpecifyStartDate();
+      String date = getUserInput();
+
+    String[] dateParts = date.split("-");
+    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+   
+
+      view.printXValue();
+      int x = getValidatedUserChoice(1, 100);
+      view.printResultOfAverage(model.getStockMovingAverage(ticker, dateObj, x));
+    }
+    createMenu(portfolio);
   }
 
   // Prompt user for a ticker symbol and a start and end date; use model to display the change/performance
@@ -183,10 +204,9 @@ public class StockController {
       String endDate = getUserInput();
 
       view.printStockPerformance(model.getStockChange(ticker, startDate, endDate));
+    } 
       createMenu(portfolio);
-    } else {
-      createMenu(portfolio);
-    }
+  
   }
 
   private void handleTransaction() {

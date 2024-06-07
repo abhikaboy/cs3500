@@ -79,6 +79,7 @@ public class StockView {
    * @param portfolio  The current portfolio that is being managed through the menu.
    */
   public void printMenu(Portfolio portfolio) {
+    out.println("====================== Menu ======================");
       out.println("Please Select An Option:");
       out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
       out.println("1) Add/Remove Item to Portfolio");
@@ -86,6 +87,7 @@ public class StockView {
       out.println("3) View Portfolio Value");
       out.println("4) Change/Create Portfolio");
       out.println("5) Exit");
+    out.println("======================================================");
    }
 
   /**
@@ -98,26 +100,33 @@ public class StockView {
       out.println("No Portfolios Found");
       return;
     }
+    out.println("============== Portfolio Selector =================");
     out.println("Please Select A Portfolio: [1-" + portfolios.length + "]");
     for (int x = 0; x < portfolios.length; x++) {
       out.println((x + 1) + ") " + portfolios[x]);
     }
+    out.println("======================================================");
   }
 
   /**
    * Prints out prompt, telling user to name a new portfolio.
    */
   public void printPortfolioMaker() {
+    out.println("============== Portfolio Maker =================");
     out.println("Please Name Your New Portfolio");
     out.println("Write 'Quit' To Cancel");
+    out.println("======================================================");
   }
 
   /**
    * Prints out prompt telling user to inpuit Stock Ticker.
    */
   public void printSpecifyStockToTransact() {
+    out.println("============== Choose A Stock Option =================");
     out.println("Type The Stock Ticker Symbol To Add/Remove");
     out.println("Write 'Quit' To Cancel");
+    out.println("======================================================");
+
   }
 
   /**
@@ -154,10 +163,12 @@ public class StockView {
    * Prints out options to choose while observing a specific stock.
    */
   public void printChooseStockOption() {
+    out.println("============== Choose A Stock Option =================");
     out.println("1) View Stock Performance Over Specified Period");
     out.println("2) View Stock X-Day Moving Average");
     out.println("3) View Stock X-Day Crossovers");
     out.println("4) Back");
+    out.println("======================================================");
   }
 
   public void printStockPerformance(Double change) {
