@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -175,6 +177,10 @@ public class StockModel {
     return endRow.getClose() - startRow.getClose();
   }
 
+  private Date formatDateString(String date){
+    String[] dateParts = date.split("-");
+    return new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+  }
   private StockRow findClosestRecordedDate(HashMap<String, StockRow> stock , String date){
     StockRow stockRow = stock.get(date);
     if(stockRow != null){
@@ -211,4 +217,25 @@ public class StockModel {
     return sum / x;
   }
 
+  public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate, String endDate) {
+    HashMap<String, StockRow> stock = getStock(symbol);
+    StockRow startRow = findClosestRecordedDate(stock, startDate);
+    StockRow endRow = findClosestRecordedDate(stock, endDate);
+    // Return all the dates that are considered a crossover day
+    double movingAverageX = getStockMovingAverage(symbol, formatDateString(endDate), x);
+    // begin at start date and add to return if the closing price is greater than the moving average
+    ArrayList<String> crossoverDays = new ArrayList<>();
+    String currentDate = startDate;
+    while(!currentDate.equals(endDate)){
+      StockRow currentRow = findClosestRecordedDate(stock, currentDate);
+      if(currentRow.getClose() > movingAverageX){
+        crossoverDays.add(currentDate);
+      }
+      Date date = formatDateString(currentDate);
+      date = new Date(date.getTime() + 86400000); // add a day
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+      currentDate = formatter.format(date);
+    }
+    return crossoverDays;
+  }
 }
