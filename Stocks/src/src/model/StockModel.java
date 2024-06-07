@@ -1,11 +1,10 @@
-package src;
+package src.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
-
-import javax.sound.sampled.Port;
 
 public class StockModel implements StockModelInterface {
   HashMap<String, Portfolio> portfolios;

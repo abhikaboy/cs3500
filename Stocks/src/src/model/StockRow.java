@@ -1,4 +1,4 @@
-package src;
+package src.model;
 
 /**
  * Testing comment for push, replace it.

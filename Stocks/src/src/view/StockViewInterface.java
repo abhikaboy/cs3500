@@ -1,4 +1,4 @@
-package src;
+package src.view;
 
 public interface StockViewInterface {
     // Implement the method signature and the JDoc comment for all the public methods in the StockView class.

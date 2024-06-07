@@ -1,4 +1,8 @@
-package src;
+package src.controller;
+
+import src.model.Portfolio;
+import src.model.StockModel;
+import src.view.StockView;
 
 import java.util.Date;
 import java.util.Scanner;

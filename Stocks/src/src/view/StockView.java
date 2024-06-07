@@ -1,4 +1,6 @@
-package src;
+package src.view;
+
+import src.model.Portfolio;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
