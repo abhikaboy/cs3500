@@ -1,7 +1,7 @@
 package src;
 
 import java.io.PrintStream;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Class that represents the visual representation of the Stock Portfolio Manager.
@@ -9,15 +9,13 @@ import java.util.Scanner;
  */
 public class StockView {
   private final PrintStream out;
-  private final Scanner scan;
 
   /**
-   *
-   * @param out
+   * Constructor for the view of the stock portfolio manager.
+   * @param out the output that will be printed.
    */
   public StockView(PrintStream out) {
     this.out = out;
-    this.scan = new Scanner(System.in);
   }
   /**
    *
@@ -58,49 +56,166 @@ public class StockView {
    * Portfolios should be stored locally as a CSV or JSON
    */
 
+
   /**
-   * TODO:Once a method is able to count total portfolios, direct controller methods to this
+   * Prints out prompt, welcoming the user :).
    */
-  protected void printWelcome() {
+  public void printWelcome() {
      out.print("Welcome to the Stock Portfolio Manager");
    }
 
   /**
-   * TODO:Once a method is able to count total portfolios, direct controller methods to this
+   * Prints out prompt, telling user to either create a portfolio or quit due to not having a
+   * portfolio in store.
    */
-
-   private void printMenuNoPortfolios() {
+  public void printMenuNoPortfolios() {
     out.print("1) Create A Portfolio");
     out.print("2) Quit");
    }
 
   /**
-   * TODO:Once a method is able to count total portfolios, direct controller methods to this
-   *      specifically, replace the [x] with the amount of items in portfolio
+   * Prints out prompt, telling user to choose one of the 6 menu options regarding their
+   * current portfolio selection.
+   * @param portfolio  The current portfolio that is being managed through the menu.
    */
-  private void printMenu() {
+  public void printMenu(Portfolio portfolio) {
       out.println("Please Select An Option:");
-      out.println("You Have [x] Items In Your Portfolio");
-      out.println("1) Add Item to Portfolio");
+      out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
+      out.println("1) Add/Remove Item to Portfolio");
       out.println("2) View Stocks");
       out.println("3) View Portfolio Value");
-      out.println("4) View Crossover");
-      out.println("5) Change/Create Portfolio");
-      out.println("6) Quit");
+      out.println("4) Change/Create Portfolio");
+      out.println("5) Exit");
    }
 
   /**
-   * TODO: Once a method is able to count total portfolios, use a getter to identify the number
-   *       of portfolios and complete the forLoop of creating the menu indices.
+   * Prints out prompt, telling user to select their desired portfolio.
+   * @param portfolios  List of portfolios stored in the model to be chosen from.
    */
-  private void printPortfolioChanger() {
+  public void printPortfolioChanger(String[] portfolios) {
     out.println("Please Select A Portfolio:");
-    for (int x = 0; x < 5; x++) {
-      out.println((x + 1) + ") " + "Portfolio Name");
+    for (int x = 0; x < portfolios.length; x++) {
+      out.println((x + 1) + ") " + portfolios[x]);
     }
   }
 
-  private void printPortfolioMaker() {
-
+  /**
+   * Prints out prompt, telling user to name a new portfolio.
+   */
+  public void printPortfolioMaker() {
+    out.println("Please Name Your New Portfolio");
+    out.println("Write 'Quit' To Cancel");
   }
+
+  /**
+   * Prints out prompt telling user to inpuit Stock Ticker.
+   */
+  public void printSpecifyStockToTransact() {
+    out.println("Type The Stock Ticker Symbol To Add/Remove");
+    out.println("Write 'Quit' To Cancel");
+  }
+
+  /**
+   * Prints out prompt telling user to input Sell/Buy action with the specific quantity of
+   * shares.
+   */
+  public void printAddOrSellStock() {
+    out.println("Type The Action And Then Quantity");
+    out.println("Ex: Sell 30 OR Buy 102");
+    out.println("Write 'Quit' To Cancel");
+  }
+
+  /**
+   * Prints out prompt informing the user that their transaction was successful.
+   */
+  public void printSuccessfulTransaction() {
+    out.println("Transaction Successful!");
+  }
+
+  /**
+   * Prints out all stocks inside a portfolio in a numbered list, prompting the user to select one.
+   * @param portfolio  Portfolio whose stocks will be examined.
+   */
+  public void printViewStocks(Portfolio portfolio) {
+    String[] names = portfolio.getStockNames();
+    out.println("Select Which Stock To Examine");
+    for (int x = 0; x < portfolio.getPortfolioSize(); x++) {
+      out.println((x + 1) + ") " + names[x]);
+    }
+    out.println("Write 'Quit' To Cancel");
+  }
+
+  /**
+   * Prints out options to choose while observing a specific stock.
+   * @param stock  Chosen stock to be observed.
+   */
+  public void printChooseStockOption(Stock stock) {
+    out.println("1) View Stock Performance Over Specified Period");
+    out.println("2) View Stock X-Day Moving Average");
+    out.println("3) View Stock X-Day Crossovers");
+    out.println("4) Quit");
+  }
+
+  /**
+   * Prints out message, telling user to input a start date.
+   */
+  public void printSpecifyStartDate() {
+    out.println("Please Specify Start Date DD-MM-YYYY");
+  }
+
+  /**
+   * Prints out message, telling user to input an end date.
+   */
+  public void printSpecifyEndDate() {
+    out.println("Please Specify End Date DD-MM-YYYY");
+  }
+
+  /**
+   * Prints out message, telling user to input an x-value to observe X-Day information.
+   */
+  public void printPortfolioValueResult(Double value) {
+    out.println("The Portfolio Value Was " + value);
+  }
+
+  /**
+   * Prints out message, telling user to input an x-value to observe X-Day information.
+   */
+  public void printXValue() {
+    out.println("Please Input the X Value of days you wish to observe");
+  }
+
+  /**
+   * Prints out a message showing the result of the X-Day Moving Average.
+   * @param num The result.
+   */
+  public void printResultOfAverage(double num) {
+    out.println("The Moving Average Is: " + num);
+  }
+
+  /**
+   * Prints out a message showing the result of the X-Day crossovers.
+   * @param days The resulting days.
+   */
+  public void printResultOfCrossOver(ArrayList<String> days) {
+    out.println("The Crossover Days Are The Following: ");
+    for (String day : days) {
+      out.println(day);
+    }
+  }
+
+  /**
+   * Displays an error message.
+   * @param error The error message to display.
+   */
+  public void displayError(String error) {
+    out.println("Error: " + error);
+  }
+
+  /**
+   * Displays a farewell message.
+   */
+  public void displayFarewell() {
+    out.println("Thank You For Using The Stock Portfolio Manager!");
+  }
+
 }

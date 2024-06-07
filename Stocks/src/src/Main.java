@@ -7,12 +7,13 @@ import java.util.Date;
 public class Main {
   public static void main(String[] args) {
     StockModel poop = new StockModel();
+    StockView piss = new StockView(System.out);
     // poop.getStock("GOOG");
     poop.addPortfolio("poop");
     poop.addPortfolio("two");
     poop.addPortfolio("three");
-    poop.addStockToPortfolio("GOOG", "poop", 10);
-    poop.addStockToPortfolio("AAPL", "poop", 1);
+    poop.addStockToPortfolio("GOOG", poop.getPortfolio("poop"), 10);
+    poop.addStockToPortfolio("AAPL", poop.getPortfolio("poop"), 1);
     System.out.println(poop.getPortfolio("poop"));
     System.out.println(poop.getPortfolioValue("poop"));
     System.out.println(poop.getStockChange("GOOG", "2024-05-06", "2024-06-06"));
@@ -21,5 +22,7 @@ public class Main {
     for(String s : poop.getPortfolioNames()){
       System.out.println(s);
     }
+    StockController controller = new StockController(poop, piss);
+    controller.control();
   }
 }
