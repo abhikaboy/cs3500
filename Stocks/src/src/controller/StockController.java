@@ -10,9 +10,9 @@ import java.util.Scanner;
  * Class representing the controller for the Stock Portfolio Manager.
  */
 public class StockController implements StockControllerInterface {
-  private StockModel model;
-  private StockView view;
-  private Scanner scan;
+  private final StockModel model;
+  private final StockView view;
+  private final Scanner scan;
   private Portfolio portfolio;
   private boolean exit;
 
