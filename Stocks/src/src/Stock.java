@@ -2,6 +2,9 @@ package src;
 
 import java.util.HashMap;
 
+/**
+ * Class that represents a stock in the Stock Portfolio Manager.
+ */
 public class Stock {
 
   private String symbol;
