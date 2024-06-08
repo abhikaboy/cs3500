@@ -6,7 +6,6 @@ import org.junit.Test;
 import src.model.Portfolio;
 import src.model.Stock;
 import src.model.StockRow;
-import src.view.StockView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -14,6 +13,9 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Testing class for the StockView class.
+ */
 public class StockViewTest {
 
   private ByteArrayOutputStream outContent;

@@ -11,12 +11,13 @@ public class StockRow {
 
   /**
    * Constructor for a new stock row.
+   *
    * @param open  Open price.
    * @param high  High price.
-   * @param low  Low price.
-   * @param close  Close price.
+   * @param low   Low price.
+   * @param close Close price.
    */
-  public StockRow(double open, double high, double low, double close){
+  public StockRow(double open, double high, double low, double close) {
     this.open = open;
     this.high = high;
     this.low = low;
@@ -25,7 +26,8 @@ public class StockRow {
 
   /**
    * Get the open price.
-   * @return  The open price.
+   *
+   * @return The open price.
    */
   public double getOpen() {
     return open;
@@ -33,7 +35,8 @@ public class StockRow {
 
   /**
    * Get the high price.
-   * @return  The high price.
+   *
+   * @return The high price.
    */
   public double getHigh() {
     return high;
@@ -41,7 +44,8 @@ public class StockRow {
 
   /**
    * Get the low price.
-   * @return  The low price.
+   *
+   * @return The low price.
    */
   public double getLow() {
     return low;
@@ -49,10 +53,11 @@ public class StockRow {
 
   /**
    * Get the close price.
-   * @return  The close price.
+   *
+   * @return The close price.
    */
   public double getClose() {
     return close;
   }
-  
+
 }

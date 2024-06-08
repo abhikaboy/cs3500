@@ -19,26 +19,28 @@ public class Portfolio {
 
   /**
    * Constructor for a new portfolio.
-   * @param portfolio  Portfolio to copy.
+   *
+   * @param portfolio Portfolio to copy.
    */
   public Portfolio(Portfolio portfolio) {
     stocks = new HashMap<>();
     for (String symbol : portfolio.stocks.keySet()) {
-      stocks.put(symbol, 
-      new Stock(symbol, 
-      portfolio.stocks.get(symbol).getQuantity(), 
-      portfolio.stocks.get(symbol).getData()));
+      stocks.put(symbol,
+              new Stock(symbol,
+                      portfolio.stocks.get(symbol).getQuantity(),
+                      portfolio.stocks.get(symbol).getData()));
     }
   }
 
 
   /**
    * Get the quantity of a stock in the portfolio.
-   * @param symbol  Symbol representing a stock.
-   * @return  The quantity of the stock in the portfolio.
+   *
+   * @param symbol Symbol representing a stock.
+   * @return The quantity of the stock in the portfolio.
    */
   public int getStockQuantity(String symbol) {
-    if(stocks.containsKey(symbol)) {
+    if (stocks.containsKey(symbol)) {
       return stocks.get(symbol).getQuantity();
     } else {
       throw new IllegalArgumentException("Stock not found in portfolio");
@@ -47,14 +49,15 @@ public class Portfolio {
 
   /**
    * Buy a stock in the portfolio.
-   * @param symbol  Symbol representing a stock.
-   * @param stock  Stock data for the stock.
-   * @param quantity  Quantity of the stock to buy.
+   *
+   * @param symbol   Symbol representing a stock.
+   * @param stock    Stock data for the stock.
+   * @param quantity Quantity of the stock to buy.
    */
   public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity) {
     System.out.println("Buying " + quantity + " shares of " + symbol);
     System.out.println(this.portfolioAString());
-    if(stocks.containsKey(symbol)) {
+    if (stocks.containsKey(symbol)) {
       System.out.println("Stock already in portfolio");
       stocks.get(symbol).purchase(quantity);
     } else {
@@ -65,13 +68,14 @@ public class Portfolio {
 
   /**
    * Sell a stock in the portfolio.
-   * @param symbol  Symbol representing a stock.
-   * @param quantity  Quantity of the stock to sell.
+   *
+   * @param symbol   Symbol representing a stock.
+   * @param quantity Quantity of the stock to sell.
    */
   public void sellStock(String symbol, int quantity) {
-    if(stocks.containsKey(symbol)) {
+    if (stocks.containsKey(symbol)) {
       stocks.get(symbol).sell(quantity);
-      if(stocks.get(symbol).getQuantity() == 0) {
+      if (stocks.get(symbol).getQuantity() == 0) {
         stocks.remove(symbol);
       }
     } else {
@@ -81,7 +85,8 @@ public class Portfolio {
 
   /**
    * Get the value of the portfolio.
-   * @return  The value of the portfolio.
+   *
+   * @return The value of the portfolio.
    */
 
   public double getPortfolioValue() {
@@ -96,11 +101,12 @@ public class Portfolio {
     }
     return total;
   }
-  
+
   /**
    * Get the value of the portfolio for a given date.
-   * @param date  Date to get the value for.
-   * @return  The value of the portfolio for the given date.
+   *
+   * @param date Date to get the value for.
+   * @return The value of the portfolio for the given date.
    */
   public double getPortfolioValue(String date) {
     double total = 0;
@@ -117,7 +123,7 @@ public class Portfolio {
    * Get the size of this portfolio by counting the size of the HashMap. Essentially, returns
    * the total amount of stocks present.
    *
-   * @return  int. The total amount of stocks in this portfolio.
+   * @return int. The total amount of stocks in this portfolio.
    */
   public int getPortfolioSize() {
     return stocks.size();
@@ -125,6 +131,7 @@ public class Portfolio {
 
   /**
    * Get the names of all the stocks.
+   *
    * @return the names of all the stocks
    */
   public String[] getStockNames() {
@@ -133,9 +140,10 @@ public class Portfolio {
 
   /**
    * The string representation of the portfolio.
-   * @return  A string representation of the portfolio.
+   *
+   * @return A string representation of the portfolio.
    * @see Portfolio#portfolioAString()
-   */ 
+   */
   public String portfolioAString() {
     String output = "";
     for (String symbol : stocks.keySet()) {
@@ -146,7 +154,8 @@ public class Portfolio {
 
   /**
    * Returns the stock given the symbol.
-   * @param symbol  Symbol representing a stock.
+   *
+   * @param symbol Symbol representing a stock.
    * @return Stock with the corresponding inputted symbol.
    */
   public Stock getStock(String symbol) {

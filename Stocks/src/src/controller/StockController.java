@@ -6,10 +6,12 @@ import src.view.StockView;
 
 import java.util.Date;
 import java.util.Scanner;
+
 /**
  * Class representing the controller for the Stock Portfolio Manager.
  */
 public class StockController implements StockControllerInterface {
+
   private StockModel model;
   private StockView view;
   private Scanner scan;
@@ -63,7 +65,7 @@ public class StockController implements StockControllerInterface {
    */
   public void control() {
 
-    if (returned == false) {
+    if (!returned) {
       this.view.printWelcome();
     }
 
@@ -87,7 +89,7 @@ public class StockController implements StockControllerInterface {
       } else {
         handleChangePortfolio(true);
       }
-      }
+    }
     exitProgram();
   }
 
@@ -153,7 +155,7 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  private void handleAnalyzeStocks(){
+  private void handleAnalyzeStocks() {
     view.printChooseStockOption();
     int choice = getValidatedUserChoice(1, 4);
 
@@ -221,9 +223,10 @@ public class StockController implements StockControllerInterface {
       view.printSpecifyStartDate();
       String date = getUserInput();
 
-    String[] dateParts = date.split("-");
-    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
-   
+      String[] dateParts = date.split("-");
+      Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900,
+              Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+
 
       view.printXValue();
       int x = getValidatedUserChoice(1, 100);
@@ -232,8 +235,8 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  // Prompt user for a ticker symbol and a start and end date; use model to display the change/performance
-  // of the stock over that period.
+  // Prompt user for a ticker symbol and a start and end date; use model to display
+  // the change/performance of the stock over that period.
   private void handleViewStockPerformance() {
     view.printSpecifyStockToTransact();
     String ticker = getUserInput();
@@ -247,9 +250,9 @@ public class StockController implements StockControllerInterface {
       String endDate = getUserInput();
 
       view.printStockPerformance(model.getStockChange(ticker, startDate, endDate));
-    } 
-      createMenu(portfolio);
-  
+    }
+    createMenu(portfolio);
+
   }
 
   private void handleTransaction() {

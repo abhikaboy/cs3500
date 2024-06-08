@@ -14,9 +14,10 @@ public class Stock {
 
   /**
    * Constructor for a new stock.
-   * @param symbol  Symbol representing the stock.
-   * @param quantity  Quantity of the stock.
-   * @param data  Stock data for the stock.
+   *
+   * @param symbol   Symbol representing the stock.
+   * @param quantity Quantity of the stock.
+   * @param data     Stock data for the stock.
    */
   public Stock(String symbol, int quantity, HashMap<String, StockRow> data) {
     this.symbol = symbol;
@@ -25,8 +26,9 @@ public class Stock {
   }
 
   /**
-   *  Purchase a quantity of the stock.
-   * @param quantity  Quantity to purchase.
+   * Purchase a quantity of the stock.
+   *
+   * @param quantity Quantity to purchase.
    */
 
   public void purchase(int quantity) {
@@ -35,10 +37,11 @@ public class Stock {
 
   /**
    * Sell a quantity of the stock.
-   * @param quantity  Quantity to sell.
+   *
+   * @param quantity Quantity to sell.
    */
   public void sell(int quantity) {
-    if(this.quantity < quantity) {
+    if (this.quantity < quantity) {
       throw new IllegalArgumentException("Cannot sell more than you have");
     }
     this.quantity -= quantity;
@@ -46,7 +49,8 @@ public class Stock {
 
   /**
    * Get the data copy for the stock.
-   * @return  The data for the stock.
+   *
+   * @return The data for the stock.
    */
   public HashMap<String, StockRow> getData() {
     // return a copy of the data
@@ -55,7 +59,8 @@ public class Stock {
 
   /**
    * Get the quantity of the stock.
-   * @return  The quantity of the stock.
+   *
+   * @return The quantity of the stock.
    */
   public int getQuantity() {
     return quantity;
@@ -63,8 +68,12 @@ public class Stock {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Stock stock = (Stock) o;
     return quantity == stock.quantity &&
             symbol.equals(stock.symbol) &&
@@ -75,5 +84,5 @@ public class Stock {
   public int hashCode() {
     return Objects.hash(symbol, quantity, data);
   }
-  
+
 }

@@ -3,9 +3,7 @@ package src.controller;
 import org.junit.Before;
 import org.junit.Test;
 
-import src.controller.StockController;
 import src.model.MockStockModel;
-import src.model.Portfolio;
 import src.view.MockStockView;
 
 import java.io.ByteArrayInputStream;
@@ -13,19 +11,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Testing class for the Controller.
+ */
 public class StockControllerTest {
   private MockStockModel model;
   private MockStockView view;
   private StockController controller;
-  private ByteArrayOutputStream outContent;
 
   @Before
   public void setUp() {
     model = new MockStockModel();
-    outContent = new ByteArrayOutputStream();
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     view = new MockStockView(outContent);
   }
 

@@ -5,6 +5,9 @@ import src.model.Portfolio;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Mock class for testing, represents the View class.
+ */
 public class MockStockView extends StockView {
   private ByteArrayOutputStream outContent;
 

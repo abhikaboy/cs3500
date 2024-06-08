@@ -3,21 +3,17 @@ package src.model;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 
 /**
- * Class to test both the Stock and Portfolio classes
+ * Class to test both the Stock and Portfolio classes.
  */
 public class StockPortfolioTest {
   private Stock stock;
   private Portfolio portfolio;
   private StockRow stockRow;
-  private StockRow stockRow2;
-  private StockRow stockRow3;
   private HashMap stockData;
 
 
@@ -25,8 +21,8 @@ public class StockPortfolioTest {
   public void setUp() {
     // Mock Stock
     stockRow = new StockRow(100, 120, 80, 90);
-    stockRow2 = new StockRow(90, 120, 80, 100);
-    stockRow3 = new StockRow(95, 120, 80, 90);
+    StockRow stockRow2 = new StockRow(90, 120, 80, 100);
+    StockRow stockRow3 = new StockRow(95, 120, 80, 90);
     stockData = new HashMap<>();
     stockData.put("2024-06-03", stockRow);
     stockData.put("2024-06-04", stockRow2);

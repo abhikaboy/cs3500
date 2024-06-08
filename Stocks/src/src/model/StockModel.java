@@ -13,17 +13,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Class representing the Model aspect of the programs MVC architecture.
+ */
 public class StockModel implements StockModelInterface {
   private HashMap<String, Portfolio> portfolios;
   private HashMap<String, HashMap<String, StockRow>> stocksCache;
 
   /**
    * Writes the stock data to a file in the stocks directory.
-   * @param output all the stock data
+   *
+   * @param output      all the stock data
    * @param stockSymbol the stock symbol
    */
   public void writeStockToFile(String output, String stockSymbol) {
-    String[] rows = output.toString().split("\n");
+    String[] rows = output.split("\n");
     File file;
     FileWriter writer = null;
     try {
@@ -60,14 +64,16 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Count the number of portfolios.
+   *
    * @return the number of portfolios
    */
   public int countPortfolios() {
     return portfolios.size();
   }
-  
+
   /**
    * Get the names of all the portfolios.
+   *
    * @return the names of all the portfolios
    */
   public String[] getPortfolioNames() {
@@ -77,6 +83,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Query the stock data from the API.
+   *
    * @param symbol the stock symbol
    */
   public void queryStock(String symbol) {
@@ -115,6 +122,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Load a given stock from the local directory.
+   *
    * @param stockSymbol the stock symbol
    * @return the stock data
    */
@@ -132,7 +140,7 @@ public class StockModel implements StockModelInterface {
         while (scanner.hasNextLine()) {
           String line = scanner.nextLine();
           String[] items = line.split(",");
-          if(items.length < 5){
+          if (items.length < 5) {
             continue;
           }
           StockRow stockRow = new StockRow(Double.parseDouble(items[1]),
@@ -151,8 +159,9 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get the stock data for a given symbol.
-   * @param symbol
-   * @return the stock data
+   *
+   * @param symbol The ticker/symbol of the stock.
+   * @return the stock data.
    */
   public HashMap<String, StockRow> getStock(String symbol) {
     if (stocksCache.containsKey(symbol)) {
@@ -165,7 +174,8 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Add a stock to a portfolio.
-   * @param symbol the stock symbol
+   *
+   * @param symbol    the stock symbol
    * @param portfolio the portfolio
    */
   public void addStockToPortfolio(String symbol, Portfolio portfolio, int shares) {
@@ -174,7 +184,8 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Remove a stock from a portfolio.
-   * @param symbol the stock symbol
+   *
+   * @param symbol    the stock symbol
    * @param portfolio the portfolio
    */
   public void sellStockFromPortfolio(String symbol, Portfolio portfolio, int quantity) {
@@ -183,6 +194,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get the value of a portfolio.
+   *
    * @return the value of the portfolio
    */
   public double getPortfolioValue(String date, Portfolio portfolio) {
@@ -210,6 +222,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get a portfolio by name.
+   *
    * @param name the portfolio name
    * @return the portfolio
    */
@@ -224,6 +237,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Creates a portfolio.
+   *
    * @param name the portfolio name
    */
   public void addPortfolio(String name) {
@@ -235,9 +249,10 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get the change in stock price over a given period.
-   * @param symbol the stock symbol
+   *
+   * @param symbol    the stock symbol
    * @param startDate the start date
-   * @param endDate the end date
+   * @param endDate   the end date
    * @return the change in stock price
    */
   public double getStockChange(String symbol, String startDate, String endDate) {
@@ -251,30 +266,34 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Covert String date into object.
+   *
    * @param date the date string
    * @return the formatted date
    */
-  private Date formatDateString(String date){
+  private Date formatDateString(String date) {
     String[] dateParts = date.split("-");
-    return new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+    return new Date(Integer.parseInt(dateParts[0]) - 1900,
+            Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
   }
-  
+
   /**
    * Find the closest stock row to a given date.
+   *
    * @param stock the stock data
-   * @param date the date
+   * @param date  the date
    * @return the closest recorded date
    */
-  private StockRow findClosestRecordedDate(HashMap<String, StockRow> stock , String date){
+  private StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
     StockRow stockRow = stock.get(date);
-    if(stockRow != null){
+    if (stockRow != null) {
       return stockRow;
     }
     String[] dateParts = date.split("-");
-    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1])
+            - 1, Integer.parseInt(dateParts[2]));
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     String dateString = formatter.format(dateObj);
-    while(stockRow == null){
+    while (stockRow == null) {
       dateObj = new Date(dateObj.getTime() - 86400000); // subtract a day
       dateString = formatter.format(dateObj);
       stockRow = stock.get(dateString);
@@ -285,9 +304,10 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get the moving average of a stock.
+   *
    * @param symbol the stock symbol
-   * @param date the date
-   * @param x the number of days
+   * @param date   the date
+   * @param x      the number of days
    * @return the moving average
    */
   public double getStockMovingAverage(String symbol, Date date, int x) {
@@ -311,21 +331,23 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Gets a list of dates that are considered crossover days.
-   * @param symbol the stock symbol
-   * @param x the number of days
+   *
+   * @param symbol    the stock symbol
+   * @param x         the number of days
    * @param startDate the start date
-   * @param endDate the end date
+   * @param endDate   the end date
    * @return the list of crossover days
    * @throws IllegalArgumentException if the stock symbol is not found
    */
-  public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate, String endDate) {
+  public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate,
+                                             String endDate) {
     HashMap<String, StockRow> stock = getStock(symbol);
     double movingAverageX = getStockMovingAverage(symbol, formatDateString(endDate), x);
     ArrayList<String> crossoverDays = new ArrayList<>();
     String currentDate = startDate;
-    while(!currentDate.equals(endDate)){
+    while (!currentDate.equals(endDate)) {
       StockRow currentRow = findClosestRecordedDate(stock, currentDate);
-      if(currentRow.getClose() > movingAverageX){
+      if (currentRow.getClose() > movingAverageX) {
         crossoverDays.add(currentDate);
       }
       Date date = formatDateString(currentDate);
@@ -338,6 +360,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Get the portfolio as a string.
+   *
    * @param portfolioName the portfolio name
    * @return the portfolio as a string
    */
@@ -348,6 +371,7 @@ public class StockModel implements StockModelInterface {
 
   /**
    * Checks if the given ticker is valid.
+   *
    * @param ticker the ticker symbol to check
    * @return true if the ticker is valid, false otherwise
    */
@@ -356,8 +380,9 @@ public class StockModel implements StockModelInterface {
   }
 
   /**
-   * Is this date string valid?
-   * @param dateStr  The inputted date in YYYY-MM-DD Format
+   * Is this date string valid.
+   *
+   * @param dateStr The inputted date in YYYY-MM-DD Format
    * @return boolean, is this day real?
    */
   public static boolean isValidDate(String dateStr) {

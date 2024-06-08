@@ -16,50 +16,12 @@ public class StockView implements StockViewInterface {
 
   /**
    * Constructor for the view of the stock portfolio manager.
+   *
    * @param out the output that will be printed.
    */
   public StockView(PrintStream out) {
     this.out = out;
   }
-  /**
-   *
-   * Allow a user to examine the gain or loss of a stock over a specified period.
-   *
-   * Allow a user to examine the x-day moving average of a stock for a specified date
-   * and a specified value of x.
-   *
-   * Allow a user to determine which days are x-day crossovers for a specified stock
-   * over a specified date range and a specified value of x.
-   *
-   * Allow a user to create one or more portfolios with shares of one or more stock,
-   * and find the value of that portfolio on a specific date. You can assume that all the
-   * stocks and their quantities will exist on that date.
-   *
-   */
-
-  /**
-   * If no portfolio currently, allow a user to
-   *  [1. Build Portfolio] ***
-   *  [2. Quit]
-   * Else Give users options [1-5]
-   * 1) View gain or loss of stock over a window of time
-   *  [Start Date DD-MM-YYYY]
-   *  [End Date DD-MM-YYYY]
-   * 2) Crossover ???
-   *  Over a specified period of time, what days are "x-day crossovers"?
-   *  An x-day crossover happens when the closing price for a day is greater
-   *  than the x-day moving average for that day. A crossover signals a "buy"
-   *  opportunity. A crossover can be defined over any period of time, although
-   *  the 30-day period (i.e. the 30-day crossover) is usually popular.
-   * 3) View Portfolio Value on specific date
-   * 4) Add Stock to portfolio ***
-   * 5) Quit
-   */
-
-  /**
-   * Portfolios should be stored locally as a CSV or JSON
-   */
-
 
   /**
    * Prints out prompt, welcoming the user :).
@@ -80,7 +42,8 @@ public class StockView implements StockViewInterface {
   /**
    * Prints out prompt, telling user to choose one of the 6 menu options regarding their
    * current portfolio selection.
-   * @param portfolio  The current portfolio that is being managed through the menu.
+   *
+   * @param portfolio The current portfolio that is being managed through the menu.
    */
   public void printMenu(Portfolio portfolio) {
     out.println("====================== Menu ======================");
@@ -97,11 +60,12 @@ public class StockView implements StockViewInterface {
 
   /**
    * Prints out prompt, telling user to select their desired portfolio.
-   * @param portfolios  List of portfolios stored in the model to be chosen from.
+   *
+   * @param portfolios List of portfolios stored in the model to be chosen from.
    */
   public void printPortfolioChanger(String[] portfolios) {
     int start = 1;
-    if(portfolios.length == 0) {
+    if (portfolios.length == 0) {
       out.println("No Portfolios Found");
       return;
     }
@@ -154,7 +118,8 @@ public class StockView implements StockViewInterface {
 
   /**
    * Prints out all stocks inside a portfolio in a numbered list, prompting the user to select one.
-   * @param portfolio  Portfolio whose stocks will be examined.
+   *
+   * @param portfolio Portfolio whose stocks will be examined.
    */
   public void printViewStocks(Portfolio portfolio) {
     String[] names = portfolio.getStockNames();
@@ -222,6 +187,7 @@ public class StockView implements StockViewInterface {
 
   /**
    * Prints out a message showing the result of the X-Day Moving Average.
+   *
    * @param num The result.
    */
   public void printResultOfAverage(double num) {
@@ -230,6 +196,7 @@ public class StockView implements StockViewInterface {
 
   /**
    * Prints out a message showing the result of the X-Day crossovers.
+   *
    * @param days The resulting days.
    */
   public void printResultOfCrossOver(ArrayList<String> days) {
@@ -241,6 +208,7 @@ public class StockView implements StockViewInterface {
 
   /**
    * Displays an error message.
+   *
    * @param error The error message to display.
    */
   public void displayError(String error) {

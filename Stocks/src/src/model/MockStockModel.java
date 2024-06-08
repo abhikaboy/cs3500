@@ -3,6 +3,9 @@ package src.model;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Mock class for testing use of the Model class.
+ */
 public class MockStockModel extends StockModel {
   private HashMap<String, Boolean> tickerValidity;
 
