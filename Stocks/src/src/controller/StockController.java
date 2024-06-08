@@ -165,7 +165,7 @@ public class StockController implements StockControllerInterface {
         handleViewStockMovingAverage();
         break;
       case 3:
-        // handleViewStockCrossovers();
+        handleViewStockCrossovers();
         break;
       case 4:
         createMenu(portfolio);
@@ -174,6 +174,42 @@ public class StockController implements StockControllerInterface {
         view.displayError("Invalid Input. Please Try Again.");
         this.handleAnalyzeStocks();
     }
+  }
+
+  private void handleViewStockCrossovers() {
+    view.printSpecifyStockToTransact();
+    String ticker = getUserInput();
+
+    if (!ticker.equalsIgnoreCase("Quit")) {
+      model.getStock(ticker);
+
+      String startDate;
+      while (true) {
+        view.printSpecifyStartDate();
+        startDate = getUserInput();
+        if (StockModel.isValidDate(startDate)) {
+          break;
+        } else {
+          handleError("Invalid start date format. Please enter the date in YYYY-MM-DD format.");
+        }
+      }
+
+      String endDate;
+      while (true) {
+        view.printSpecifyEndDate();
+        endDate = getUserInput();
+        if (StockModel.isValidDate(endDate)) {
+          break;
+        } else {
+          handleError("Invalid end date format. Please enter the date in YYYY-MM-DD format.");
+        }
+      }
+
+      view.printXValue();
+      int x = getValidatedUserChoice(1, 100);
+      view.printResultOfCrossOver(model.xDayCrossoverDays(ticker, x, startDate, endDate));
+    }
+    createMenu(portfolio);
   }
 
   private void handleViewStockMovingAverage() {
