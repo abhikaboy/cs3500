@@ -81,15 +81,15 @@ public class StockController implements StockControllerInterface {
       } else {
         handleChangePortfolio(true);
       }
-      }
-    exitProgram();
+    }
+    handleExitProgram();
   }
 
   private void createMenu(Portfolio portfolio) {
     view.printMenu(portfolio);
 
     while (!exit) {
-      int choice = getValidatedUserChoice(1, 5);
+      int choice = getValidatedUserChoice(1, 6);
 
       switch (choice) {
         case 1:
@@ -112,10 +112,8 @@ public class StockController implements StockControllerInterface {
           break;
         default:
           view.displayError("Invalid Input. Please Try Again.");
-          createMenu(portfolio);
       }
     }
-    exitProgram();
   }
 
   private void handleError(String msg) {
@@ -216,9 +214,9 @@ public class StockController implements StockControllerInterface {
       view.printSpecifyStartDate();
       String date = getUserInput();
 
-    String[] dateParts = date.split("-");
-    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
-   
+      String[] dateParts = date.split("-");
+      Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
+
 
       view.printXValue();
       int x = getValidatedUserChoice(1, 100);
@@ -242,9 +240,9 @@ public class StockController implements StockControllerInterface {
       String endDate = getUserInput();
 
       view.printStockPerformance(model.getStockChange(ticker, startDate, endDate));
-    } 
-      createMenu(portfolio);
-  
+    }
+    createMenu(portfolio);
+
   }
 
   private void handleTransaction(String ticker) {
@@ -315,7 +313,7 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-  private void exitProgram() {
+  private void handleExitProgram() {
     view.displayFarewell();
   }
 }
