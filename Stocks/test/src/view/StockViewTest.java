@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import src.model.Portfolio;
-import src.model.Stock;
+import src.model.Share;
 import src.model.StockRow;
 
 import java.io.ByteArrayOutputStream;
@@ -116,8 +116,8 @@ public class StockViewTest {
     HashMap<String, StockRow> stockData1 = new HashMap<>();
     HashMap<String, StockRow> stockData2 = new HashMap<>();
 
-    Stock stock1 = new Stock("AAPL", 10, stockData1);
-    Stock stock2 = new Stock("GOOG", 5, stockData2);
+    Share stock1 = new Share("AAPL", 10, stockData1);
+    Share stock2 = new Share("GOOG", 5, stockData2);
 
     Portfolio portfolio = new Portfolio();
     portfolio.buyStock("AAPL", stockData1, 10);
@@ -143,7 +143,7 @@ public class StockViewTest {
   public void testPrintChooseStockOption() {
     // Create a Stock instance
     HashMap<String, StockRow> data = new HashMap<>();
-    Stock mockStock = new Stock("AAPL", 10, data);
+    Share mockStock = new Share("AAPL", 10, data);
 
     view.printChooseStockOption();
     assertEquals("============== Choose A Stock Analysis Option =================\r\n" +

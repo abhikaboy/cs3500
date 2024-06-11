@@ -11,9 +11,9 @@ import java.util.Scanner;
  * Class representing the controller for the Stock Portfolio Manager.
  */
 public class StockController implements StockControllerInterface {
-  private StockModel model;
-  private StockView view;
-  private Scanner scan;
+  private final StockModel model;
+  private final StockView view;
+  private final Scanner scan;
   private Portfolio portfolio;
   private boolean exit;
 
@@ -82,8 +82,8 @@ public class StockController implements StockControllerInterface {
       } else {
         handleChangePortfolio(true);
       }
-      }
-    exitProgram();
+    }
+    handleExitProgram();
   }
 
   private void createMenu(Portfolio portfolio) {
@@ -113,10 +113,8 @@ public class StockController implements StockControllerInterface {
           break;
         default:
           view.displayError("Invalid Input. Please Try Again.");
-          createMenu(portfolio);
       }
     }
-    exitProgram();
   }
 
   private void handleError(String msg) {
@@ -239,20 +237,11 @@ public class StockController implements StockControllerInterface {
       String endDate = getUserInput();
 
       view.printStockPerformance(model.getStockChange(ticker, startDate, endDate));
-    } 
-      createMenu(portfolio);
-  
+    }
+    createMenu(portfolio);
+
   }
 
-  private void handleTransactionWithDate(String ticker, String date) {
-    if (ticker == null) {
-      handleSpecifyStock();
-    } else {
-      view.printAddOrSellStock();
-      String transaction = getUserInput();
-    }
-      
-  }
   private void handleTransaction(String ticker) {
     if (ticker == null) {
       handleSpecifyStock();
@@ -321,7 +310,7 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-  private void exitProgram() {
+  private void handleExitProgram() {
     view.displayFarewell();
   }
 }

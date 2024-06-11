@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Class to test both the Stock and Portfolio classes.
  */
 public class StockPortfolioTest {
-  private Stock stock;
+  private Share share;
   private Portfolio portfolio;
   private StockRow stockRow;
   private HashMap stockData;
@@ -27,7 +27,7 @@ public class StockPortfolioTest {
     stockData.put("2024-06-03", stockRow);
     stockData.put("2024-06-04", stockRow2);
     stockData.put("2024-06-03", stockRow3);
-    stock = new Stock("AAPL", 100, stockData);
+    share = new Share("AAPL", 100, stockData);
     portfolio = new Portfolio();
   }
 
@@ -55,25 +55,25 @@ public class StockPortfolioTest {
   // Testing the Stock class
   @Test
   public void testPurchase() {
-    stock.purchase(100);
-    assertEquals(200, stock.getQuantity());
+    share.purchase(100);
+    assertEquals(200, share.getQuantity());
   }
 
   @Test
   public void testSell() {
-    stock.purchase(100);
-    stock.sell(50);
-    assertEquals(150, stock.getQuantity());
+    share.purchase(100);
+    share.sell(50);
+    assertEquals(150, share.getQuantity());
   }
 
   @Test
   public void testGetData() {
-    assertEquals(stockData, stock.getData());
+    assertEquals(stockData, share.getData());
   }
 
   @Test
   public void testGetQuantity() {
-    assertEquals(100, stock.getQuantity());
+    assertEquals(100, share.getQuantity());
   }
  
   // Testing the Portfolio class
@@ -93,7 +93,7 @@ public class StockPortfolioTest {
   @Test
   public void testGetStock() {
     portfolio.buyStock("AAPL", stockData, 100);
-    assertEquals(stock, portfolio.getStock("AAPL"));
+    assertEquals(share, portfolio.getShare("AAPL"));
   }
 
 
