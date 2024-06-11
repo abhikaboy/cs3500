@@ -1,16 +1,20 @@
 package src.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
+import src.helper.DateFormat;
+
 /**
- * Class that represents a stock in the Stock Portfolio Manager.
+ * Class that represents a share in the Stock Portfolio Manager.
  */
-public class Stock {
+public class Share {
 
   private String symbol;
   private int quantity;
   private HashMap<String, StockRow> data;
+  private String date;
 
   /**
    * Constructor for a new stock.
@@ -19,10 +23,25 @@ public class Stock {
    * @param quantity Quantity of the stock.
    * @param data     Stock data for the stock.
    */
-  public Stock(String symbol, int quantity, HashMap<String, StockRow> data) {
+  public Share(String symbol, int quantity, HashMap<String, StockRow> data) {
     this.symbol = symbol;
     this.quantity = quantity;
     this.data = data;
+    Date today = new Date();
+    this.date = DateFormat.toString(today); // todays date
+  }
+  /**
+   * Constructor for a new stock.
+   *
+   * @param symbol   Symbol representing the stock.
+   * @param quantity Quantity of the stock.
+   * @param data     Stock data for the stock.
+   */
+  public Share(String symbol, int quantity, HashMap<String, StockRow> data, String date) {
+    this.symbol = symbol;
+    this.quantity = quantity;
+    this.data = data;
+    this.date = date;
   }
 
   /**
@@ -35,12 +54,29 @@ public class Stock {
     this.quantity += quantity;
   }
 
+
+  public void purchase(int quantity, String date) {
+    this.quantity += quantity;
+    this.date = date; 
+  }
+
   /**
    * Sell a quantity of the stock.
    *
    * @param quantity Quantity to sell.
    */
   public void sell(int quantity) {
+    if (this.quantity < quantity) {
+      throw new IllegalArgumentException("Cannot sell more than you have");
+    }
+    this.quantity -= quantity;
+  }
+  /**
+   * Sell a quantity of the stock.
+   *
+   * @param quantity Quantity to sell.
+   */
+  public void sell(int quantity, String date) {
     if (this.quantity < quantity) {
       throw new IllegalArgumentException("Cannot sell more than you have");
     }
@@ -74,7 +110,7 @@ public class Stock {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Stock stock = (Stock) o;
+    Share stock = (Share) o;
     return quantity == stock.quantity &&
             symbol.equals(stock.symbol) &&
             data.equals(stock.data);

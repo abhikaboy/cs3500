@@ -1,5 +1,6 @@
 package src.model;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -7,8 +8,8 @@ import java.util.HashMap;
  */
 public class Portfolio {
 
-  // Symbol, Stock
-  HashMap<String, Stock> stocks;
+  // Symbol, Share
+  HashMap<String, Share> stocks;
 
   /**
    * Constructor for a new portfolio.
@@ -26,7 +27,7 @@ public class Portfolio {
     stocks = new HashMap<>();
     for (String symbol : portfolio.stocks.keySet()) {
       stocks.put(symbol,
-              new Stock(symbol,
+              new Share(symbol,
                       portfolio.stocks.get(symbol).getQuantity(),
                       portfolio.stocks.get(symbol).getData()));
     }
@@ -62,7 +63,19 @@ public class Portfolio {
       stocks.get(symbol).purchase(quantity);
     } else {
       System.out.println("Adding stock to portfolio");
-      stocks.put(symbol, new Stock(symbol, quantity, stock));
+      stocks.put(symbol, new Share(symbol, quantity, stock));
+    }
+  }
+
+  public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity, String date) {
+    System.out.println("Buying " + quantity + " shares of " + symbol);
+    System.out.println(this.portfolioAString());
+    if (stocks.containsKey(symbol)) {
+      System.out.println("Stock already in portfolio");
+      stocks.get(symbol).purchase(quantity, date);
+    } else {
+      System.out.println("Adding stock to portfolio");
+      stocks.put(symbol, new Share(symbol, quantity, stock, date));
     }
   }
 
@@ -153,12 +166,12 @@ public class Portfolio {
   }
 
   /**
-   * Returns the stock given the symbol.
+   * Returns the Shares given the symbol.
    *
    * @param symbol Symbol representing a stock.
    * @return Stock with the corresponding inputted symbol.
    */
-  public Stock getStock(String symbol) {
+  public Share getShare(String symbol) {
     return stocks.get(symbol);
   }
 

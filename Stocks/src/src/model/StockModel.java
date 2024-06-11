@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import src.helper.DateFormat;
+
 /**
  * Class representing the Model aspect of the programs MVC architecture.
  */
@@ -181,6 +183,17 @@ public class StockModel implements StockModelInterface {
   public void addStockToPortfolio(String symbol, Portfolio portfolio, int shares) {
     portfolio.buyStock(symbol, getStock(symbol), shares);
   }
+  /**
+   * Add a stock to a portfolio.
+   *
+   * @param symbol    the stock symbol
+   * @param portfolio the portfolio
+   * @param shares    the number of shares
+   * @param date      the date of the transaction
+   */
+  public void addStockToPortfolio(String symbol, Portfolio portfolio, int shares, String date) {
+    portfolio.buyStock(symbol, getStock(symbol), shares, date);
+  }
 
   /**
    * Remove a stock from a portfolio.
@@ -265,18 +278,6 @@ public class StockModel implements StockModelInterface {
   }
 
   /**
-   * Covert String date into object.
-   *
-   * @param date the date string
-   * @return the formatted date
-   */
-  private Date formatDateString(String date) {
-    String[] dateParts = date.split("-");
-    return new Date(Integer.parseInt(dateParts[0]) - 1900,
-            Integer.parseInt(dateParts[1]) - 1, Integer.parseInt(dateParts[2]));
-  }
-
-  /**
    * Find the closest stock row to a given date.
    *
    * @param stock the stock data
@@ -288,14 +289,11 @@ public class StockModel implements StockModelInterface {
     if (stockRow != null) {
       return stockRow;
     }
-    String[] dateParts = date.split("-");
-    Date dateObj = new Date(Integer.parseInt(dateParts[0]) - 1900, Integer.parseInt(dateParts[1])
-            - 1, Integer.parseInt(dateParts[2]));
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    String dateString = formatter.format(dateObj);
+    Date dateObj = DateFormat.toDate(date);
+    String dateString = DateFormat.toString(dateObj);
     while (stockRow == null) {
       dateObj = new Date(dateObj.getTime() - 86400000); // subtract a day
-      dateString = formatter.format(dateObj);
+      DateFormat.toString(dateObj);
       stockRow = stock.get(dateString);
     }
     System.out.println(date + " Closest Recorded Date: " + dateString);
@@ -342,7 +340,7 @@ public class StockModel implements StockModelInterface {
   public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate,
                                              String endDate) {
     HashMap<String, StockRow> stock = getStock(symbol);
-    double movingAverageX = getStockMovingAverage(symbol, formatDateString(endDate), x);
+    double movingAverageX = getStockMovingAverage(symbol, DateFormat.toDate(endDate), x);
     ArrayList<String> crossoverDays = new ArrayList<>();
     String currentDate = startDate;
     while (!currentDate.equals(endDate)) {
@@ -350,7 +348,7 @@ public class StockModel implements StockModelInterface {
       if (currentRow.getClose() > movingAverageX) {
         crossoverDays.add(currentDate);
       }
-      Date date = formatDateString(currentDate);
+      Date date = DateFormat.toDate(currentDate);
       date = new Date(date.getTime() + 86400000); // add a day
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
       currentDate = formatter.format(date);

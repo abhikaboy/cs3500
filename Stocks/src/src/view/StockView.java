@@ -1,7 +1,7 @@
 package src.view;
 
 import src.model.Portfolio;
-import src.model.Stock;
+import src.model.Share;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -121,12 +121,12 @@ public class StockView implements StockViewInterface {
    *
    * @param portfolio Portfolio whose stocks will be examined.
    */
-  public void printViewStocks(Portfolio portfolio) {
+public void printViewStocks(Portfolio portfolio) {
     String[] names = portfolio.getStockNames();
     Arrays.sort(names); // Sort the stock names alphabetically
     out.println("============== Portfolio Contents =================");
     for (String stockName : names) {
-      Stock stock = portfolio.getStock(stockName);
+      Share stock = portfolio.getShare(stockName);
       if (stock != null) {
         int quantity = stock.getQuantity();
         out.println(stockName + ": " + quantity);
