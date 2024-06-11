@@ -96,7 +96,6 @@ public class StockView implements StockViewInterface {
     out.println("Type The Desired Stock Ticker Symbol");
     out.println("Write 'Quit' To Cancel");
     out.println("======================================================");
-
   }
 
   /**
@@ -165,6 +164,13 @@ public void printViewStocks(Portfolio portfolio) {
    */
   public void printSpecifyEndDate() {
     out.println("Please Specify End Date YYYY-MM-DD");
+  }
+
+  /**
+   * Prints out message, telling user to input an end date.
+   */
+  public void printSpecifyDate() {
+    out.println("Please Specify The Date YYYY-MM-DD You wish to perform this action on");
   }
 
   /**

@@ -121,4 +121,7 @@ public class Share {
     return Objects.hash(symbol, quantity, data);
   }
 
+  public boolean boughtBefore(Date date){
+    return DateFormat.toDate(this.date).before(date);
+  }
 }
