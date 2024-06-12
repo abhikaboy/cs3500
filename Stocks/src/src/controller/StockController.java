@@ -126,11 +126,17 @@ public class StockController implements StockControllerInterface {
     String name = getUserInput();
 
     if (name.equalsIgnoreCase("Quit")) {
-      createMenu(portfolio);
+
+      //If you try quitting at the menu without even making a portfolio
+      if (portfolio == null) {
+        return;
+      } else {
+        createMenu(portfolio);
+      }
+
     } else {
       model.addPortfolio(name);
       portfolio = model.getPortfolio(name);
-
     }
   }
 
@@ -261,12 +267,23 @@ public class StockController implements StockControllerInterface {
 
 
   private void handleChangePortfolio(boolean menu) {
-    String[] portfolioNames = model.getPortfolioNames();
-    view.printPortfolioChanger(model.getPortfolioNames());
-    int choice = getValidatedUserChoice(1, portfolioNames.length + 1);
+    while (true) {
+      String[] portfolioNames = model.getPortfolioNames();
+      view.printPortfolioChanger(portfolioNames);
 
-    portfolio = model.getPortfolio(portfolioNames[choice - 1]);
-    if(menu){
+      int choice = getValidatedUserChoice(1, portfolioNames.length + 1);
+
+      if (choice == portfolioNames.length + 1) {
+        handleCreatePortfolio();
+        // After creating a new portfolio, continue the loop to update the list and re-prompt
+
+      } else {
+        portfolio = model.getPortfolio(portfolioNames[choice - 1]);
+        break;
+      }
+    }
+
+    if (menu) {
       createMenu(portfolio);
     }
   }
