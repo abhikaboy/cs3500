@@ -60,7 +60,8 @@ public class StockView implements StockViewInterface {
     out.println("5) Change/Create Portfolio");
     out.println("6) View Past Portfolio Value");
     out.println("7) Save Portfolio");
-    out.println("8) Save and Exit");
+    out.println("8) Graph Portfolio");
+    out.println("9) Save and Exit");
     out.println("======================================================");
   }
 
@@ -71,6 +72,10 @@ public class StockView implements StockViewInterface {
     out.println("Saving and Exiting The Program");
   }
 
+  public void printGraph(String graph) {
+    out.println(graph);
+  }
+    
   public void printTransactionOptions(HashMap<String, TransactionOption> transactionOptions) {
     out.println("============== Transaction Options =================");
     out.println("Type the [name] of the type of transaction (e.g. Buy or SellOnDate):");

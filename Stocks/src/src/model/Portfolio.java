@@ -136,7 +136,7 @@ public class Portfolio {
       StockRow lastRow = null;
       // todays date: 
       String date = "2024-06-06";
-      lastRow = stock.get(date);
+      lastRow = findClosestRecordedDate(stock,date);
       total += lastRow.getClose() * shares.get(symbol).getQuantity();
     }
     return total;
@@ -152,11 +152,27 @@ public class Portfolio {
     double total = 0;
     for (String symbol : shares.keySet()) {
       HashMap<String, StockRow> stock = shares.get(symbol).getData();
-      StockRow lastRow = stock.get(date);
+      StockRow lastRow = findClosestRecordedDate(stock,date);
       // todays date: 
       total += lastRow.getClose() * shares.get(symbol).getQuantity();
     }
     return total;
+  }
+  public StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
+    StockRow stockRow = stock.get(date);
+    if (stockRow != null) {
+      return stockRow;
+    }
+    Date dateObj = DateFormat.toDate(date);
+    String dateString = DateFormat.toString(dateObj);
+
+    while (stockRow == null) {
+      dateObj = new Date(dateObj.getTime() - 86400000); // subtract a day
+      dateString = DateFormat.toString(dateObj);
+      stockRow = stock.get(dateString);
+    }
+    System.out.println(date + " Closest Recorded Date: " + dateString);
+    return stockRow;
   }
 
   /**

@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.sound.sampled.Port;
+
 import src.helper.DateFormat;
 
 /**
@@ -313,6 +315,12 @@ public class StockModel implements StockModelInterface {
   }
   }
 
+
+  public String graphPortfolio(Portfolio portfolio, String startDate, String endDate) {
+    GraphModel graphModel = new GraphModel(DateFormat.toDate(startDate), DateFormat.toDate(endDate), portfolio);
+    String graph = graphModel.getGraph();
+    return graph;
+  }
   /**
    * Get the change in stock price over a given period.
    *

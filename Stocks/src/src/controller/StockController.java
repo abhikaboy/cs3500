@@ -140,7 +140,8 @@ public class StockController implements StockControllerInterface {
     menuOptions.put(5, () -> handleChangePortfolio(true));
     menuOptions.put(6, () -> handleViewPortfolioOnSpecificDate());
     menuOptions.put(7, () -> savePortfolio());
-    menuOptions.put(8, () -> view.exitProgram());
+    menuOptions.put(8, () -> graphPortfolio());
+    menuOptions.put(9, () -> view.exitProgram());
 
     while (!exit) {
       int choice = getValidatedUserChoice(1, menuOptions.size());
@@ -164,7 +165,16 @@ public class StockController implements StockControllerInterface {
   private void handleError(String msg) {
     view.displayError(msg);
   }
+  private void graphPortfolio(){
+    // get start and end date
+    view.printSpecifyDate();
+    String startDate = handleDate();
+    view.printSpecifyDate();
+    String endDate = handleDate();
 
+    view.printGraph(model.graphPortfolio(portfolio, startDate, endDate));
+    createMenu(portfolio);
+  }
   private void handleCreatePortfolio() {
     view.printPortfolioMaker();
     String name = getUserInput();
