@@ -197,7 +197,38 @@ public class StockController implements StockControllerInterface {
   }
 
   private void handleRebalance() {
+    view.printSpecifyDate();
+    String date = handleDate();
+    HashMap<String, Double> desiredDistribution = new HashMap<>();
 
+    for (String stock : portfolio.getStockNames()) {
+      view.printSpecifyDistribution(stock);
+      double distribution = getUserInputAsDouble();
+      desiredDistribution.put(stock, distribution / 100.0);
+    }
+
+    double totalDistribution = desiredDistribution.values().stream().mapToDouble(Double::doubleValue).sum();
+    if (totalDistribution != 1.0) {
+      handleError("The total distribution must equal 100%. Please try again.");
+      handleRebalance();
+      return;
+    }
+
+    try {
+      portfolio.rebalance(date, desiredDistribution);
+      view.printRebalanceSuccess();
+    } catch (RuntimeException e) {
+      handleError(e.getMessage());
+    }
+    createMenu(portfolio);
+  }
+
+  private double getUserInputAsDouble() {
+    while (!scan.hasNextDouble()) {
+      scan.next();
+      handleError("Invalid input. Please enter a number.");
+    }
+    return scan.nextDouble();
   }
 
   private void handleViewPortfolioValue() {
@@ -291,7 +322,7 @@ public class StockController implements StockControllerInterface {
   }
 
 
-  private int getNumberShares(){
+  private int getNumberShares() {
     int shares = 0;
     view.printSpecifyQuantity();
     while (true) {

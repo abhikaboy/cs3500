@@ -115,11 +115,12 @@ public class Share {
    * @return double, value of a single share at the end of the specified date.
    */
   public double getPriceOnDate(String date) {
-    StockRow row = data.get(date);
+    String formattedDate = DateFormat.toString(DateFormat.toDate(date));
+    StockRow row = data.get(formattedDate);
     if (row != null) {
       return row.getClose();
     }
-    return -1;
+    throw new RuntimeException("Stock row not found for date: " + formattedDate);
   }
 
   /**
