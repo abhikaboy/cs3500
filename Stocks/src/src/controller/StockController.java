@@ -165,6 +165,7 @@ public class StockController implements StockControllerInterface {
   private void handleError(String msg) {
     view.displayError(msg);
   }
+
   private void graphPortfolio(){
     // get start and end date
     view.printSpecifyDate();

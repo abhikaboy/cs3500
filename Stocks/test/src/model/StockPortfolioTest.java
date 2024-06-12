@@ -28,7 +28,7 @@ public class StockPortfolioTest {
     stockData.put("2024-06-04", stockRow2);
     stockData.put("2024-06-03", stockRow3);
     share = new Share("AAPL", 100, stockData);
-    portfolio = new Portfolio();
+    portfolio = new Portfolio("ABC");
   }
 
   // Testing the StockRow class

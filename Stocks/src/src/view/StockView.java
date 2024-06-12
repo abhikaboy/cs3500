@@ -52,7 +52,8 @@ public class StockView implements StockViewInterface {
   public void printMenu(Portfolio portfolio) {
     out.println("====================== Menu ======================");
     out.println("Please Select An Option:");
-    out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio " + portfolio.getName());
+    out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio "
+            + portfolio.getName());
     out.println("1) Perform Transaction");
     out.println("2) View Present Portfolio Contents");
     out.println("3) Analyze Stocks");
@@ -65,17 +66,36 @@ public class StockView implements StockViewInterface {
     out.println("======================================================");
   }
 
+  /**
+   * Prints a status update to the user, saying that the desired portfolios current state is
+   * being saved.
+   * @param name The name of the portfolio to save.
+   */
   public void savePortfolio(String name){
     out.println("Saving Portfolio: " + name);
   }
+
+  /**
+   * Prints an exit status message, telling the user their current state is being saved as they
+   * exit.
+   */
   public void exitProgram(){
     out.println("Saving and Exiting The Program");
   }
 
+  /**
+   * Prints out the graph of their portfolio performance over specified period of time.
+   * @param graph The graph to be printed showing the portfolio performance.
+   */
   public void printGraph(String graph) {
     out.println(graph);
   }
-    
+
+  /**
+   * Prints out possible transaction options to the user.
+   * @param transactionOptions possible transaction options the user can choose from, e.g. Sell on
+   *                           a specific date, to buy immediately, etc.
+   */
   public void printTransactionOptions(HashMap<String, TransactionOption> transactionOptions) {
     out.println("============== Transaction Options =================");
     out.println("Type the [name] of the type of transaction (e.g. Buy or SellOnDate):");

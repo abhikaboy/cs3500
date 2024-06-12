@@ -1,6 +1,7 @@
 package src.view;
 
 import src.model.Portfolio;
+import src.model.StockRow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -9,29 +10,37 @@ import java.io.PrintStream;
  * Mock class for testing, represents the View class.
  */
 public class MockStockView extends StockView {
-  private ByteArrayOutputStream outContent;
+  private final StringBuilder log;
 
-  public MockStockView(ByteArrayOutputStream outContent) {
-    super(new PrintStream(outContent));
-    this.outContent = outContent;
-  }
 
-  public String getOutput() {
-    return outContent.toString();
+  public MockStockView(PrintStream out) {
+    super(out);
+    log = new StringBuilder();
   }
 
   @Override
   public void printWelcome() {
+    log.append("Welcome to the Stock Portfolio Manager\r\n");
     super.printWelcome();
   }
 
   @Override
   public void printMenuNoPortfolios() {
+    log.append("1) Create A Portfolio\r\n");
+    log.append("2) Quit\r\n");
     super.printMenuNoPortfolios();
   }
 
   @Override
   public void printMenu(Portfolio portfolio) {
+    log.append("Please Select An Option:\r\n");
+    log.append("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio\r\n");
+    log.append("1) Add/Remove Item to Portfolio\r\n");
+    log.append("2) View Portfolio Contents\r\n");
+    log.append("3) Analyze Stocks\r\n");
+    log.append("4) View Portfolio Value\r\n");
+    log.append("5) Change/Create Portfolio\r\n");
+    log.append("6) Exit\r\n");
     super.printMenu(portfolio);
   }
 
@@ -103,6 +112,10 @@ public class MockStockView extends StockView {
   @Override
   public void printResultOfAverage(double num) {
     super.printResultOfAverage(num);
+  }
+
+  public String getOutput() {
+    return log.toString();
   }
 
 }

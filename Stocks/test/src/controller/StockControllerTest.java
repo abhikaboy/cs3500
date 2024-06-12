@@ -9,6 +9,7 @@ import src.view.MockStockView;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertTrue;
@@ -25,20 +26,25 @@ public class StockControllerTest {
   public void setUp() {
     model = new MockStockModel();
     ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    view = new MockStockView(outContent);
+    view = new MockStockView(new PrintStream(outContent));
+    controller = new StockController(model, view); // Initialize the controller here
   }
 
   @Test
   public void testPrintMenuNoPortfolios() {
-    // Simulate user input to quit
-    String input = "Quit\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    Scanner scanner = new Scanner(in);
+    // Simulate user input to create a portfolio and then quit
+    String input = "";
+    InputStream inContent = new ByteArrayInputStream(input.getBytes());
+    System.setIn(inContent);
 
-    controller = new StockController(model, view);
+    // Call the control method to display the initial menu
     controller.control();
 
+    // Capture the output from the view
     String output = view.getOutput();
+    System.out.println("Captured output:\n" + output); // Debugging line to see the captured output
+
+    // Verify that the initial menu is displayed correctly
     assertTrue(output.contains("1) Create A Portfolio"));
     assertTrue(output.contains("2) Quit"));
   }

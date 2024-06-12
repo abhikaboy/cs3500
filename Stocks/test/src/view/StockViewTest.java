@@ -46,7 +46,7 @@ public class StockViewTest {
   @Test
   public void testPrintMenu() {
     // Mock Portfolio
-    Portfolio mockPortfolio = new Portfolio() {
+    Portfolio mockPortfolio = new Portfolio("ABC") {
       @Override
       public int getPortfolioSize() {
         return 5;
@@ -56,13 +56,16 @@ public class StockViewTest {
     view.printMenu(mockPortfolio);
     assertEquals("====================== Menu ======================\r\n" +
             "Please Select An Option:\r\n" +
-            "You Have 5 Items In Your Portfolio\r\n" +
-            "1) Add/Remove Item to Portfolio\r\n" +
-            "2) View Portfolio Contents\r\n" +
+            "You Have 5 Items In Your Portfolio ABC\r\n" +
+            "1) Perform Transaction\r\n" +
+            "2) View Present Portfolio Contents\r\n" +
             "3) Analyze Stocks\r\n" +
             "4) View Portfolio Value\r\n" +
             "5) Change/Create Portfolio\r\n" +
-            "6) Exit\r\n" +
+            "6) View Past Portfolio Value\r\n" +
+            "7) Save Portfolio\r\n" +
+            "8) Graph Portfolio\r\n" +
+            "9) Save and Exit\r\n" +
             "======================================================\r\n", outContent.toString());
   }
 
@@ -119,7 +122,7 @@ public class StockViewTest {
     Share stock1 = new Share("AAPL", 10, stockData1);
     Share stock2 = new Share("GOOG", 5, stockData2);
 
-    Portfolio portfolio = new Portfolio();
+    Portfolio portfolio = new Portfolio("ABC");
     portfolio.buyStock("AAPL", stockData1, 10);
     portfolio.buyStock("GOOG", stockData2, 5);
 
