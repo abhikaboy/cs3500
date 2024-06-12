@@ -59,7 +59,7 @@ public class StockViewTest {
             "You Have 5 Items In Your Portfolio\r\n" +
             "1) Add/Remove Item to Portfolio\r\n" +
             "2) View Portfolio Contents\r\n" +
-            "3) Analyze Current Stocks\r\n" +
+            "3) Analyze Stocks\r\n" +
             "4) View Portfolio Value\r\n" +
             "5) Change/Create Portfolio\r\n" +
             "6) Exit\r\n" +
@@ -88,8 +88,8 @@ public class StockViewTest {
   }
 
   @Test
-  public void testPrintSpecifyStockToTransact() {
-    view.printSpecifyStockToTransact();
+  public void testPrintSpecifyStock() {
+    view.printSpecifyStock();
     assertEquals("============== Input Desired Stock =================\r\n" +
             "Type The Desired Stock Ticker Symbol\r\n" +
             "Write 'Quit' To Cancel\r\n" +

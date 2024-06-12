@@ -51,7 +51,7 @@ public class StockView implements StockViewInterface {
     out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
     out.println("1) Add/Remove Item to Portfolio");
     out.println("2) View Portfolio Contents");
-    out.println("3) Analyze Current Stocks");
+    out.println("3) Analyze Stocks");
     out.println("4) View Portfolio Value");
     out.println("5) Change/Create Portfolio");
     out.println("6) Exit");
@@ -91,7 +91,7 @@ public class StockView implements StockViewInterface {
   /**
    * Prints out prompt telling user to inpuit Stock Ticker.
    */
-  public void printSpecifyStockToTransact() {
+  public void printSpecifyStock() {
     out.println("============== Input Desired Stock =================");
     out.println("Type The Desired Stock Ticker Symbol");
     out.println("Write 'Quit' To Cancel");

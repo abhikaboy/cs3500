@@ -17,7 +17,7 @@ public interface StockViewInterface {
 
   public void printChooseStockOption();
 
-  public void printSpecifyStockToTransact();
+  public void printSpecifyStock();
 
   public void printAddOrSellStock();
 

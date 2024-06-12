@@ -46,8 +46,8 @@ public class MockStockView extends StockView {
   }
 
   @Override
-  public void printSpecifyStockToTransact() {
-    super.printSpecifyStockToTransact();
+  public void printSpecifyStock() {
+    super.printSpecifyStock();
   }
 
   @Override

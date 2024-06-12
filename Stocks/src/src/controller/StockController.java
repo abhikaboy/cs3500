@@ -94,7 +94,7 @@ public class StockController implements StockControllerInterface {
 
       switch (choice) {
         case 1:
-          handleTransaction(null);
+          handleTransaction();
           break;
         case 2:
           handleViewPortfolioContents();
@@ -171,44 +171,27 @@ public class StockController implements StockControllerInterface {
   }
 
   private void handleViewStockCrossovers() {
-    view.printSpecifyStockToTransact();
-    String ticker = getUserInput();
+    String ticker = handleSpecifyStock();
 
     if (!ticker.equalsIgnoreCase("Quit")) {
       model.getStock(ticker);
 
-      String startDate;
-      while (true) {
-        view.printSpecifyStartDate();
-        startDate = getUserInput();
-        if (StockModel.isValidDate(startDate)) {
-          break;
-        } else {
-          handleError("Invalid start date format. Please enter the date in YYYY-MM-DD format.");
-        }
-      }
+      view.printSpecifyStartDate();
+      String startDate = handleDate();
 
-      String endDate;
-      while (true) {
-        view.printSpecifyEndDate();
-        endDate = getUserInput();
-        if (StockModel.isValidDate(endDate)) {
-          break;
-        } else {
-          handleError("Invalid end date format. Please enter the date in YYYY-MM-DD format.");
-        }
-      }
+      view.printSpecifyEndDate();
+      String endDate = handleDate();
 
       view.printXValue();
       int x = getValidatedUserChoice(1, 100);
+
       view.printResultOfCrossOver(model.xDayCrossoverDays(ticker, x, startDate, endDate));
     }
     createMenu(portfolio);
   }
 
   private void handleViewStockMovingAverage() {
-    view.printSpecifyStockToTransact();
-    String ticker = getUserInput();
+    String ticker = handleSpecifyStock();
 
     if (!ticker.equalsIgnoreCase("Quit")) {
       model.getStock(ticker);
@@ -225,11 +208,11 @@ public class StockController implements StockControllerInterface {
   // Prompt user for a ticker symbol and a start and end date;
   // use model to display the change/performance of the stock over that period.
   private void handleViewStockPerformance() {
-    view.printSpecifyStockToTransact();
-    String ticker = getUserInput();
+    String ticker = handleSpecifyStock();
 
     if (!ticker.equalsIgnoreCase("Quit")) {
       model.getStock(ticker);
+
       view.printSpecifyStartDate();
       String startDate = handleDate();
 
@@ -242,10 +225,9 @@ public class StockController implements StockControllerInterface {
 
   }
 
-  private void handleTransaction(String ticker) {
-    if (ticker == null) {
-      handleSpecifyStock();
-    } else {
+  private void handleTransaction() {
+      String ticker = handleSpecifyStock();
+
       view.printAddOrSellStock();
       String transaction = getUserInput();
       // Split the input to get the action and quantity
@@ -264,19 +246,19 @@ public class StockController implements StockControllerInterface {
             view.printSuccessfulTransaction();
           } else {
             handleError("Invalid action. Please enter 'Buy' or 'Sell'.");
-            handleTransaction(ticker);
+            handleTransaction();
           }
         } catch (NumberFormatException e) {
           handleError("Invalid quantity. Please enter a valid number.");
-          handleTransaction(ticker);
+          handleTransaction();
         }
       } else {
         handleError("Invalid input format. Please enter 'Buy:<quantity>' or 'Sell:<quantity>'.");
-        handleTransaction(ticker);
+        handleTransaction();
       }
       createMenu(portfolio);
     }
-  }
+
 
   private void handleChangePortfolio(boolean menu) {
     String[] portfolioNames = model.getPortfolioNames();
@@ -289,23 +271,25 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-  private void handleSpecifyStock() {
-    view.printSpecifyStockToTransact();
+  private String handleSpecifyStock() {
+    view.printSpecifyStock();
     String ticker = getUserInput();
 
     if (ticker.equalsIgnoreCase("Quit")) {
       createMenu(portfolio);
+      return null;
     } else {
       try {
         if (model.isValidTicker(ticker)) {
-          handleTransaction(ticker);
+          return ticker;
         } else {
           handleError("Invalid ticker symbol.");
-          handleSpecifyStock();  // Prompt again for valid ticker
+          return handleSpecifyStock();  // Prompt again for valid ticker
         }
       } catch (Exception e) {
         handleError("An error occurred while validating the ticker symbol.");
         createMenu(portfolio);
+        return null;
       }
     }
   }
@@ -314,19 +298,19 @@ public class StockController implements StockControllerInterface {
     String date = getUserInput();
     if (date.equalsIgnoreCase("Quit")) {
       createMenu(portfolio);
-      return null; // To ensure handleDate always returns a String
+      return null;
     } else {
       try {
         if (StockModel.isValidDate(date)) {
           return date;
         } else {
-          handleError("Invalid Date!");
+          handleError("Invalid date format. Please enter the date in YYYY-MM-DD format.");
           return handleDate();  // Prompt again
         }
       } catch (Exception e) {
         handleError("An error occurred while validating the date.");
         createMenu(portfolio);
-        return null; // To ensure handleDate always returns a String
+        return null;
       }
     }
   }
