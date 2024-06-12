@@ -111,7 +111,6 @@ public class StockModel implements StockModelInterface {
     try {
       in = url.openStream();
       int b;
-
       while ((b = in.read()) != -1) {
         output.append((char) b);
       }
@@ -206,6 +205,17 @@ public class StockModel implements StockModelInterface {
   }
 
   /**
+   * Remove a stock from a portfolio.
+   *
+   * @param symbol    the stock symbol
+   * @param portfolio the portfolio
+   */
+  public void sellStockFromPortfolio(String symbol, Portfolio portfolio, int quantity, String date) {
+    portfolio.sellStock(symbol, quantity, date);
+  }
+
+
+  /**
    * Get the value of a portfolio.
    *
    * @return the value of the portfolio
@@ -221,6 +231,7 @@ public class StockModel implements StockModelInterface {
     portfolios = new HashMap<>();
     stocksCache = new HashMap<>();
     File file = new File("./stocks");
+    File portfolios = new File("./portfolios");
     if (!file.exists()) {
       file.mkdir();
     } else {
@@ -231,6 +242,22 @@ public class StockModel implements StockModelInterface {
         stocksCache.put(stockSymbol, loadLocalStock(stockSymbol));
       }
     }
+    if(!portfolios.exists()){
+      portfolios.mkdir();
+    }
+    for(File f : portfolios.listFiles()){
+      String name = f.getName().replace(".txt", "");
+      try (Scanner scanner = new Scanner(f)) {
+        String fileContent = scanner.useDelimiter("\\Z").next();
+        readPortfolioFromFile(name, fileContent);
+        scanner.close();
+      } catch (FileNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+    }
+
   }
 
   /**
@@ -242,7 +269,7 @@ public class StockModel implements StockModelInterface {
   public Portfolio getPortfolio(String name) {
     if (portfolios.containsKey(name)) {
       // return a hard copy of the portfolio
-      return new Portfolio(portfolios.get(name));
+      return new Portfolio(name, portfolios.get(name));
     } else {
       throw new IllegalArgumentException("Portfolio does not exist");
     }
@@ -257,7 +284,33 @@ public class StockModel implements StockModelInterface {
     if (portfolios.containsKey(name)) {
       return;
     }
-    portfolios.put(name, new Portfolio());
+    portfolios.put(name, new Portfolio(name));
+  }
+
+  /**
+   * Writes a portfolio to a file.
+   *
+   * @param portfolio the portfolio
+   */
+  public void writePortfolioToFile(Portfolio portfolio) {
+    portfolio.writeHistoryToFile("./portfolios/" + portfolio.getName() + ".txt");
+  }
+
+  public void readPortfolioFromFile(String name, String fileContent) {
+    Portfolio portfolio = new Portfolio(name);
+    String[] lines = fileContent.split("\n");
+    for (String line : lines) {
+      String[] items = line.split(";");
+      switch(items[0]){
+        case "BUY":
+          portfolio.buyStock(items[1], getStock(items[1]), Integer.parseInt(items[2]), items[3]);
+          break;
+        case "SELL":
+          portfolio.sellStock(items[1], Integer.parseInt(items[2]), items[3]);
+          break;
+    }
+    portfolios.put(name, portfolio);
+  }
   }
 
   /**

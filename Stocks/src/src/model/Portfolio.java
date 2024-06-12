@@ -1,7 +1,13 @@
 package src.model;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import src.helper.DateFormat;
 
 /**
  * A class that represents a portfolio of stocks.
@@ -9,13 +15,17 @@ import java.util.HashMap;
 public class Portfolio {
 
   // Symbol, Share
-  HashMap<String, Share> shares;
+  private HashMap<String, Share> shares;
+  private String name;
+  private ArrayList<String> history;
 
   /**
    * Constructor for a new portfolio.
    */
-  public Portfolio() {
+  public Portfolio(String name) {
     shares = new HashMap<>();
+    this.name = name;
+    history = new ArrayList<>();
   }
 
   /**
@@ -23,7 +33,8 @@ public class Portfolio {
    *
    * @param portfolio Portfolio to copy.
    */
-  public Portfolio(Portfolio portfolio) {
+  public Portfolio(String name, Portfolio portfolio) {
+    this.name = name;
     shares = new HashMap<>();
     for (String symbol : portfolio.shares.keySet()) {
       shares.put(symbol,
@@ -31,8 +42,12 @@ public class Portfolio {
                       portfolio.shares.get(symbol).getQuantity(),
                       portfolio.shares.get(symbol).getData()));
     }
+    history = new ArrayList<>(portfolio.history);
   }
 
+  public String getName() {
+    return name;
+  }
 
   /**
    * Get the quantity of a stock in the portfolio.
@@ -61,6 +76,7 @@ public class Portfolio {
     } else {
       shares.put(symbol, new Share(symbol, quantity, stock));
     }
+    history.add("BUY;" + symbol + ";" + quantity + ";" + DateFormat.toString(new Date()));
   }
 
   public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity, String date) {
@@ -69,6 +85,7 @@ public class Portfolio {
     } else {
       shares.put(symbol, new Share(symbol, quantity, stock, date));
     } 
+    history.add("BUY;" + symbol + ";" + quantity + ";" + date);
   }
 
   /**
@@ -86,6 +103,24 @@ public class Portfolio {
     } else {
       throw new IllegalArgumentException("Stock not found in portfolio");
     }
+    history.add("SELL;" + symbol + ";" + quantity + ";" + DateFormat.toString(new Date()));
+  }
+  /**
+   * Sell a stock in the portfolio on a specific date.
+   *
+   * @param symbol   Symbol representing a stock.
+   * @param quantity Quantity of the stock to sell.
+   */
+  public void sellStock(String symbol, int quantity, String date) {
+    if (shares.containsKey(symbol)) {
+      shares.get(symbol).sell(quantity, date);
+      if (shares.get(symbol).getQuantity() == 0) {
+        shares.remove(symbol);
+      }
+    } else {
+      throw new IllegalArgumentException("Stock not found in portfolio");
+    }
+    history.add("SELL;" + symbol + ";" + quantity + ";" + date);
   }
 
   /**
@@ -165,6 +200,18 @@ public class Portfolio {
    */
   public Share getShare(String symbol) {
     return shares.get(symbol);
+  }
+
+  public void writeHistoryToFile(String filename) {
+    try {
+      FileWriter fw = new FileWriter(filename);
+      for (String line : history) {
+        fw.write(line + "\n");
+      }
+      fw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }

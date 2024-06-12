@@ -6,6 +6,8 @@ import src.model.StockModel;
 import src.view.StockView;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 /**
  * Class representing the controller for the Stock Portfolio Manager.
@@ -16,6 +18,7 @@ public class StockController implements StockControllerInterface {
   private final Scanner scan;
   private Portfolio portfolio;
   private boolean exit;
+  private HashMap<String, TransactionOption> transactionOptions;
 
 
   /**
@@ -30,6 +33,47 @@ public class StockController implements StockControllerInterface {
     this.scan = new Scanner(System.in);
     this.portfolio = null;
     this.exit = false;
+
+    this.transactionOptions = new HashMap<String, TransactionOption>();
+    // buy option parameters hashmap
+    HashMap<String, String> buyParameters = new HashMap<>();
+    buyParameters.put("Quantity", "Number of shares to Buy");
+
+    transactionOptions.put("Buy",
+     new TransactionOption( () -> model.addStockToPortfolio(
+      handleSpecifyStock(), portfolio, getNumberShares())  ,
+     "Buy",  buyParameters));
+
+    // sell option parameters hashmap
+    HashMap<String, String> sellParameters = new HashMap<>();
+    sellParameters.put("Quantity", "Number of shares to Sell");
+
+    transactionOptions.put("Sell",
+     new TransactionOption( () -> model.sellStockFromPortfolio(
+      handleSpecifyStock(), portfolio, getNumberShares())  ,
+     "Sell",  sellParameters));
+
+     // buy from specific date option parameters hashmap
+    HashMap<String, String> buyFromDateParameters = new HashMap<>();
+    buyFromDateParameters.put("Quantity", "Number of shares to Buy");
+    buyFromDateParameters.put("Date", "Date to Buy Stock");
+
+    transactionOptions.put("BuyOnDate",
+     new TransactionOption( () -> model.addStockToPortfolio(
+      handleSpecifyStock(), portfolio, getNumberShares(), handleSpecifyDate())  ,
+     "BuyOnDate",  buyFromDateParameters));
+
+    // sell from specific date option parameters hashmap
+    HashMap<String, String> sellFromDateParameters = new HashMap<>();    
+    buyFromDateParameters.put("Quantity", "Number of shares to Sell");
+    sellFromDateParameters.put("Date", "Date to Sell Stock");
+
+    transactionOptions.put("SellOnDate",
+     new TransactionOption( () -> model.sellStockFromPortfolio(
+      handleSpecifyStock(), portfolio, getNumberShares(), handleSpecifyDate())  ,
+     "SellOnDate",  sellFromDateParameters));
+
+
   }
 
   private String getUserInput() {
@@ -88,33 +132,33 @@ public class StockController implements StockControllerInterface {
 
   private void createMenu(Portfolio portfolio) {
     view.printMenu(portfolio);
+    HashMap<Integer, Runnable> menuOptions = new HashMap<>();
+    menuOptions.put(1, () -> handleTransaction());
+    menuOptions.put(2, () -> handleViewPortfolioContents());
+    menuOptions.put(3, () -> handleAnalyzeStocks());
+    menuOptions.put(4, () -> handleViewPortfolioValue());
+    menuOptions.put(5, () -> handleChangePortfolio(true));
+    menuOptions.put(6, () -> handleViewPortfolioOnSpecificDate());
+    menuOptions.put(7, () -> savePortfolio());
+    menuOptions.put(8, () -> view.exitProgram());
 
     while (!exit) {
-      int choice = getValidatedUserChoice(1, 6);
-
-      switch (choice) {
-        case 1:
-          handleTransaction();
-          break;
-        case 2:
-          handleViewPortfolioContents();
-          break;
-        case 3:
-          handleAnalyzeStocks();
-          break;
-        case 4:
-          handleViewPortfolioValue();
-          break;
-        case 5:
-          handleChangePortfolio(true);
-          break;
-        case 6:
+      int choice = getValidatedUserChoice(1, menuOptions.size());
+      if(menuOptions.containsKey(choice)){
+        menuOptions.get(choice).run();
+        if(choice == menuOptions.size()){
           exit = true;
-          break;
-        default:
+        }
+      } else {
           view.displayError("Invalid Input. Please Try Again.");
       }
     }
+  }
+
+  private void savePortfolio() {
+    view.savePortfolio(portfolio.getName());
+    model.writePortfolioToFile(portfolio);
+    createMenu(portfolio);
   }
 
   private void handleError(String msg) {
@@ -141,7 +185,6 @@ public class StockController implements StockControllerInterface {
   }
 
   private void handleViewPortfolioValue() {
-    this.handleChangePortfolio(false);
     view.printPortfolioValuePrompt();
     String date = getUserInput();
     view.printPortfolioValueResult(portfolio.getPortfolioValue(date));
@@ -231,41 +274,36 @@ public class StockController implements StockControllerInterface {
 
   }
 
-  private void handleTransaction() {
-      String ticker = handleSpecifyStock();
 
-      view.printAddOrSellStock();
-      String transaction = getUserInput();
-      // Split the input to get the action and quantity
-      String[] parts = transaction.split(":");
-
-      if (parts.length == 2) {
-        String action = parts[0].trim();
-        try {
-          int quantity = Integer.parseInt(parts[1].trim());
-
-          if (action.equalsIgnoreCase("Buy")) {
-            model.addStockToPortfolio(ticker, portfolio, quantity);
-            view.printSuccessfulTransaction();
-          } else if (action.equalsIgnoreCase("Sell")) {
-            model.sellStockFromPortfolio(ticker, portfolio, quantity);
-            view.printSuccessfulTransaction();
-          } else {
-            handleError("Invalid action. Please enter 'Buy' or 'Sell'.");
-            handleTransaction();
-          }
-        } catch (NumberFormatException e) {
-          handleError("Invalid quantity. Please enter a valid number.");
-          handleTransaction();
+  private int getNumberShares(){
+    int shares = 0;
+    view.printSpecifyQuantity();
+    while (true) {
+      String sharesString = getUserInput();
+      try {
+        shares = Integer.parseInt(sharesString);
+        if (shares < 0) {
+          throw new NumberFormatException();
         }
-      } else {
-        handleError("Invalid input format. Please enter 'Buy:<quantity>' or 'Sell:<quantity>'.");
-        handleTransaction();
+        break;
+      } catch (NumberFormatException e) {
+        view.displayError("Invalid input. Please enter a valid number.");
       }
-      createMenu(portfolio);
     }
+    return shares;
+  }
 
+  private void handleTransaction(){
+    view.printTransactionOptions(this.transactionOptions);
+    String option = getUserInput();
 
+    transactionOptions.get(option).execute();
+    view.printSuccessfulTransaction();
+    createMenu(portfolio);
+  }
+  // Abstract this method 
+
+  
   private void handleChangePortfolio(boolean menu) {
     while (true) {
       String[] portfolioNames = model.getPortfolioNames();
@@ -300,7 +338,7 @@ public class StockController implements StockControllerInterface {
         if (model.isValidTicker(ticker)) {
           return ticker;
         } else {
-          handleError("Invalid ticker symbol.");
+          handleError("Invalid ticker symbol. " + ticker);
           return handleSpecifyStock();  // Prompt again for valid ticker
         }
       } catch (Exception e) {
@@ -309,6 +347,11 @@ public class StockController implements StockControllerInterface {
         return null;
       }
     }
+  }
+
+  private String handleSpecifyDate() {
+    view.printSpecifyDate();
+    return handleDate();
   }
 
   private String handleDate() {
@@ -332,8 +375,12 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-
   private void handleExitProgram() {
     view.displayFarewell();
   }
+
+  private void handleViewPortfolioOnSpecificDate() {
+  }
+
+
 }

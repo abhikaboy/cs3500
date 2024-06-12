@@ -29,7 +29,7 @@ public class MockStockModel extends StockModel {
 
   @Override
   public Portfolio getPortfolio(String name) {
-    return new Portfolio(); // Return a new portfolio for simplicity
+    return new Portfolio(name); // Return a new portfolio for simplicity
   }
 
   @Override

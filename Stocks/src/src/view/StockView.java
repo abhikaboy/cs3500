@@ -1,11 +1,15 @@
 package src.view;
 
+import src.controller.TransactionOption;
 import src.model.Portfolio;
 import src.model.Share;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+
+import javax.sound.sampled.Port;
 
 /**
  * Class that represents the visual representation of the Stock Portfolio Manager.
@@ -48,16 +52,40 @@ public class StockView implements StockViewInterface {
   public void printMenu(Portfolio portfolio) {
     out.println("====================== Menu ======================");
     out.println("Please Select An Option:");
-    out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio");
-    out.println("1) Add/Remove Item to Portfolio");
-    out.println("2) View Portfolio Contents");
+    out.println("You Have " + portfolio.getPortfolioSize() + " Items In Your Portfolio " + portfolio.getName());
+    out.println("1) Perform Transaction");
+    out.println("2) View Present Portfolio Contents");
     out.println("3) Analyze Stocks");
     out.println("4) View Portfolio Value");
     out.println("5) Change/Create Portfolio");
-    out.println("6) Exit");
+    out.println("6) View Past Portfolio Value");
+    out.println("7) Save Portfolio");
+    out.println("8) Save and Exit");
     out.println("======================================================");
   }
 
+  public void savePortfolio(String name){
+    out.println("Saving Portfolio: " + name);
+  }
+  public void exitProgram(){
+    out.println("Saving and Exiting The Program");
+  }
+
+  public void printTransactionOptions(HashMap<String, TransactionOption> transactionOptions) {
+    out.println("============== Transaction Options =================");
+    out.println("Type the [name] of the type of transaction (e.g. Buy or SellOnDate):");
+    for (String option : transactionOptions.keySet()) {
+      out.print(transactionOptions.get(option));
+    }
+    out.println("======================================================");
+  }
+
+  /**
+   * Prints out prompt, telling user to input the quantity of shares they wish to buy or sell.
+   */
+  public void printSpecifyQuantity() {
+    out.println("Please Specify the Quantity of Shares you wish to perform this action on:");
+  }
   /**
    * Prints out prompt, telling user to select their desired portfolio.
    *

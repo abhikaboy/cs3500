@@ -15,6 +15,7 @@ public class Share {
   private int quantity;
   private HashMap<String, StockRow> data;
   private String date;
+  private HashMap<String, Integer> history;
 
   /**
    * Constructor for a new stock.
@@ -29,6 +30,7 @@ public class Share {
     this.data = data;
     Date today = new Date();
     this.date = DateFormat.toString(today); // todays date
+    this.history = new HashMap<>();
   }
   /**
    * Constructor for a new stock.
@@ -42,6 +44,7 @@ public class Share {
     this.quantity = quantity;
     this.data = data;
     this.date = date;
+    this.history = new HashMap<>();
   }
 
   /**
@@ -52,12 +55,14 @@ public class Share {
 
   public void purchase(int quantity) {
     this.quantity += quantity;
+    this.history.put(this.date, this.quantity);
   }
 
 
   public void purchase(int quantity, String date) {
     this.quantity += quantity;
     this.date = date; 
+    this.history.put(this.date, this.quantity);
   }
 
   /**
@@ -70,6 +75,7 @@ public class Share {
       throw new IllegalArgumentException("Cannot sell more than you have");
     }
     this.quantity -= quantity;
+    this.history.put(this.date, this.quantity);
   }
   /**
    * Sell a quantity of the stock.
@@ -81,6 +87,7 @@ public class Share {
       throw new IllegalArgumentException("Cannot sell more than you have");
     }
     this.quantity -= quantity;
+    this.history.put(this.date, this.quantity);
   }
 
   /**
