@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import src.helper.DateFormat;
 
@@ -84,7 +85,7 @@ public class Portfolio {
       shares.get(symbol).purchase(quantity, date);
     } else {
       shares.put(symbol, new Share(symbol, quantity, stock, date));
-    } 
+    }
     history.add("BUY;" + symbol + ";" + quantity + ";" + date);
   }
 
@@ -105,6 +106,7 @@ public class Portfolio {
     }
     history.add("SELL;" + symbol + ";" + quantity + ";" + DateFormat.toString(new Date()));
   }
+
   /**
    * Sell a stock in the portfolio on a specific date.
    *
@@ -136,7 +138,7 @@ public class Portfolio {
       StockRow lastRow = null;
       // todays date: 
       String date = "2024-06-06";
-      lastRow = findClosestRecordedDate(stock,date);
+      lastRow = findClosestRecordedDate(stock, date);
       total += lastRow.getClose() * shares.get(symbol).getQuantity();
     }
     return total;
@@ -152,12 +154,13 @@ public class Portfolio {
     double total = 0;
     for (String symbol : shares.keySet()) {
       HashMap<String, StockRow> stock = shares.get(symbol).getData();
-      StockRow lastRow = findClosestRecordedDate(stock,date);
+      StockRow lastRow = findClosestRecordedDate(stock, date);
       // todays date: 
       total += lastRow.getClose() * shares.get(symbol).getQuantity();
     }
     return total;
   }
+
   public StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
     StockRow stockRow = stock.get(date);
     if (stockRow != null) {
@@ -230,4 +233,37 @@ public class Portfolio {
     }
   }
 
+  /**
+   * rebalances the current portfolio to fit the desired value distribution.
+   *
+   * @param date                the date the portfolio should be rebalanced from.
+   * @param desiredDistribution the desired distribution the contents of the portfolio should be
+   *                            after balancing.
+   */
+  public void rebalance(String date, Map<String, Double> desiredDistribution) {
+    double portfolioTotalValue = getPortfolioValue(date);
+    Map<String, Double> targetValues = new HashMap<>();
+    Map<String, Integer> buySellShares = new HashMap<>();
+
+    for (String symbol : shares.keySet()) {
+      double targetValue = portfolioTotalValue * desiredDistribution.get(symbol);
+      targetValues.put(symbol, targetValue);
+    }
+
+    for (String symbol : shares.keySet()) {
+      Share share = shares.get(symbol);
+      double currentValue = share.getValueOnDate(date);
+      double targetValue = targetValues.get(symbol);
+      double difference = targetValue - currentValue;
+      double priceOnDate = share.getPriceOnDate(date);
+      int sharesToTrade = (int) Math.round(difference / priceOnDate);
+
+      buySellShares.put(symbol, sharesToTrade);
+    }
+
+    for (String symbol : buySellShares.keySet()) {
+      int sharesToTrade = buySellShares.get(symbol);
+      shares.get(symbol).updateQuantity(sharesToTrade);
+    }
+  }
 }

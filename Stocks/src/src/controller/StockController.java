@@ -141,7 +141,8 @@ public class StockController implements StockControllerInterface {
     menuOptions.put(6, () -> handleViewPortfolioOnSpecificDate());
     menuOptions.put(7, () -> savePortfolio());
     menuOptions.put(8, () -> graphPortfolio());
-    menuOptions.put(9, () -> view.exitProgram());
+    menuOptions.put(9, () -> handleRebalance());
+    menuOptions.put(10, () -> view.exitProgram());
 
     while (!exit) {
       int choice = getValidatedUserChoice(1, menuOptions.size());
@@ -193,6 +194,10 @@ public class StockController implements StockControllerInterface {
       model.addPortfolio(name);
       portfolio = model.getPortfolio(name);
     }
+  }
+
+  private void handleRebalance() {
+
   }
 
   private void handleViewPortfolioValue() {

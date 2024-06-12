@@ -62,7 +62,8 @@ public class StockView implements StockViewInterface {
     out.println("6) View Past Portfolio Value");
     out.println("7) Save Portfolio");
     out.println("8) Graph Portfolio");
-    out.println("9) Save and Exit");
+    out.println("9) Rebalance Portfolio");
+    out.println("10) Save and Exit");
     out.println("======================================================");
   }
 

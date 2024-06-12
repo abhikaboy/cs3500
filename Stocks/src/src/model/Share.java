@@ -109,6 +109,37 @@ public class Share {
     return quantity;
   }
 
+  /**
+   * Get the closing price of this share's stock on the specified date.
+   * @param date the date you want to find the closing price of.
+   * @return double, value of a single share at the end of the specified date.
+   */
+  public double getPriceOnDate(String date) {
+    StockRow row = data.get(date);
+    if (row != null) {
+      return row.getClose();
+    }
+    return -1;
+  }
+
+  /**
+   * Get the total value of the shares in this stock based on the inputted date.
+   * @param date the date to observe the share values.
+   * @return the total value of shares owned. Share closing price * share quantity.
+   */
+  public double getValueOnDate(String date) {
+    return getPriceOnDate(date) * quantity;
+  }
+
+  /**
+   * Updates the number of shares by adding the given quantity. Quantity could be negative.
+   * @param quantity number of shares to add or remove from the current quantity. Action depends
+   *                 on the sign of the argument.
+   */
+  public void updateQuantity(int quantity) {
+    this.quantity += quantity;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
