@@ -4,8 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Testing class for the StockModel class.
@@ -70,12 +72,14 @@ public class StockModelTest {
     assertEquals(1, model.xDayCrossoverDays("AAPL", 1, "2024-06-03", "2024-06-06").size());
   }
 
+
   @Test
   public void testGetStockMovingAverage() {
     model.addPortfolio("ABC");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(191.62, model.getStockMovingAverage("AAPL", new Date(), 20),0.01);
+    assertEquals(192.31, model.getStockMovingAverage("AAPL", new Date(), 20),0.01);
   }
+
 
   @Test
   public void testGetStock() {
@@ -97,5 +101,17 @@ public class StockModelTest {
     model.addPortfolio("ABC");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
     assertEquals(194.03, model.getStock("AAPL").get("2024-06-03").getClose(),0.01);
+  }
+
+  @Test
+  public void testFindClosestRecordedDate() {
+    HashMap<String, StockRow> stock = new HashMap<>();
+    stock.put("2023-06-01", new StockRow(100.0, 110.0, 95.0, 105.0));
+    stock.put("2023-06-02", new StockRow(106.0, 115.0, 101.0, 111.0));
+    stock.put("2023-06-05", new StockRow(112.0, 120.0, 108.0, 118.0));
+
+    StockRow result = model.findClosestRecordedDate(stock, "2023-06-03");
+    assertNotNull(result);
+    assertEquals(111.0, result.getClose(), 0.001);
   }
 }

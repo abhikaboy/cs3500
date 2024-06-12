@@ -167,7 +167,7 @@ public void printViewStocks(Portfolio portfolio) {
   }
 
   /**
-   * Prints out message, telling user to input an end date.
+   * Prints out message, telling user to input a date.
    */
   public void printSpecifyDate() {
     out.println("Please Specify The Date YYYY-MM-DD You wish to perform this action on");

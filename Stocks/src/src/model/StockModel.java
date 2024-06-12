@@ -284,16 +284,17 @@ public class StockModel implements StockModelInterface {
    * @param date  the date
    * @return the closest recorded date
    */
-  private StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
+  public StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
     StockRow stockRow = stock.get(date);
     if (stockRow != null) {
       return stockRow;
     }
     Date dateObj = DateFormat.toDate(date);
     String dateString = DateFormat.toString(dateObj);
+
     while (stockRow == null) {
       dateObj = new Date(dateObj.getTime() - 86400000); // subtract a day
-      DateFormat.toString(dateObj);
+      dateString = DateFormat.toString(dateObj);
       stockRow = stock.get(dateString);
     }
     System.out.println(date + " Closest Recorded Date: " + dateString);

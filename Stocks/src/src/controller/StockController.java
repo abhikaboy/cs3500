@@ -213,7 +213,7 @@ public class StockController implements StockControllerInterface {
     if (!ticker.equalsIgnoreCase("Quit")) {
       model.getStock(ticker);
       view.printSpecifyStartDate();
-      String date = getUserInput();
+      String date = handleDate();
       Date dateObj = DateFormat.toDate(date);
       view.printXValue();
       int x = getValidatedUserChoice(1, 100);
@@ -222,8 +222,8 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  // Prompt user for a ticker symbol and a start and end date; use model to display the change/performance
-  // of the stock over that period.
+  // Prompt user for a ticker symbol and a start and end date;
+  // use model to display the change/performance of the stock over that period.
   private void handleViewStockPerformance() {
     view.printSpecifyStockToTransact();
     String ticker = getUserInput();
@@ -231,10 +231,10 @@ public class StockController implements StockControllerInterface {
     if (!ticker.equalsIgnoreCase("Quit")) {
       model.getStock(ticker);
       view.printSpecifyStartDate();
-      String startDate = getUserInput();
+      String startDate = handleDate();
 
       view.printSpecifyEndDate();
-      String endDate = getUserInput();
+      String endDate = handleDate();
 
       view.printStockPerformance(model.getStockChange(ticker, startDate, endDate));
     }
@@ -309,6 +309,28 @@ public class StockController implements StockControllerInterface {
       }
     }
   }
+
+  private String handleDate() {
+    String date = getUserInput();
+    if (date.equalsIgnoreCase("Quit")) {
+      createMenu(portfolio);
+      return null; // To ensure handleDate always returns a String
+    } else {
+      try {
+        if (StockModel.isValidDate(date)) {
+          return date;
+        } else {
+          handleError("Invalid Date!");
+          return handleDate();  // Prompt again
+        }
+      } catch (Exception e) {
+        handleError("An error occurred while validating the date.");
+        createMenu(portfolio);
+        return null; // To ensure handleDate always returns a String
+      }
+    }
+  }
+
 
   private void handleExitProgram() {
     view.displayFarewell();
