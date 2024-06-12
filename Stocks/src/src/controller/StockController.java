@@ -169,14 +169,15 @@ public class StockController implements StockControllerInterface {
 
   private void graphPortfolio(){
     // get start and end date
-    view.printSpecifyDate();
+    view.printSpecifyStartDate();
     String startDate = handleDate();
-    view.printSpecifyDate();
+    view.printSpecifyEndDate();
     String endDate = handleDate();
 
     view.printGraph(model.graphPortfolio(portfolio, startDate, endDate));
     createMenu(portfolio);
   }
+
   private void handleCreatePortfolio() {
     view.printPortfolioMaker();
     String name = getUserInput();
