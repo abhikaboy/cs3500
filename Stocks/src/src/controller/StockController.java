@@ -11,7 +11,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 /**
- * Class representing the controller for the Stock Portfolio Manager.
+ * The StockController class serves as the main controller for the
+ * Stock Portfolio Manager application.
+ * It mediates between the user interface (view) and the data model, handling user input and
+ * updating the view accordingly.
+ *
+ * Responsibilities:
+ * - Initialize the model and view components.
+ * - Manage user input and navigate through the application menu.
+ * - Handle creation and selection of portfolios.
+ * - Execute stock transactions (buying and selling stocks).
+ * - Perform portfolio rebalancing based on user-specified distributions.
+ * - Provide portfolio analysis tools, such as viewing stock performance and calculating moving averages.
+ * - Graph portfolio performance over a specified date range.
+ * - Save and load portfolio data.
+ *
+ * This class utilizes a Scanner object for reading user input from the console and interacts with the model
+ * to perform operations on the portfolio. It also interacts with the view to display information and prompts to the user.
+ *
+ * Note: The controller expects the dates to be in the "YYYY-MM-DD" format for all date-related operations.
  */
 public class StockController implements StockControllerInterface {
   private final StockModel model;
