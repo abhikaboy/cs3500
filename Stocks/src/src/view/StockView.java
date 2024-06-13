@@ -275,6 +275,36 @@ public void printViewStocks(Portfolio portfolio) {
   }
 
   /**
+   * Print the heading for portfolio details.
+   * @param date date that the user wishes to view the portfolio state.
+   */
+  public void printPortfolioOnDate(String date) {
+    System.out.println("Portfolio details for date: " + date);
+  }
+
+  /**
+   * Print portfolio details containing stocks, their quantity, their price, and the overall value.
+   * @param stock The stock ticker.
+   * @param quantity The number of shares owned of this stock.
+   * @param price the price of a single share.
+   * @param value the value of all shares in the stock.
+   */
+  public void printStockDetailsOnDate(String stock, int quantity, double price, double value) {
+    System.out.println("Stock: " + stock);
+    System.out.println("Quantity: " + quantity);
+    System.out.println("Price: $" + price);
+    System.out.println("Value: $" + value);
+  }
+
+  /**
+   * Print portfolio details containing the entire portfolio value at a specified date.
+   * @param totalValue the total value that the portfolio amounts to.
+   */
+  public void printTotalPortfolioValueOnDate(double totalValue) {
+    System.out.println("Total portfolio value on specified date: $" + totalValue);
+  }
+
+  /**
    * Displays an error message.
    *
    * @param error The error message to display.
@@ -284,11 +314,19 @@ public void printViewStocks(Portfolio portfolio) {
   }
 
   /**
+   * Simply prints an empty line for separation to make it easier on the eyes.
+   */
+  public void printBlankLine() {
+    System.out.println();
+  }
+
+  /**
    * Displays a farewell message.
    */
   public void displayFarewell() {
     out.println("Thank You For Using The Stock Portfolio Manager!");
   }
+
 
 
 }

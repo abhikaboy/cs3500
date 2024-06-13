@@ -428,7 +428,28 @@ public class StockController implements StockControllerInterface {
   }
 
   private void handleViewPortfolioOnSpecificDate() {
+    view.printSpecifyDate();
+    String date = handleDate();
+    if (date == null) {
+      return;
+    }
+
+    view.printPortfolioOnDate(date);
+
+    for (String stock : portfolio.getStockNames()) {
+      try {
+        int quantity = portfolio.getStockQuantity(stock);
+        double price = portfolio.getShare(stock).getPriceOnDate(date);
+        double value = price * quantity;
+        view.printStockDetailsOnDate(stock, quantity, price, value);
+        view.printBlankLine();
+      } catch (RuntimeException e) {
+        handleError(e.getMessage());
+      }
+    }
+
+    double totalValue = portfolio.getPortfolioValue(date);
+    view.printTotalPortfolioValueOnDate(totalValue);
+    createMenu(portfolio);
   }
-
-
 }
