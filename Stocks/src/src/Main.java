@@ -13,13 +13,9 @@ public class Main {
    * Main method to initiate the program.
    */
   public static void main(String[] args) {
-    StockModel poop = new StockModel();
-    StockView piss = new StockView(System.out);
-    // poop.getStock("GOOG");
-    for (String s : poop.getPortfolioNames()) {
-      System.out.println(s);
-    }
-    StockController controller = new StockController(poop, piss);
+    StockModel model = new StockModel();
+    StockView view = new StockView(System.out);
+    StockController controller = new StockController(model, view);
     controller.control();
   }
 }

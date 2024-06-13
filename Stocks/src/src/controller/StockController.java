@@ -2,6 +2,7 @@ package src.controller;
 
 import src.helper.DateFormat;
 import src.model.Portfolio;
+import src.model.Share;
 import src.model.StockModel;
 import src.view.StockView;
 
@@ -200,8 +201,11 @@ public class StockController implements StockControllerInterface {
   private void handleRebalance() {
     view.printSpecifyDate();
     String date = handleDate();
-    HashMap<String, Double> desiredDistribution = new HashMap<>();
+    if (date == null) {
+      return;  // If the user entered "Quit", exit the method
+    }
 
+    HashMap<String, Double> desiredDistribution = new HashMap<>();
     for (String stock : portfolio.getStockNames()) {
       view.printSpecifyDistribution(stock);
       double distribution = getUserInputAsDouble();
@@ -218,7 +222,7 @@ public class StockController implements StockControllerInterface {
     try {
       portfolio.rebalance(date, desiredDistribution);
       view.printRebalanceSuccess();
-    } catch (RuntimeException e) {
+    } catch (IllegalArgumentException e) {
       handleError(e.getMessage());
     }
     createMenu(portfolio);
@@ -431,15 +435,16 @@ public class StockController implements StockControllerInterface {
     view.printSpecifyDate();
     String date = handleDate();
     if (date == null) {
-      return;
+      return; // If the user entered "Quit", exit the method
     }
 
     view.printPortfolioOnDate(date);
 
     for (String stock : portfolio.getStockNames()) {
       try {
-        int quantity = portfolio.getStockQuantity(stock);
-        double price = portfolio.getShare(stock).getPriceOnDate(date);
+        Share share = portfolio.getShare(stock);
+        int quantity = share.getQuantityOnDate(date);
+        double price = share.getPriceOnDate(date);
         double value = price * quantity;
         view.printStockDetailsOnDate(stock, quantity, price, value);
         view.printBlankLine();

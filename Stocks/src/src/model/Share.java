@@ -2,7 +2,9 @@ package src.model;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import src.helper.DateFormat;
 
@@ -59,10 +61,9 @@ public class Share {
   }
 
 
-  public void purchase(int quantity, String date) {
-    this.quantity += quantity;
-    this.date = date; 
-    this.history.put(this.date, this.quantity);
+  public void purchase(int amount, String date) {
+    this.quantity += amount;
+    history.put(date, this.quantity); // Record the new quantity on the specified date
   }
 
   /**
@@ -87,7 +88,7 @@ public class Share {
       throw new IllegalArgumentException("Cannot sell more than you have");
     }
     this.quantity -= quantity;
-    this.history.put(this.date, this.quantity);
+    this.history.put(date, this.quantity);
   }
 
   /**
@@ -115,12 +116,22 @@ public class Share {
    * @return double, value of a single share at the end of the specified date.
    */
   public double getPriceOnDate(String date) {
-    String formattedDate = DateFormat.toString(DateFormat.toDate(date));
-    StockRow row = data.get(formattedDate);
+    StockRow row = data.get(date);
     if (row != null) {
       return row.getClose();
     }
-    throw new RuntimeException("Stock row not found for date: " + formattedDate);
+
+    // If exact date is not found, find the closest date
+    TreeMap<String, StockRow> sortedData = new TreeMap<>(data);
+    Map.Entry<String, StockRow> closestEntry = sortedData.floorEntry(date);
+    if (closestEntry == null) {
+      closestEntry = sortedData.ceilingEntry(date);
+    }
+    if (closestEntry != null) {
+      return closestEntry.getValue().getClose();
+    }
+
+    return 0;
   }
 
   /**
@@ -129,16 +140,49 @@ public class Share {
    * @return the total value of shares owned. Share closing price * share quantity.
    */
   public double getValueOnDate(String date) {
-    return getPriceOnDate(date) * quantity;
+    double price = getPriceOnDate(date);
+    if (price == 0) {
+      return 0; // Indicate that no data is available
+    }
+    int quantityOnDate = getQuantityOnDate(date);
+    return price * quantityOnDate;
   }
 
   /**
    * Updates the number of shares by adding the given quantity. Quantity could be negative.
    * @param quantity number of shares to add or remove from the current quantity. Action depends
    *                 on the sign of the argument.
+   * @param date the date that which this update takes place.
    */
-  public void updateQuantity(int quantity) {
+  public void updateQuantity(int quantity, String date) {
     this.quantity += quantity;
+    this.date = date;
+    this.history.put(this.date, this.quantity);
+  }
+
+  public int getQuantityOnDate(String date) {
+    Date targetDate = DateFormat.toDate(date);
+    int closestQuantity = 0;
+    Date closestDate = null;
+
+    for (Map.Entry<String, Integer> entry : history.entrySet()) {
+      Date historyDate = DateFormat.toDate(entry.getKey());
+      if (!historyDate.after(targetDate)) {
+        if (closestDate == null || historyDate.after(closestDate)) {
+          closestDate = historyDate;
+          closestQuantity = entry.getValue();
+        }
+      }
+    }
+    return closestQuantity;
+  }
+
+  public HashMap<String, Integer> getHistory() {
+    return new HashMap<>(history);
+  }
+
+  public void addToHistory(String date, int quantity) {
+    history.put(date, quantity);
   }
 
   @Override

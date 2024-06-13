@@ -102,18 +102,18 @@ public class StockPortfolioTest {
   public void testRebalance() {
     // Set up the initial portfolio
     HashMap<String, StockRow> nflxData = new HashMap<>();
-    nflxData.put("2024-06-01", new StockRow(10, 10, 10, 15));
+    nflxData.put("2024-06-05", new StockRow(10, 10, 10, 15));
     HashMap<String, StockRow> googlData = new HashMap<>();
-    googlData.put("2024-06-01", new StockRow(25, 25, 25, 30));
+    googlData.put("2024-06-05", new StockRow(25, 25, 25, 30));
     HashMap<String, StockRow> msftData = new HashMap<>();
-    msftData.put("2024-06-01", new StockRow(10, 10, 10, 10));
+    msftData.put("2024-06-05", new StockRow(10, 10, 10, 10));
     HashMap<String, StockRow> aaplData = new HashMap<>();
-    aaplData.put("2024-06-01", new StockRow(50, 50, 50, 30));
+    aaplData.put("2024-06-05", new StockRow(50, 50, 50, 30));
 
-    portfolio.buyStock("NFLX", nflxData, 25);
-    portfolio.buyStock("GOOGL", googlData, 10);
-    portfolio.buyStock("MSFT", msftData, 25);
-    portfolio.buyStock("AAPL", aaplData, 5);
+    portfolio.buyStock("NFLX", nflxData, 25, "2024-06-01");
+    portfolio.buyStock("GOOGL", googlData, 10, "2024-06-01");
+    portfolio.buyStock("MSFT", msftData, 25, "2024-06-01");
+    portfolio.buyStock("AAPL", aaplData, 5, "2024-06-01");
 
     Map<String, Double> targetDistribution = new HashMap<>();
     targetDistribution.put("NFLX", 0.25);
@@ -125,36 +125,93 @@ public class StockPortfolioTest {
     for (String symbol : portfolio.getStockNames()) {
       Share share = portfolio.getShare(symbol);
       System.out.println(symbol + ": " + share.getQuantity() +
-              " shares at $" + share.getPriceOnDate("2024-06-01") +
-              " each on 2024-06-01. Total value: $" + share.getValueOnDate("2024-06-01"));
+              " shares at $" + share.getPriceOnDate("2024-06-05") +
+              " each on 2024-06-05. Total value: $" + share.getValueOnDate("2024-06-05"));
+      System.out.println("History: " + share.getHistory());
     }
 
-    // Rebalance the portfolio on a specific date
-    portfolio.rebalance("2024-06-01", targetDistribution);
+// Rebalance the portfolio on a specific date
+    portfolio.rebalance("2024-06-05", targetDistribution);
 
     System.out.println("After rebalance:");
     for (String symbol : portfolio.getStockNames()) {
       Share share = portfolio.getShare(symbol);
       System.out.println(symbol + ": " + share.getQuantity() +
-              " shares at $" + share.getPriceOnDate("2024-06-01") +
-              " each on 2024-06-01. Total value: $" + share.getValueOnDate("2024-06-01"));
+              " shares at $" + share.getPriceOnDate("2024-06-05") +
+              " each on 2024-06-05. Total value: $" + share.getValueOnDate("2024-06-05"));
+      System.out.println("History: " + share.getHistory());
     }
 
-    // Check the rebalanced quantities
+// Check the rebalanced quantities
     assertEquals(18, portfolio.getShare("NFLX").getQuantity());
     assertEquals(9, portfolio.getShare("GOOGL").getQuantity());
     assertEquals(27, portfolio.getShare("MSFT").getQuantity());
     assertEquals(9, portfolio.getShare("AAPL").getQuantity());
 
-    // Check the rebalanced values
-    assertEquals(270.0, portfolio.getShare("NFLX").getValueOnDate("2024-06-01"), 0.01);
-    assertEquals(270.0, portfolio.getShare("GOOGL").getValueOnDate("2024-06-01"), 0.01);
-    assertEquals(270.0, portfolio.getShare("MSFT").getValueOnDate("2024-06-01"), 0.01);
-    assertEquals(270.0, portfolio.getShare("AAPL").getValueOnDate("2024-06-01"), 0.01);
+// Check the rebalanced values
+    assertEquals(270.0, portfolio.getShare("NFLX").getValueOnDate("2024-06-05"), 0.01);
+    assertEquals(270.0, portfolio.getShare("GOOGL").getValueOnDate("2024-06-05"), 0.01);
+    assertEquals(270.0, portfolio.getShare("MSFT").getValueOnDate("2024-06-05"), 0.01);
+    assertEquals(270.0, portfolio.getShare("AAPL").getValueOnDate("2024-06-05"), 0.01);
   }
 
   @Test
   public void testRebalanceUnequalDistribution() {
+    // Set up the initial portfolio
+    HashMap<String, StockRow> nflxData = new HashMap<>();
+    nflxData.put("2024-06-03", new StockRow(10, 10, 10, 15));
+    HashMap<String, StockRow> googlData = new HashMap<>();
+    googlData.put("2024-06-03", new StockRow(25, 25, 25, 30));
+    HashMap<String, StockRow> msftData = new HashMap<>();
+    msftData.put("2024-06-03", new StockRow(10, 10, 10, 10));
+    HashMap<String, StockRow> aaplData = new HashMap<>();
+    aaplData.put("2024-06-03", new StockRow(50, 50, 50, 30));
+
+    portfolio.buyStock("NFLX", nflxData, 25, "2024-06-03");
+    portfolio.buyStock("GOOGL", googlData, 10, "2024-06-03");
+    portfolio.buyStock("MSFT", msftData, 25, "2024-06-03");
+    portfolio.buyStock("AAPL", aaplData, 5, "2024-06-03");
+
+    Map<String, Double> targetDistribution = new HashMap<>();
+    targetDistribution.put("NFLX", 0.40);
+    targetDistribution.put("GOOGL", 0.20);
+    targetDistribution.put("MSFT", 0.20);
+    targetDistribution.put("AAPL", 0.20);
+
+    System.out.println("Before rebalance:");
+    for (String symbol : portfolio.getStockNames()) {
+      Share share = portfolio.getShare(symbol);
+      System.out.println(symbol + ": " + share.getQuantity() + " shares at $" +
+              share.getPriceOnDate("2024-06-03") + " each on 2024-06-03. Total value: $" +
+              share.getValueOnDate("2024-06-03"));
+    }
+
+    // Rebalance the portfolio on a specific date
+    portfolio.rebalance("2024-06-03", targetDistribution);
+
+    System.out.println("After rebalance:");
+    for (String symbol : portfolio.getStockNames()) {
+      Share share = portfolio.getShare(symbol);
+      System.out.println(symbol + ": " + share.getQuantity() + " shares at $" +
+              share.getPriceOnDate("2024-06-03") + " each on 2024-06-03. Total value: $" +
+              share.getValueOnDate("2024-06-03"));
+    }
+
+    // Check the rebalanced quantities
+    assertEquals(29, portfolio.getShare("NFLX").getQuantity());
+    assertEquals(7, portfolio.getShare("GOOGL").getQuantity());
+    assertEquals(22, portfolio.getShare("MSFT").getQuantity());
+    assertEquals(7, portfolio.getShare("AAPL").getQuantity());
+
+    // Check the rebalanced values
+    assertEquals(435, portfolio.getShare("NFLX").getValueOnDate("2024-06-03"), 0.01);
+    assertEquals(210, portfolio.getShare("GOOGL").getValueOnDate("2024-06-03"), 0.01);
+    assertEquals(220, portfolio.getShare("MSFT").getValueOnDate("2024-06-03"), 0.01);
+    assertEquals(210, portfolio.getShare("AAPL").getValueOnDate("2024-06-03"), 0.01);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testRebalanceInvalidDate() {
     // Set up the initial portfolio
     HashMap<String, StockRow> nflxData = new HashMap<>();
     nflxData.put("2024-06-01", new StockRow(10, 10, 10, 15));
@@ -165,10 +222,10 @@ public class StockPortfolioTest {
     HashMap<String, StockRow> aaplData = new HashMap<>();
     aaplData.put("2024-06-01", new StockRow(50, 50, 50, 30));
 
-    portfolio.buyStock("NFLX", nflxData, 25);
-    portfolio.buyStock("GOOGL", googlData, 10);
-    portfolio.buyStock("MSFT", msftData, 25);
-    portfolio.buyStock("AAPL", aaplData, 5);
+    portfolio.buyStock("NFLX", nflxData, 25, "2024-06-01");
+    portfolio.buyStock("GOOGL", googlData, 10, "2024-06-01");
+    portfolio.buyStock("MSFT", msftData, 25, "2024-06-01");
+    portfolio.buyStock("AAPL", aaplData, 5, "2024-06-01");
 
     Map<String, Double> targetDistribution = new HashMap<>();
     targetDistribution.put("NFLX", 0.40);
@@ -184,27 +241,7 @@ public class StockPortfolioTest {
               share.getValueOnDate("2024-06-01"));
     }
 
-    // Rebalance the portfolio on a specific date
-    portfolio.rebalance("2024-06-01", targetDistribution);
-
-    System.out.println("After rebalance:");
-    for (String symbol : portfolio.getStockNames()) {
-      Share share = portfolio.getShare(symbol);
-      System.out.println(symbol + ": " + share.getQuantity() + " shares at $" +
-              share.getPriceOnDate("2024-06-01") + " each on 2024-06-01. Total value: $" +
-              share.getValueOnDate("2024-06-01"));
-    }
-
-    // Check the rebalanced quantities
-    assertEquals(29, portfolio.getShare("NFLX").getQuantity());
-    assertEquals(7, portfolio.getShare("GOOGL").getQuantity());
-    assertEquals(22, portfolio.getShare("MSFT").getQuantity());
-    assertEquals(7, portfolio.getShare("AAPL").getQuantity());
-
-    // Check the rebalanced values
-    assertEquals(435, portfolio.getShare("NFLX").getValueOnDate("2024-06-01"), 0.01);
-    assertEquals(210, portfolio.getShare("GOOGL").getValueOnDate("2024-06-01"), 0.01);
-    assertEquals(220, portfolio.getShare("MSFT").getValueOnDate("2024-06-01"), 0.01);
-    assertEquals(210, portfolio.getShare("AAPL").getValueOnDate("2024-06-01"), 0.01);
+    // Attempt to rebalance the portfolio on an invalid date (before the most recent purchase)
+    portfolio.rebalance("2024-05-01", targetDistribution);
   }
 }

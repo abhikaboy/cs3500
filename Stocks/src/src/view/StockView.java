@@ -292,7 +292,7 @@ public void printViewStocks(Portfolio portfolio) {
   public void printStockDetailsOnDate(String stock, int quantity, double price, double value) {
     System.out.println("Stock: " + stock);
     System.out.println("Quantity: " + quantity);
-    System.out.println("Price: $" + price);
+    System.out.println("Price Per Share: $" + price);
     System.out.println("Value: $" + value);
   }
 
@@ -301,7 +301,7 @@ public void printViewStocks(Portfolio portfolio) {
    * @param totalValue the total value that the portfolio amounts to.
    */
   public void printTotalPortfolioValueOnDate(double totalValue) {
-    System.out.println("Total portfolio value on specified date: $" + totalValue);
+    System.out.println("Total Portfolio Value: $" + totalValue);
   }
 
   /**
