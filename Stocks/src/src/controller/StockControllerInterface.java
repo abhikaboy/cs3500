@@ -3,7 +3,7 @@ package src.controller;
 /**
  * Interface representing the controller aspect of the MVC (Model-View-Controller) architecture
  * for the Stock Portfolio Manager application.
- * 
+ *
  * Responsibilities:
  * - Define the primary control method to start and manage the application flow.
  * - Serve as a blueprint for implementing controllers in the Stock Portfolio Manager application.

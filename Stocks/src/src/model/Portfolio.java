@@ -17,7 +17,7 @@ import src.helper.DateFormat;
 public class Portfolio {
 
   // Symbol, Share
-  private HashMap<String, Share> shares;
+  private Map<String, Share> shares;
   private String name;
   private ArrayList<String> history;
 
@@ -71,7 +71,7 @@ public class Portfolio {
    * @param stock    Stock data for the stock.
    * @param quantity Quantity of the stock to buy.
    */
-  public void buyStock(String symbol, HashMap<String, StockRow> stock, int quantity) {
+  public void buyStock(String symbol, Map<String, StockRow> stock, int quantity) {
     if (shares.containsKey(symbol)) {
       shares.get(symbol).purchase(quantity);
     } else {
@@ -80,7 +80,7 @@ public class Portfolio {
     history.add("BUY;" + symbol + ";" + quantity + ";" + DateFormat.toString(new Date()));
   }
 
-  public void buyStock(String ticker, HashMap<String, StockRow> data, int quantity, String date) {
+  public void buyStock(String ticker, Map<String, StockRow> data, int quantity, String date) {
     if (shares.containsKey(ticker)) {
       shares.get(ticker).purchase(quantity, date);
     } else {
@@ -138,7 +138,7 @@ public class Portfolio {
   public double getPortfolioValue() {
     double total = 0;
     for (String symbol : shares.keySet()) {
-      HashMap<String, StockRow> stock = shares.get(symbol).getData();
+      Map<String, StockRow> stock = shares.get(symbol).getData();
       StockRow lastRow = null;
       // todays date: 
       String date = "2024-06-06";
@@ -165,7 +165,7 @@ public class Portfolio {
     return totalValue;
   }
 
-  public StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
+  public StockRow findClosestRecordedDate(Map<String, StockRow> stock, String date) {
     StockRow stockRow = stock.get(date);
     if (stockRow != null) {
       return stockRow;
