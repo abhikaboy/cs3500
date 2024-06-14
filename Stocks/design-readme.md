@@ -2,6 +2,11 @@
 
 Part one design explained
 
+## Changes
+
+-   Changed the transactions to utilize a set of transaction command-like objects. Abstracts the transaction logic
+-   Created a helper class to manage the conversion between dates and strings
+
 ## Design
 
 Our program uses the Model View Controller System to operate.
