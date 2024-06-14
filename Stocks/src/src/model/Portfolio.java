@@ -52,7 +52,7 @@ public class Portfolio {
      * @param symbol Symbol representing a stock.
      * @return The quantity of the stock in the portfolio.
      */
-    public int getStockQuantity(String symbol) {
+    public double getStockQuantity(String symbol) {
       if (shares.containsKey(symbol)) {
         return shares.get(symbol).getQuantity();
       }
@@ -305,7 +305,7 @@ public class Portfolio {
       double portfolioTotalValue = getPortfolioValue(date);
 
       Map<String, Double> targetValues = new HashMap<>();
-      Map<String, Integer> buySellShares = new HashMap<>();
+      Map<String, Double> buySellShares = new HashMap<>();
 
       for (String symbol : shares.keySet()) {
         double targetValue = portfolioTotalValue * desiredDistribution.getOrDefault(symbol, 0.0);
@@ -320,7 +320,7 @@ public class Portfolio {
         double targetValue = targetValues.get(symbol);
         double difference = targetValue - currentValue;
         double priceOnDate = share.getPriceOnDate(date);
-        int sharesToTrade = (int) Math.round(difference / priceOnDate);
+        double sharesToTrade = Math.round(difference / priceOnDate);
 
         if (share.getQuantityOnDate(date) + sharesToTrade < 0) {
           sharesToTrade = -share.getQuantityOnDate(date);
@@ -331,7 +331,7 @@ public class Portfolio {
 
 
       for (String symbol : buySellShares.keySet()) {
-        int sharesToTrade = buySellShares.get(symbol);
+        double sharesToTrade = buySellShares.get(symbol);
         shares.get(symbol).updateQuantity(sharesToTrade, date);
 
         String actionType = sharesToTrade > 0 ? "BUY" : "SELL";
