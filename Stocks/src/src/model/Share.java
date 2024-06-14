@@ -43,7 +43,7 @@ public class Share {
    * @param quantity Quantity of the stock.
    * @param data     Stock data for the stock.
    */
-  public Share(String symbol, int quantity, HashMap<String, StockRow> data, String date) {
+  public Share(String symbol, int quantity, Map<String, StockRow> data, String date) {
     this.symbol = symbol;
     this.quantity = quantity;
     this.data = data;
@@ -169,30 +169,21 @@ public class Share {
     int closestQuantity = 0;
     Date closestDate = null;
 
-    System.out.println("Date history for " + this.symbol + " is " + history.size());
-
-    printMap(history);
-
     // loop over all the keys in the map
     for (String key : history.keySet()) {
       Date historyDate = DateFormat.toDate(key);
-      System.out.println("Comparing " + historyDate + " to " + targetDate);
       if (historyDate.before(targetDate)) {
         if (closestDate == null || historyDate.after(closestDate)) {
-          System.out.println("Found closest date " + historyDate);
           closestDate = historyDate;
           closestQuantity = history.get(key);
         }
       }
     }
 
-    System.out.println("Closest quantity for " + date + " is " + closestQuantity);
     return closestQuantity;
   }
 
   public HashMap<String, Integer> getHistory() {
-    printMap(history);
-    printMap(new HashMap<>(history));
     return new HashMap<>(history);
   }
 
