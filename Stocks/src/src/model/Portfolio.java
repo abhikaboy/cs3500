@@ -38,12 +38,7 @@ public class Portfolio {
   public Portfolio(String name, Portfolio portfolio) {
     this.name = name;
     shares = new HashMap<>();
-    for (String symbol : portfolio.shares.keySet()) {
-      shares.put(symbol,
-              new Share(symbol,
-                      portfolio.shares.get(symbol).getQuantity(),
-                      portfolio.shares.get(symbol).getData()));
-    }
+    shares.putAll(portfolio.shares);
     history = new ArrayList<>(portfolio.history);
   }
 
@@ -84,7 +79,7 @@ public class Portfolio {
     if (shares.containsKey(ticker)) {
       shares.get(ticker).purchase(quantity, date);
     } else {
-      Share newShare = new Share(ticker, quantity, data);
+      Share newShare = new Share(ticker, quantity, data, date);
       shares.put(ticker, newShare);
     }
     shares.get(ticker).addToHistory(date, shares.get(ticker).getQuantity());

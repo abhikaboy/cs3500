@@ -14,3 +14,7 @@ Part one feature list of the stocks assignment
 6. View Portfolio Value
 7. Query API to get stock data
 8. Store and Cache Stock Data Locally
+9. Store and Cache Portfolio Data Locally
+10. View Portfolio Value from a previous time
+11. Graph the Portfolio Value over time
+12. Rebalance aPortfolio

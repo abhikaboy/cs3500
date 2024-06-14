@@ -87,9 +87,6 @@ public class GraphModel {
     // maximize the length of the graph 
     // 1 day increments = maximum of 30 days 
     // 2 days increments = maximum of 60 days
-    // 3 days increments = maximum of 90 days
-    // 4 days increments = maximum of 120 days
-    // 5 days increments = maximum of 150 days
     return (int) range / 30 + 1;
   }
 

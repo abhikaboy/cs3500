@@ -33,6 +33,8 @@ public class Share {
     Date today = new Date();
     this.date = DateFormat.toString(today); // todays date
     this.history = new HashMap<>();
+    this.history.put(this.date, this.quantity);
+    System.out.println("Created new share for " + symbol + " with quantity " + quantity + " without the date");
   }
   /**
    * Constructor for a new stock.
@@ -47,6 +49,7 @@ public class Share {
     this.data = data;
     this.date = date;
     this.history = new HashMap<>();
+    this.history.put(this.date, this.quantity);
   }
 
   /**
@@ -131,6 +134,7 @@ public class Share {
       return closestEntry.getValue().getClose();
     }
 
+    System.out.println("No data found for " + date);
     return 0;
   }
 
@@ -165,20 +169,41 @@ public class Share {
     int closestQuantity = 0;
     Date closestDate = null;
 
-    for (Map.Entry<String, Integer> entry : history.entrySet()) {
-      Date historyDate = DateFormat.toDate(entry.getKey());
-      if (!historyDate.after(targetDate)) {
+    System.out.println("Date history for " + this.symbol + " is " + history.size());
+
+    printMap(history);
+
+    // loop over all the keys in the map
+    for (String key : history.keySet()) {
+      Date historyDate = DateFormat.toDate(key);
+      System.out.println("Comparing " + historyDate + " to " + targetDate);
+      if (historyDate.before(targetDate)) {
         if (closestDate == null || historyDate.after(closestDate)) {
+          System.out.println("Found closest date " + historyDate);
           closestDate = historyDate;
-          closestQuantity = entry.getValue();
+          closestQuantity = history.get(key);
         }
       }
     }
+
+    System.out.println("Closest quantity for " + date + " is " + closestQuantity);
     return closestQuantity;
   }
 
   public HashMap<String, Integer> getHistory() {
+    printMap(history);
+    printMap(new HashMap<>(history));
     return new HashMap<>(history);
+  }
+
+  private void printMap(HashMap<String, Integer> map) {
+    System.out.println("======================================================");
+    System.out.println("Map has " + map.size() + " entries");
+    for (Map.Entry<String, Integer> entry : map.entrySet()) {
+      System.out.println(entry.getKey() + " : " + entry.getValue());
+    }
+        System.out.println("======================================================");
+
   }
 
   public void addToHistory(String date, int quantity) {
