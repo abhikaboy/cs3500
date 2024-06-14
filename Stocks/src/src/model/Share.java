@@ -15,9 +15,9 @@ public class Share {
 
   private String symbol;
   private int quantity;
-  private HashMap<String, StockRow> data;
+  private Map<String, StockRow> data;
   private String date;
-  private HashMap<String, Integer> history;
+  private Map<String, Integer> history;
 
   /**
    * Constructor for a new stock.
@@ -26,7 +26,7 @@ public class Share {
    * @param quantity Quantity of the stock.
    * @param data     Stock data for the stock.
    */
-  public Share(String symbol, int quantity, HashMap<String, StockRow> data) {
+  public Share(String symbol, int quantity, Map<String, StockRow> data) {
     this.symbol = symbol;
     this.quantity = quantity;
     this.data = data;

@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.sound.sampled.Port;
@@ -18,11 +19,19 @@ import javax.sound.sampled.Port;
 import src.helper.DateFormat;
 
 /**
- * Class representing the Model aspect of the programs MVC architecture.
+ * Class representing the Model aspect of the Stock Portfolio Manager's MVC architecture.
+ * This class manages stock portfolios and handles stock data queries, loading, and caching.
+ * It provides functionality to add and remove stocks from portfolios, calculate portfolio
+ * values, track portfolio history, and perform various stock data calculations such as
+ * moving averages and crossover days.
+ *
+ * The StockModel class works closely with the Portfolio and Share classes to maintain the
+ * integrity of stock data and portfolio transactions. It also uses a cache to store stock
+ * data locally for performance optimization.
  */
 public class StockModel implements StockModelInterface {
-  private HashMap<String, Portfolio> portfolios;
-  private HashMap<String, HashMap<String, StockRow>> stocksCache;
+  private Map<String, Portfolio> portfolios;
+  private Map<String, HashMap<String, StockRow>> stocksCache;
 
   /**
    * Writes the stock data to a file in the stocks directory.
