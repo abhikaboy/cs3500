@@ -64,6 +64,12 @@ public class Share {
   }
 
 
+  /**
+   * Purchase a quantity of the stock at the given date.
+   *
+   * @param amount Quantity to purchase.
+   * @param date the date the transaction should take place on.
+   */
   public void purchase(int amount, String date) {
     this.quantity += amount;
     history.put(date, this.quantity); // Record the new quantity on the specified date
@@ -164,6 +170,12 @@ public class Share {
     this.history.put(this.date, this.quantity);
   }
 
+  /**
+   * Returns the quantity of shares based on the date the portfolio should rever to.
+   * @param date the date to check
+   * @return integer representing the quantity of shares we have of this stock at the given
+   * date.
+   */
   public int getQuantityOnDate(String date) {
     Date targetDate = DateFormat.toDate(date);
     int closestQuantity = 0;
@@ -183,10 +195,18 @@ public class Share {
     return closestQuantity;
   }
 
+  /**
+   * Returns this Stocks/share's history.
+   * @return history in a new HashMap.
+   */
   public HashMap<String, Integer> getHistory() {
     return new HashMap<>(history);
   }
 
+  /**
+   * Used to prevent hard-coding a menu. It maps a selection like a menu.
+   * @param map Selections to map into a menu.
+   */
   private void printMap(HashMap<String, Integer> map) {
     System.out.println("======================================================");
     System.out.println("Map has " + map.size() + " entries");
@@ -197,6 +217,12 @@ public class Share {
 
   }
 
+  /**
+   * Quick method to add a transaction update of this stock to the history. Takes the date
+   * of the transaction, and the new number of shares.
+   * @param date date the transaction occurred.
+   * @param quantity the new quantity of shares after the transaction.
+   */
   public void addToHistory(String date, int quantity) {
     history.put(date, quantity);
   }
@@ -220,6 +246,11 @@ public class Share {
     return Objects.hash(symbol, quantity, data);
   }
 
+  /**
+   * Returns a boolean value, does this.date come before the given date.
+   * @param date date to see if this date comes before.
+   * @return a boolean, does this date come before that date?
+   */
   public boolean boughtBefore(Date date){
     return DateFormat.toDate(this.date).before(date);
   }
