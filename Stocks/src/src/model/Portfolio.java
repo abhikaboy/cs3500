@@ -75,6 +75,14 @@ public class Portfolio {
     history.add("BUY;" + symbol + ";" + quantity + ";" + DateFormat.toString(new Date()));
   }
 
+  /**
+   * Buy a stock in the portfolio on a specific date.
+   *
+   * @param ticker   Symbol representing a stock.
+   * @param data     Stock data for the stock.
+   * @param quantity Quantity of the stock to buy.
+   * @param date     date which to perform the buy.
+   */
   public void buyStock(String ticker, Map<String, StockRow> data, int quantity, String date) {
     if (shares.containsKey(ticker)) {
       shares.get(ticker).purchase(quantity, date);
@@ -160,6 +168,12 @@ public class Portfolio {
     return totalValue;
   }
 
+  /**
+   * Get the stock data for a given date by inferring between known dates.
+   *
+   * @param date Date to get the stock data for.
+   * @return The stock data for the given date.
+   */
   public StockRow findClosestRecordedDate(Map<String, StockRow> stock, String date) {
     StockRow stockRow = stock.get(date);
     if (stockRow != null) {
@@ -219,6 +233,11 @@ public class Portfolio {
     return shares.get(symbol);
   }
 
+  /**
+   * Write the history of the portfolio to a txt file.
+   *
+   * @param filename The filename to write the history to.
+   */
   public void writeHistoryToFile(String filename) {
     try {
       FileWriter fw = new FileWriter(filename);
@@ -231,6 +250,11 @@ public class Portfolio {
     }
   }
 
+  /**
+   * Get the date of the last transaction in the portfolio.
+   *
+   * @return The last transaction date.
+   */
   public Date getLastTransactionDate() {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date lastDate;

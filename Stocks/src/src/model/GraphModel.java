@@ -7,6 +7,12 @@ import src.helper.DateFormat;
 
 import java.util.ArrayList;
 
+/**
+ * A class that represents a graph model for a portfolio.
+ * 
+ * Is able to generate a graph of the portfolio values over time.
+ */
+
 public class GraphModel {
   private Date startDate;
   private Date endDate;
@@ -19,6 +25,13 @@ public class GraphModel {
   private double minValue;
   private int maxStars;
 
+  /**
+   * Constructor for a new graph model.
+   *
+   * @param startDate The start date of the graph.
+   * @param endDate   The end date of the graph.
+   * @param portfolio The portfolio to graph.
+   */
   public GraphModel(Date startDate, Date endDate, Portfolio portfolio) {
     this.startDate = startDate;
     this.endDate = endDate;
@@ -68,6 +81,12 @@ public class GraphModel {
     return stars;
   }
 
+  /**
+   * Get the bar graph as a string.
+   * Complete with title, scale, and values
+   *
+   * @return The graph as a string.
+   */
   public String getGraph() {
     // the max value shuold be 20 *
     // the min value should be 1 * 
