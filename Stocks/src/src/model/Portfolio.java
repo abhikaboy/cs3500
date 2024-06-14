@@ -320,7 +320,7 @@ public class Portfolio {
         double targetValue = targetValues.get(symbol);
         double difference = targetValue - currentValue;
         double priceOnDate = share.getPriceOnDate(date);
-        double sharesToTrade = (int) Math.round(difference / priceOnDate);
+        double sharesToTrade = Math.round(difference / priceOnDate);
 
         if (share.getQuantityOnDate(date) + sharesToTrade < 0) {
           sharesToTrade = -share.getQuantityOnDate(date);
