@@ -181,7 +181,7 @@ public void printViewStocks(Portfolio portfolio) {
     for (String stockName : names) {
       Share stock = portfolio.getShare(stockName);
       if (stock != null) {
-        int quantity = stock.getQuantity();
+        double quantity = stock.getQuantity();
         out.println(stockName + ": " + quantity);
       } else {
         out.println(stockName + ": Stock not found");
@@ -289,7 +289,7 @@ public void printViewStocks(Portfolio portfolio) {
    * @param price the price of a single share.
    * @param value the value of all shares in the stock.
    */
-  public void printStockDetailsOnDate(String stock, int quantity, double price, double value) {
+  public void printStockDetailsOnDate(String stock, double quantity, double price, double value) {
     System.out.println("Stock: " + stock);
     System.out.println("Quantity: " + quantity);
     System.out.println("Price Per Share: $" + price);

@@ -461,7 +461,7 @@ public class StockController implements StockControllerInterface {
     for (String stock : portfolio.getStockNames()) {
       try {
         Share share = portfolio.getShare(stock);
-        int quantity = share.getQuantityOnDate(date);
+        double quantity = share.getQuantityOnDate(date);
         double price = share.getPriceOnDate(date);
         double value = price * quantity;
         view.printStockDetailsOnDate(stock, quantity, price, value);

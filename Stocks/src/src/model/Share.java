@@ -14,10 +14,10 @@ import src.helper.DateFormat;
 public class Share {
 
   private String symbol;
-  private int quantity;
+  private double quantity;
   private Map<String, StockRow> data;
   private String date;
-  private Map<String, Integer> history;
+  private Map<String, Double> history;
 
   /**
    * Constructor for a new stock.
@@ -109,7 +109,7 @@ public class Share {
    *
    * @return The quantity of the stock.
    */
-  public int getQuantity() {
+  public double getQuantity() {
     return quantity;
   }
 
@@ -148,7 +148,7 @@ public class Share {
     if (price == 0) {
       return 0; // Indicate that no data is available
     }
-    int quantityOnDate = getQuantityOnDate(date);
+    double quantityOnDate = getQuantityOnDate(date);
     return price * quantityOnDate;
   }
 
@@ -158,15 +158,15 @@ public class Share {
    *                 on the sign of the argument.
    * @param date the date that which this update takes place.
    */
-  public void updateQuantity(int quantity, String date) {
+  public void updateQuantity(double quantity, String date) {
     this.quantity += quantity;
     this.date = date;
     this.history.put(this.date, this.quantity);
   }
 
-  public int getQuantityOnDate(String date) {
+  public double getQuantityOnDate(String date) {
     Date targetDate = DateFormat.toDate(date);
-    int closestQuantity = 0;
+    double closestQuantity = 0;
     Date closestDate = null;
 
     // loop over all the keys in the map
@@ -183,21 +183,21 @@ public class Share {
     return closestQuantity;
   }
 
-  public HashMap<String, Integer> getHistory() {
+  public HashMap<String, Double> getHistory() {
     return new HashMap<>(history);
   }
 
-  private void printMap(HashMap<String, Integer> map) {
+  private void printMap(HashMap<String, Double> map) {
     System.out.println("======================================================");
     System.out.println("Map has " + map.size() + " entries");
-    for (Map.Entry<String, Integer> entry : map.entrySet()) {
+    for (Map.Entry<String, Double> entry : map.entrySet()) {
       System.out.println(entry.getKey() + " : " + entry.getValue());
     }
         System.out.println("======================================================");
 
   }
 
-  public void addToHistory(String date, int quantity) {
+  public void addToHistory(String date, double quantity) {
     history.put(date, quantity);
   }
 
