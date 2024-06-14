@@ -218,6 +218,7 @@ public class StockController implements StockControllerInterface {
 
   private void handleRebalance() {
     view.printSpecifyDate();
+    view.printMustBeChronological();
     String date = handleDate();
     if (date == null) {
       return;  // If the user entered "Quit", exit the method

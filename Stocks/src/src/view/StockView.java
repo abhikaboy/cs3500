@@ -227,10 +227,17 @@ public void printViewStocks(Portfolio portfolio) {
     out.println("Please Specify The Date YYYY-MM-DD You wish to perform this action on");
   }
 
+  /**
+   * Prints message asking user to specify their distribution for rebalancing.
+   * @param stock Stock to ender their desired percentage value takeup.
+   */
   public void printSpecifyDistribution(String stock) {
     out.println("Please Specify What % Distribution You Wish For This Stock To Have: " + stock);
   }
 
+  /**
+   * Prints message saying that rebalance was successful.
+   */
   public void printRebalanceSuccess() {
     out.println("Successfully Rebalanced Portfolio");
   }
@@ -242,6 +249,16 @@ public void printViewStocks(Portfolio portfolio) {
     out.println("The Portfolio Value Was " + value);
   }
 
+  /**
+   * Prints message telling user to make sure they dont rebalance before the last transaction.
+   */
+  public void printMustBeChronological() {
+    out.println("You Cannot Rebalance Before The Last Chronological Transaction!");
+  }
+
+  /**
+   * Prints out to ask user to input date.
+   */
   public void printPortfolioValuePrompt() {
     out.println("Please Specify the date you wish to view the value of the portfolio YYYY-MM-DD");
   }
