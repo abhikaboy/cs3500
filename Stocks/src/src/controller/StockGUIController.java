@@ -1,26 +1,44 @@
 package src.controller;
 
+import src.helper.DateFormat;
 import src.model.Portfolio;
 import src.model.Share;
 import src.model.StockModelInterface;
 import src.view.ExtendedStockViewInterface;
 import src.view.StockView;
 
+import java.util.Date;
+
 import javax.swing.JOptionPane;
 
+/**
+ * The StockGUIController class extends the StockController class to provide
+ * a graphical user interface (GUI) controller for the Stock Portfolio Manager application.
+ * This class handles user interactions through a GUI and updates the view accordingly.
+ */
 public class StockGUIController extends StockController implements ExtendedStockControllerInterface {
 
   private final ExtendedStockViewInterface guiView;
   private Portfolio currentPortfolio;
 
+
+  /**
+   * Constructor for the StockGUIController.
+   *
+   * @param model   the Model state the controller is utilizing.
+   * @param guiView the graphical user interface view.
+   */
   public StockGUIController(StockModelInterface model, ExtendedStockViewInterface guiView) {
     super(model, new StockView(System.out));
     this.guiView = guiView;
     guiView.setController(this);
     registerListeners();
-    displayAllPortfolios(); // Display all portfolios at the start
+    displayAllPortfolios();
   }
 
+  /**
+   * Registers the action listeners for the GUI buttons.
+   */
   private void registerListeners() {
     guiView.setCreatePortfolioButtonActionListener(e -> createPortfolio());
     guiView.setBuyButtonActionListener(e -> buyStock());
@@ -31,6 +49,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     guiView.setSaveAndQuitButtonActionListener(e -> saveAndQuit()); // Register the new button
   }
 
+  /**
+   * Displays all available portfolios in the GUI.
+   */
   private void displayAllPortfolios() {
     String[] portfolioNames = getModel().getPortfolioNames();
     if (portfolioNames.length == 0) {
@@ -44,6 +65,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Creates a new portfolio.
+   */
   @Override
   public void createPortfolio() {
     guiView.printPortfolioMaker();
@@ -58,6 +82,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Buys stock for the current portfolio.
+   */
   @Override
   public void buyStock() {
     if (currentPortfolio == null) {
@@ -88,6 +115,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Sells stock from the current portfolio.
+   */
   @Override
   public void sellStock() {
     if (currentPortfolio == null) {
@@ -118,6 +148,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Queries the portfolio value at a specified date.
+   */
   @Override
   public void queryPortfolio() {
     if (currentPortfolio == null) {
@@ -126,18 +159,53 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
 
     guiView.printPortfolioValuePrompt();
-    String date = JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
-    if (date == null) return;
+    String dateInput = JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
+    if (dateInput == null) return;
 
     try {
-      Double value = getModel().getPortfolioValue(currentPortfolio, date);
+      Date date = DateFormat.toDate(dateInput);
+      Double value = getModel().getPortfolioValue(currentPortfolio, DateFormat.toString(date));
       guiView.printPortfolioValueResult(value);
-      guiView.showPortfolio(getPortfolioDetails(currentPortfolio));
+      guiView.showPortfolio(getPortfolioDetailsOnDate(currentPortfolio, date));
     } catch (Exception e) {
-      guiView.showPortfolio(e.getMessage());
+      guiView.showPortfolio("Error: " + e.getMessage());
     }
   }
 
+  /**
+   * Gets the details of the portfolio at a specified date.
+   *
+   * @param portfolio the portfolio to get details from.
+   * @param date the date to get the portfolio details at.
+   * @return the string representation of the portfolio details at the specified date.
+   */
+  private String getPortfolioDetailsOnDate(Portfolio portfolio, Date date) {
+    StringBuilder details = new StringBuilder("Portfolio: " + portfolio.getName() + "\n");
+
+    for (String stock : portfolio.getStockNames()) {
+      try {
+        Share share = portfolio.getShare(stock);
+        double quantity = share.getQuantityOnDate(DateFormat.toString(date));
+        double price = share.getPriceOnDate(DateFormat.toString(date));
+        double value = price * quantity;
+        details.append("Stock: ").append(stock)
+                .append(", Quantity: ").append(quantity)
+                .append(", Price: ").append(price)
+                .append(", Value: ").append(value).append("\n");
+      } catch (RuntimeException e) {
+        details.append("Error retrieving details for stock: ").append(stock).append("\n");
+      }
+    }
+
+    double totalValue = portfolio.getPortfolioValue(DateFormat.toString(date));
+    details.append("Total Portfolio Value: ").append(totalValue).append("\n");
+
+    return details.toString();
+  }
+
+  /**
+   * Saves the current portfolio.
+   */
   @Override
   public void savePortfolio() {
     if (currentPortfolio == null) {
@@ -172,6 +240,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Retrieves a portfolio based on user selection.
+   */
   @Override
   public void retrievePortfolio() {
     String[] portfolioNames = getModel().getPortfolioNames();
@@ -203,6 +274,11 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Handles specifying the stock from user input.
+   *
+   * @return the stock ticker symbol specified by the user.
+   */
   @Override
   protected String handleSpecifyStock() {
     guiView.printSpecifyStock();
@@ -225,17 +301,32 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Handles specifying the date from user input.
+   *
+   * @return the date specified by the user.
+   */
   @Override
   protected String handleSpecifyDate() {
     guiView.printSpecifyDate();
     return JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
   }
 
+  /**
+   * Handles getting the date from user input.
+   *
+   * @return the date specified by the user.
+   */
   @Override
   protected String handleDate() {
     return JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
   }
 
+  /**
+   * Handles getting a user input as a double value.
+   *
+   * @return the double value inputted by the user.
+   */
   @Override
   protected double getUserInputAsDouble() {
     while (true) {
@@ -248,6 +339,12 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Gets the details of the current portfolio.
+   *
+   * @param portfolio the portfolio to get details from.
+   * @return the string representation of the portfolio details.
+   */
   private String getPortfolioDetails(Portfolio portfolio) {
     StringBuilder details = new StringBuilder("Portfolio: " + portfolio.getName() + "\n");
 
@@ -256,7 +353,7 @@ public class StockGUIController extends StockController implements ExtendedStock
         Share share = portfolio.getShare(stock);
         double quantity = share.getQuantity();
         details.append("Stock: ").append(stock)
-                .append(", Quantity: ").append(quantity).append("\n"); 
+                .append(", Quantity: ").append(quantity).append("\n");
       } catch (RuntimeException e) {
         details.append("Error retrieving details for stock: ").append(stock).append("\n");
       }
