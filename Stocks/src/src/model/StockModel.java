@@ -462,6 +462,11 @@ public class StockModel implements StockModelInterface {
    * @return true if the ticker is valid, false otherwise
    */
   public boolean isValidTicker(String ticker) {
+    try{
+      getStock(ticker);
+    } catch(Exception e){
+      return false;
+    }
     return stocksCache.containsKey(ticker);
   }
 
