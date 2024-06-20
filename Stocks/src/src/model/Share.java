@@ -34,7 +34,6 @@ public class Share {
     this.date = DateFormat.toString(today); // todays date
     this.history = new HashMap<>();
     this.history.put(this.date, this.quantity);
-    System.out.println("Created new share for " + symbol + " with quantity " + quantity + " without the date");
   }
 
   /**
@@ -176,11 +175,11 @@ public class Share {
   }
 
   /**
-   * Returns the quantity of shares based on the date the portfolio should rever to.
+   * Returns the quantity of shares based on the date the portfolio should refer to.
    *
-   * @param date the date to check
+   * @param date the date to check.
    * @return integer representing the quantity of shares we have of this stock at the given
-   * date.
+   *         date.
    */
   public double getQuantityOnDate(String date) {
     Date targetDate = DateFormat.toDate(date);

@@ -1,11 +1,11 @@
 package src.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A class that represents a transaction command on the menu
- * 
+ * A class that represents a transaction command on the menu. This class faciliatates the
+ * creation and execution of transactions by creating user-friendly prompts and providing
+ * and execution method.
  */
 public class TransactionOption {
   private Runnable runnable;
@@ -15,11 +15,12 @@ public class TransactionOption {
   /**
    * Constructor for a new transaction option.
    *
-   * @param runnable     The runnable to execute when the option is selected.
-   * @param name         The name of the option.
+   * @param runnable        The runnable to execute when the option is selected.
+   * @param name            The name of the option.
    * @param parametersLabel A map of the parameters for the option.
    */
-  public TransactionOption(Runnable runnable, String name, HashMap<String, String> parametersLabel) {
+  public TransactionOption(Runnable runnable, String name, HashMap<String,
+          String> parametersLabel) {
     this.runnable = runnable;
     this.name = name;
     this.runnable = runnable;
@@ -35,11 +36,11 @@ public class TransactionOption {
   }
 
   /**
-   * A user friendly string representation of the option.
+   * A user-friendly string representation of the option.
    *
    * @return friendly string representation of the option.
    */
-  
+
   public String toString() {
     String ret = '[' + name + ']';
     for (String key : parametersLabel.keySet()) {

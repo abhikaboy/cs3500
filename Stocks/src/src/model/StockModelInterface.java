@@ -14,40 +14,44 @@ import java.util.HashMap;
  */
 public interface StockModelInterface {
 
-  public void addStockToPortfolio(String ticker, Portfolio portfolio, int quantity);
+  void addStockToPortfolio(String ticker, Portfolio portfolio, int quantity);
 
-  public void addStockToPortfolio(String symbol, Portfolio portfolio, int shares, String date);
+  void addStockToPortfolio(String symbol, Portfolio portfolio, int shares, String date);
 
-  public void sellStockFromPortfolio(String ticker, Portfolio portfolio, int quantity);
+  void sellStockFromPortfolio(String ticker, Portfolio portfolio, int quantity);
 
-  public void sellStockFromPortfolio(String ticker, Portfolio portfolio, int quantity, String date);
+  void sellStockFromPortfolio(String ticker, Portfolio portfolio, int quantity, String date);
 
-  public double getStockMovingAverage(String ticker, Date startDate, int x);
+  double getStockMovingAverage(String ticker, Date startDate, int x);
 
-  public double getStockChange(String ticker, String startDate, String endDate);
+  double getStockChange(String ticker, String startDate, String endDate);
 
-  public Portfolio getPortfolio(String name);
+  Portfolio getPortfolio(String name);
 
-  public String[] getPortfolioNames();
+  String[] getPortfolioNames();
 
-  public void addPortfolio(String name);
+  void addPortfolio(String name);
 
-  public void queryStock(String symbol);
+  void queryStock(String symbol);
 
-  public HashMap<String, StockRow> loadLocalStock(String stockSymbol);
+  HashMap<String, StockRow> loadLocalStock(String stockSymbol);
 
-  public HashMap<String, StockRow> getStock(String symbol);
+  HashMap<String, StockRow> getStock(String symbol);
 
-  public void writePortfolioToFile(Portfolio portfolio);
+  void writePortfolioToFile(Portfolio portfolio);
 
-  public void readPortfolioFromFile(String name, String fileContent);
+  void readPortfolioFromFile(String name, String fileContent);
 
-  public String graphPortfolio(Portfolio portfolio, String startDate, String endDate);
+  String graphPortfolio(Portfolio portfolio, String startDate, String endDate);
 
-  public StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date);
+  StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date);
 
-  public ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate,
+  ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate,
                                              String endDate);
 
-  public boolean isValidTicker(String ticker);
+  boolean isValidTicker(String ticker);
+
+  double getPortfolioValue(Portfolio portfolio, String date);
+
+  int countPortfolios();
 }

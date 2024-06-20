@@ -1,9 +1,7 @@
 package src.view;
 
 import src.model.Portfolio;
-import src.model.StockRow;
 
-import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**

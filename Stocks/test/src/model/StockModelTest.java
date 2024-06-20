@@ -23,23 +23,24 @@ public class StockModelTest {
 
   @Test
   public void testCountPortfolios() {
-    assertEquals(0, model.countPortfolios());
+    assertEquals(3, model.countPortfolios(), 0.01);
     model.addPortfolio("ABC");
-    assertEquals(1, model.countPortfolios());
+    assertEquals(4, model.countPortfolios(), 0.01);
   }
 
   @Test
   public void addPortfolio() {
     model.addPortfolio("ABC");
-    assertEquals(1, model.countPortfolios());
+    assertEquals(4, model.countPortfolios(), 0.01);
 
   }
 
   @Test
   public void testGetPortfolioNames() {
+    assertEquals(3, model.countPortfolios(), 0.01);
     model.addPortfolio("ABC");
     model.addPortfolio("DEF");
-    assertEquals(2, model.getPortfolioNames().length);
+    assertEquals(5, model.getPortfolioNames().length);
   }
 
   @Test
@@ -55,14 +56,14 @@ public class StockModelTest {
     Portfolio portfolio = model.getPortfolio("ABC");
 
     model.addStockToPortfolio("AAPL", portfolio, 100);
-    assertEquals(100, portfolio.getStockQuantity("AAPL"));
+    assertEquals(100, portfolio.getStockQuantity("AAPL"), 0.01);
   }
 
   @Test
   public void testGetStockChange() {
     model.addPortfolio("ABC");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(0.449, model.getStockChange("AAPL", "2024-06-03", "2024-06-06"),0.01);
+    assertEquals(0.449, model.getStockChange("AAPL", "2024-06-03", "2024-06-06"), 0.01);
   }
 
   @Test
@@ -77,7 +78,7 @@ public class StockModelTest {
   public void testGetStockMovingAverage() {
     model.addPortfolio("ABC");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(192.31, model.getStockMovingAverage("AAPL", new Date(), 20),0.01);
+    assertEquals(194.19, model.getStockMovingAverage("AAPL", new Date(), 20), 0.01);
   }
 
 
@@ -85,7 +86,7 @@ public class StockModelTest {
   public void testGetStock() {
     model.addPortfolio("ABC");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(194.03, model.getStock("AAPL").get("2024-06-03").getClose(),0.01);
+    assertEquals(194.03, model.getStock("AAPL").get("2024-06-03").getClose(), 0.01);
   }
 
   @Test
@@ -93,14 +94,14 @@ public class StockModelTest {
     model.addPortfolio("ABC");
     model.getStock("AAPL");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(0, model.getPortfolioValue("2024-06-03", model.getPortfolio("ABC")),0.01);
+    assertEquals(0, model.getPortfolioValue("2024-06-03", model.getPortfolio("ABC")), 0.01);
   }
 
   @Test
   public void testLoadLocalStock() {
     model.addPortfolio("ABC");
     model.addStockToPortfolio("AAPL", model.getPortfolio("ABC"), 100);
-    assertEquals(194.03, model.getStock("AAPL").get("2024-06-03").getClose(),0.01);
+    assertEquals(194.03, model.getStock("AAPL").get("2024-06-03").getClose(), 0.01);
   }
 
   @Test

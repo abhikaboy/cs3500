@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.sound.sampled.Port;
-
 import src.helper.DateFormat;
 
 /**
@@ -25,7 +23,7 @@ import src.helper.DateFormat;
  * values, track portfolio history, and perform various stock data calculations such as
  * moving averages and crossover days.
  *
- * The StockModel class works closely with the Portfolio and Share classes to maintain the
+ * <p>The StockModel class works closely with the Portfolio and Share classes to maintain the
  * integrity of stock data and portfolio transactions. It also uses a cache to store stock
  * data locally for performance optimization.
  */
@@ -193,6 +191,7 @@ public class StockModel implements StockModelInterface {
   public void addStockToPortfolio(String symbol, Portfolio portfolio, int shares) {
     portfolio.buyStock(symbol, getStock(symbol), shares);
   }
+
   /**
    * Add a stock to a portfolio.
    *
@@ -221,7 +220,8 @@ public class StockModel implements StockModelInterface {
    * @param symbol    the stock symbol
    * @param portfolio the portfolio
    */
-  public void sellStockFromPortfolio(String symbol, Portfolio portfolio, int quantity, String date) {
+  public void sellStockFromPortfolio(String symbol, Portfolio portfolio, int quantity,
+                                     String date) {
     portfolio.sellStock(symbol, quantity, date);
   }
 
@@ -253,10 +253,10 @@ public class StockModel implements StockModelInterface {
         stocksCache.put(stockSymbol, loadLocalStock(stockSymbol));
       }
     }
-    if(!portfolios.exists()){
+    if (!portfolios.exists()) {
       portfolios.mkdir();
     }
-    for(File f : portfolios.listFiles()){
+    for (File f : portfolios.listFiles()) {
       String name = f.getName().replace(".txt", "");
       try (Scanner scanner = new Scanner(f)) {
         String fileContent = scanner.useDelimiter("\\Z").next();
@@ -266,7 +266,7 @@ public class StockModel implements StockModelInterface {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      
+
     }
 
   }
@@ -307,29 +307,42 @@ public class StockModel implements StockModelInterface {
     portfolio.writeHistoryToFile("./portfolios/" + portfolio.getName() + ".txt");
   }
 
+  /**
+   * Method to read the save file of a folder and convert it into a Portfolio.
+   * @param name name of the portfolio.
+   * @param fileContent contents of the file in String form.
+   */
   public void readPortfolioFromFile(String name, String fileContent) {
     Portfolio portfolio = new Portfolio(name);
     String[] lines = fileContent.split("\n");
     for (String line : lines) {
       String[] items = line.split(";");
-      switch(items[0]){
-        case "BUY":
-          portfolio.buyStock(items[1], getStock(items[1]), Integer.parseInt(items[2]), items[3]);
-          break;
-        case "SELL":
-          portfolio.sellStock(items[1], Integer.parseInt(items[2]), items[3]);
-          break;
+      if (items[0].equals("BUY")) {
+        portfolio.buyStock(items[1], getStock(items[1]), Integer.parseInt(items[2]), items[3]);
+      }
+      else if (items[0].equals("SELL")) {
+        portfolio.sellStock(items[1], Integer.parseInt(items[2]), items[3]);
+      }
+      portfolios.put(name, portfolio);
     }
-    portfolios.put(name, portfolio);
-  }
   }
 
 
+  /**
+   * This creates a graph given the contents of a portfolio and a start/end date, visualizing the
+   * performance of the given portfolio over time.
+   * @param portfolio the portfolio to examine over time.
+   * @param startDate the start date, when to start examining the portfolio performance.
+   * @param endDate the end date, when to stop examining the portfolio performance.
+   * @return returns a String variation of the graph to output.
+   */
   public String graphPortfolio(Portfolio portfolio, String startDate, String endDate) {
-    GraphModel graphModel = new GraphModel(DateFormat.toDate(startDate), DateFormat.toDate(endDate), portfolio);
+    GraphModel graphModel = new GraphModel(DateFormat.toDate(startDate),
+            DateFormat.toDate(endDate), portfolio);
     String graph = graphModel.getGraph();
     return graph;
   }
+
   /**
    * Get the change in stock price over a given period.
    *
@@ -436,6 +449,10 @@ public class StockModel implements StockModelInterface {
   public String getPortfolioAsString(String portfolioName) {
     Portfolio portfolio = getPortfolio(portfolioName);
     return portfolioName + ": \n" + portfolio.portfolioAString();
+  }
+
+  public double getPortfolioValue(Portfolio portfolio, String date) {
+    return portfolio.getPortfolioValue(date);
   }
 
   /**

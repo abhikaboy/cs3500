@@ -4,35 +4,39 @@ import src.helper.DateFormat;
 import src.model.Portfolio;
 import src.model.Share;
 import src.model.StockModel;
+import src.model.StockModelInterface;
 import src.view.StockView;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
+
 /**
  * The StockController class serves as the main controller for the
  * Stock Portfolio Manager application.
  * It mediates between the user interface (view) and the data model, handling user input and
  * updating the view accordingly.
  *
- * Responsibilities:
+ * <p>Responsibilities:
  * - Initialize the model and view components.
  * - Manage user input and navigate through the application menu.
  * - Handle creation and selection of portfolios.
  * - Execute stock transactions (buying and selling stocks).
  * - Perform portfolio rebalancing based on user-specified distributions.
- * - Provide portfolio analysis tools, such as viewing stock performance and calculating moving averages.
+ * - Provide portfolio analysis tools, such as viewing stock performance and calculating
+ *   moving averages.
  * - Graph portfolio performance over a specified date range.
  * - Save and load portfolio data.
  *
- * This class utilizes a Scanner object for reading user input from the console and interacts with the model
- * to perform operations on the portfolio. It also interacts with the view to display information and prompts to the user.
+ * <p>This class utilizes a Scanner object for reading user input from the console and interacts
+ * with the model to perform operations on the portfolio. It also interacts with the view
+ * to display information and prompts to the user.
  *
- * Note: The controller expects the dates to be in the "YYYY-MM-DD" format for all date-related operations.
+ * <p>Note: The controller expects the dates to be in the "YYYY-MM-DD" format for all
+ * date-related operations.
  */
 public class StockController implements StockControllerInterface {
-  private final StockModel model;
+  private final StockModelInterface model;
   private final StockView view;
   private final Scanner scan;
   private Portfolio portfolio;
@@ -46,7 +50,7 @@ public class StockController implements StockControllerInterface {
    * @param model the Model state the controller is utilizing.
    * @param view  the text-based display state.
    */
-  public StockController(StockModel model, StockView view) {
+  public StockController(StockModelInterface model, StockView view) {
     this.model = model;
     this.view = view;
     this.scan = new Scanner(System.in);
@@ -59,47 +63,51 @@ public class StockController implements StockControllerInterface {
     buyParameters.put("Quantity", "Number of shares to Buy");
 
     transactionOptions.put("Buy",
-     new TransactionOption( () -> model.addStockToPortfolio(
-      handleSpecifyStock(), portfolio, getNumberShares())  ,
-     "Buy",  buyParameters));
+            new TransactionOption(() -> model.addStockToPortfolio(
+                    handleSpecifyStock(), portfolio, getNumberShares()),
+                    "Buy", buyParameters));
 
     // sell option parameters hashmap
     HashMap<String, String> sellParameters = new HashMap<>();
     sellParameters.put("Quantity", "Number of shares to Sell");
 
     transactionOptions.put("Sell",
-     new TransactionOption( () -> model.sellStockFromPortfolio(
-      handleSpecifyStock(), portfolio, getNumberShares())  ,
-     "Sell",  sellParameters));
+            new TransactionOption(() -> model.sellStockFromPortfolio(
+                    handleSpecifyStock(), portfolio, getNumberShares()),
+                    "Sell", sellParameters));
 
-     // buy from specific date option parameters hashmap
+    // buy from specific date option parameters hashmap
     HashMap<String, String> buyFromDateParameters = new HashMap<>();
     buyFromDateParameters.put("Quantity", "Number of shares to Buy");
     buyFromDateParameters.put("Date", "Date to Buy Stock");
 
     transactionOptions.put("BuyOnDate",
-     new TransactionOption( () -> model.addStockToPortfolio(
-      handleSpecifyStock(), portfolio, getNumberShares(), handleSpecifyDate())  ,
-     "BuyOnDate",  buyFromDateParameters));
+            new TransactionOption(() -> model.addStockToPortfolio(
+                    handleSpecifyStock(), portfolio, getNumberShares(), handleSpecifyDate()),
+                    "BuyOnDate", buyFromDateParameters));
 
     // sell from specific date option parameters hashmap
-    HashMap<String, String> sellFromDateParameters = new HashMap<>();    
+    HashMap<String, String> sellFromDateParameters = new HashMap<>();
     buyFromDateParameters.put("Quantity", "Number of shares to Sell");
     sellFromDateParameters.put("Date", "Date to Sell Stock");
 
     transactionOptions.put("SellOnDate",
-     new TransactionOption( () -> model.sellStockFromPortfolio(
-      handleSpecifyStock(), portfolio, getNumberShares(), handleSpecifyDate())  ,
-     "SellOnDate",  sellFromDateParameters));
+            new TransactionOption(() -> model.sellStockFromPortfolio(
+                    handleSpecifyStock(), portfolio, getNumberShares(), handleSpecifyDate()),
+                    "SellOnDate", sellFromDateParameters));
 
 
   }
 
-  private String getUserInput() {
+  public StockModelInterface getModel() {
+    return model;
+  }
+
+  protected String getUserInput() {
     return scan.next();
   }
 
-  private int getUserChoice() {
+  protected int getUserChoice() {
     while (!scan.hasNextInt()) {
       scan.next();
       handleError("Invalid input. Please enter a number.");
@@ -107,7 +115,7 @@ public class StockController implements StockControllerInterface {
     return scan.nextInt();
   }
 
-  private int getValidatedUserChoice(int lowerb, int upperb) {
+  protected int getValidatedUserChoice(int lowerb, int upperb) {
     int choice;
     while (true) {
       choice = getUserChoice();
@@ -165,13 +173,13 @@ public class StockController implements StockControllerInterface {
 
     while (!exit) {
       int choice = getValidatedUserChoice(1, menuOptions.size());
-      if(menuOptions.containsKey(choice)){
+      if (menuOptions.containsKey(choice)) {
         menuOptions.get(choice).run();
-        if(choice == menuOptions.size()){
+        if (choice == menuOptions.size()) {
           exit = true;
         }
       } else {
-          view.displayError("Invalid Input. Please Try Again.");
+        view.displayError("Invalid Input. Please Try Again.");
       }
     }
   }
@@ -182,11 +190,11 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  private void handleError(String msg) {
+  protected void handleError(String msg) {
     view.displayError(msg);
   }
 
-  private void graphPortfolio(){
+  private void graphPortfolio() {
     // get start and end date
     view.printSpecifyStartDate();
     String startDate = handleDate();
@@ -197,7 +205,7 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  private void handleCreatePortfolio() {
+  void handleCreatePortfolio() {
     view.printPortfolioMaker();
     String name = getUserInput();
 
@@ -231,7 +239,8 @@ public class StockController implements StockControllerInterface {
       desiredDistribution.put(stock, distribution / 100.0);
     }
 
-    double totalDistribution = desiredDistribution.values().stream().mapToDouble(Double::doubleValue).sum();
+    double totalDistribution = desiredDistribution.values().stream().
+            mapToDouble(Double::doubleValue).sum();
     if (totalDistribution != 1.0) {
       handleError("The total distribution must equal 100%. Please try again.");
       handleRebalance();
@@ -247,7 +256,7 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  private double getUserInputAsDouble() {
+  protected double getUserInputAsDouble() {
     while (!scan.hasNextDouble()) {
       scan.next();
       handleError("Invalid input. Please enter a number.");
@@ -255,7 +264,7 @@ public class StockController implements StockControllerInterface {
     return scan.nextDouble();
   }
 
-  private void handleViewPortfolioValue() {
+  void handleViewPortfolioValue() {
     view.printPortfolioValuePrompt();
     String date = getUserInput();
     view.printPortfolioValueResult(portfolio.getPortfolioValue(date));
@@ -267,7 +276,7 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  private void handleAnalyzeStocks(){
+  private void handleAnalyzeStocks() {
     view.printChooseStockOption();
     int choice = getValidatedUserChoice(1, 4);
 
@@ -346,7 +355,7 @@ public class StockController implements StockControllerInterface {
   }
 
 
-  private int getNumberShares() {
+  protected int getNumberShares() {
     int shares = 0;
     view.printSpecifyQuantity();
     while (true) {
@@ -364,7 +373,7 @@ public class StockController implements StockControllerInterface {
     return shares;
   }
 
-  private void handleTransaction(){
+  void handleTransaction() {
     view.printTransactionOptions(this.transactionOptions);
     String option = getUserInput();
 
@@ -374,8 +383,8 @@ public class StockController implements StockControllerInterface {
   }
   // Abstract this method 
 
-  
-  private void handleChangePortfolio(boolean menu) {
+
+  void handleChangePortfolio(boolean menu) {
     while (true) {
       String[] portfolioNames = model.getPortfolioNames();
       view.printPortfolioChanger(portfolioNames);
@@ -397,7 +406,7 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-  private String handleSpecifyStock() {
+  protected String handleSpecifyStock() {
     view.printSpecifyStock();
     String ticker = getUserInput();
 
@@ -420,12 +429,12 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-  private String handleSpecifyDate() {
+  protected String handleSpecifyDate() {
     view.printSpecifyDate();
     return handleDate();
   }
 
-  private String handleDate() {
+  protected String handleDate() {
     String date = getUserInput();
     if (date.equalsIgnoreCase("Quit")) {
       createMenu(portfolio);
@@ -446,7 +455,7 @@ public class StockController implements StockControllerInterface {
     }
   }
 
-  private void handleExitProgram() {
+  protected void handleExitProgram() {
     view.displayFarewell();
   }
 

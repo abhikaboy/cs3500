@@ -65,7 +65,8 @@ public class StockViewTest {
             "6) View Past Portfolio Value\r\n" +
             "7) Save Portfolio\r\n" +
             "8) Graph Portfolio\r\n" +
-            "9) Save and Exit\r\n" +
+            "9) Rebalance Portfolio\r\n" +
+            "10) Save and Exit\r\n" +
             "======================================================\r\n", outContent.toString());
   }
 
@@ -135,8 +136,8 @@ public class StockViewTest {
             "============== Portfolio Contents ================="));
 
     String expectedOutput = "============== Portfolio Contents =================\r\n" +
-            "AAPL: 10\r\n" +
-            "GOOG: 5\r\n" +
+            "AAPL: 10.0\r\n" +
+            "GOOG: 5.0\r\n" +
             "======================================================\r\n";
 
     assertEquals(expectedOutput, portfolioContents);

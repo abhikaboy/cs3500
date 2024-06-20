@@ -5,36 +5,40 @@ package src.view;
  */
 public interface StockViewInterface {
 
-  public void printWelcome();
+  void printWelcome();
 
-  public void printPortfolioMaker();
+  void printPortfolioMaker();
 
-  public void printPortfolioChanger(String[] portfolioNames);
+  void printPortfolioChanger(String[] portfolioNames);
 
-  public void printPortfolioValuePrompt();
+  void printPortfolioValuePrompt();
 
-  public void printPortfolioValueResult(Double value);
+  void printPortfolioValueResult(Double value);
 
-  public void printChooseStockOption();
+  void printChooseStockOption();
 
-  public void printSpecifyStock();
+  void printSpecifyStock();
 
-  public void printAddOrSellStock();
+  void printAddOrSellStock();
 
-  public void printSuccessfulTransaction();
+  void printSuccessfulTransaction();
 
-  public void printSpecifyStartDate();
+  void printSpecifyStartDate();
 
-  public void printSpecifyEndDate();
+  void printSpecifyEndDate();
 
-  public void printStockPerformance(Double change);
+  void printStockPerformance(Double change);
 
-  public void printXValue();
+  void printXValue();
 
-  public void printResultOfAverage(double average);
+  void printResultOfAverage(double average);
 
-  public void displayError(String msg);
+  void displayError(String msg);
 
-  public void displayFarewell();
+  void displayFarewell();
+
+  void printSpecifyQuantity();
+
+  void printSpecifyDate();
 
 }

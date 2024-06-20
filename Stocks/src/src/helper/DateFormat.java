@@ -4,14 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
-  Convert a date to a string in the format YYYY-MM-DD
-  Convert a string in the format YYYY-MM-DD to a date
-*/  
+ * Class for facilitating and enforcing the formatting of dates, either in string format or
+ * in the Java.util "Date" format.
+ * Convert a date to a string in the format YYYY-MM-DD.
+ * Convert a string in the format YYYY-MM-DD to a date.
+ */
 public class DateFormat {
   /**
    * Convert a string in the format YYYY-MM-DD to a date.
-   * @param date
-   * @return a convertef date object based on the string.
+   *
+   * @param date the string version of a date to turn into a Date.
+   * @return a converted date object based on the string.
    */
   public static Date toDate(String date) {
     String[] dateParts = date.split("-");
@@ -20,14 +23,15 @@ public class DateFormat {
   }
 
   /**
-   * Convert a date to a string in the format YYYY-MM-DD
-   * @param date
-   * @return a string representation of the date. 
+   * Convert a date to a string in the format YYYY-MM-DD.
+   *
+   * @param date Date representation to transform into a string.
+   * @return a string representation of the date.
    */
   public static String toString(Date date) {
     String dateString = "";
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     dateString = formatter.format(date);
     return dateString;
-  } 
+  }
 }

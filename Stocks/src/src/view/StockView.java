@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.sound.sampled.Port;
-
 /**
  * Class that represents the visual representation of the Stock Portfolio Manager.
  * Contains all methods related to creating visual output.
@@ -70,9 +68,10 @@ public class StockView implements StockViewInterface {
   /**
    * Prints a status update to the user, saying that the desired portfolios current state is
    * being saved.
+   *
    * @param name The name of the portfolio to save.
    */
-  public void savePortfolio(String name){
+  public void savePortfolio(String name) {
     out.println("Saving Portfolio: " + name);
   }
 
@@ -80,12 +79,13 @@ public class StockView implements StockViewInterface {
    * Prints an exit status message, telling the user their current state is being saved as they
    * exit.
    */
-  public void exitProgram(){
+  public void exitProgram() {
     out.println("Saving and Exiting The Program");
   }
 
   /**
    * Prints out the graph of their portfolio performance over specified period of time.
+   *
    * @param graph The graph to be printed showing the portfolio performance.
    */
   public void printGraph(String graph) {
@@ -94,6 +94,7 @@ public class StockView implements StockViewInterface {
 
   /**
    * Prints out possible transaction options to the user.
+   *
    * @param transactionOptions possible transaction options the user can choose from, e.g. Sell on
    *                           a specific date, to buy immediately, etc.
    */
@@ -112,6 +113,7 @@ public class StockView implements StockViewInterface {
   public void printSpecifyQuantity() {
     out.println("Please Specify the Quantity of Shares you wish to perform this action on:");
   }
+
   /**
    * Prints out prompt, telling user to select their desired portfolio.
    *
@@ -174,7 +176,7 @@ public class StockView implements StockViewInterface {
    *
    * @param portfolio Portfolio whose stocks will be examined.
    */
-public void printViewStocks(Portfolio portfolio) {
+  public void printViewStocks(Portfolio portfolio) {
     String[] names = portfolio.getStockNames();
     Arrays.sort(names); // Sort the stock names alphabetically
     out.println("============== Portfolio Contents =================");
@@ -229,6 +231,7 @@ public void printViewStocks(Portfolio portfolio) {
 
   /**
    * Prints message asking user to specify their distribution for rebalancing.
+   *
    * @param stock Stock to ender their desired percentage value takeup.
    */
   public void printSpecifyDistribution(String stock) {
@@ -250,7 +253,7 @@ public void printViewStocks(Portfolio portfolio) {
   }
 
   /**
-   * Prints message telling user to make sure they dont rebalance before the last transaction.
+   * Prints message telling user to make sure they don't rebalance before the last transaction.
    */
   public void printMustBeChronological() {
     out.println("You Cannot Rebalance Before The Last Chronological Transaction!");
@@ -293,6 +296,7 @@ public void printViewStocks(Portfolio portfolio) {
 
   /**
    * Print the heading for portfolio details.
+   *
    * @param date date that the user wishes to view the portfolio state.
    */
   public void printPortfolioOnDate(String date) {
@@ -301,10 +305,11 @@ public void printViewStocks(Portfolio portfolio) {
 
   /**
    * Print portfolio details containing stocks, their quantity, their price, and the overall value.
-   * @param stock The stock ticker.
+   *
+   * @param stock    The stock ticker.
    * @param quantity The number of shares owned of this stock.
-   * @param price the price of a single share.
-   * @param value the value of all shares in the stock.
+   * @param price    the price of a single share.
+   * @param value    the value of all shares in the stock.
    */
   public void printStockDetailsOnDate(String stock, double quantity, double price, double value) {
     System.out.println("Stock: " + stock);
@@ -315,6 +320,7 @@ public void printViewStocks(Portfolio portfolio) {
 
   /**
    * Print portfolio details containing the entire portfolio value at a specified date.
+   *
    * @param totalValue the total value that the portfolio amounts to.
    */
   public void printTotalPortfolioValueOnDate(double totalValue) {
@@ -343,7 +349,6 @@ public void printViewStocks(Portfolio portfolio) {
   public void displayFarewell() {
     out.println("Thank You For Using The Stock Portfolio Manager!");
   }
-
 
 
 }

@@ -57,14 +57,14 @@ public class StockPortfolioTest {
   @Test
   public void testPurchase() {
     share.purchase(100);
-    assertEquals(200, share.getQuantity());
+    assertEquals(200, share.getQuantity(), 0.01);
   }
 
   @Test
   public void testSell() {
     share.purchase(100);
     share.sell(50);
-    assertEquals(150, share.getQuantity());
+    assertEquals(150, share.getQuantity(), 0.01);
   }
 
   @Test
@@ -74,21 +74,21 @@ public class StockPortfolioTest {
 
   @Test
   public void testGetQuantity() {
-    assertEquals(100, share.getQuantity());
+    assertEquals(100, share.getQuantity(), 0.01);
   }
 
   // Testing the Portfolio class
   @Test
   public void testBuyStock() {
     portfolio.buyStock("AAPL", stockData, 100);
-    assertEquals(100, portfolio.getStockQuantity("AAPL"));
+    assertEquals(100, portfolio.getStockQuantity("AAPL"), 0.01);
   }
 
   @Test
   public void testSellStock() {
     portfolio.buyStock("AAPL", stockData, 100);
     portfolio.sellStock("AAPL", 50);
-    assertEquals(50, portfolio.getStockQuantity("AAPL"));
+    assertEquals(50, portfolio.getStockQuantity("AAPL"), 0.01);
   }
 
   @Test
@@ -130,7 +130,7 @@ public class StockPortfolioTest {
       System.out.println("History: " + share.getHistory());
     }
 
-// Rebalance the portfolio on a specific date
+    // Rebalance the portfolio on a specific date
     portfolio.rebalance("2024-06-05", targetDistribution);
 
     System.out.println("After rebalance:");
@@ -142,13 +142,13 @@ public class StockPortfolioTest {
       System.out.println("History: " + share.getHistory());
     }
 
-// Check the rebalanced quantities
-    assertEquals(18, portfolio.getShare("NFLX").getQuantity());
-    assertEquals(9, portfolio.getShare("GOOGL").getQuantity());
-    assertEquals(27, portfolio.getShare("MSFT").getQuantity());
-    assertEquals(9, portfolio.getShare("AAPL").getQuantity());
+    // Check the rebalanced quantities
+    assertEquals(18, portfolio.getShare("NFLX").getQuantity(), 0.01);
+    assertEquals(9, portfolio.getShare("GOOGL").getQuantity(), 0.01);
+    assertEquals(27, portfolio.getShare("MSFT").getQuantity(), 0.01);
+    assertEquals(9, portfolio.getShare("AAPL").getQuantity(), 0.01);
 
-// Check the rebalanced values
+    // Check the rebalanced values
     assertEquals(270.0, portfolio.getShare("NFLX").getValueOnDate("2024-06-05"), 0.01);
     assertEquals(270.0, portfolio.getShare("GOOGL").getValueOnDate("2024-06-05"), 0.01);
     assertEquals(270.0, portfolio.getShare("MSFT").getValueOnDate("2024-06-05"), 0.01);
@@ -198,10 +198,10 @@ public class StockPortfolioTest {
     }
 
     // Check the rebalanced quantities
-    assertEquals(29, portfolio.getShare("NFLX").getQuantity());
-    assertEquals(7, portfolio.getShare("GOOGL").getQuantity());
-    assertEquals(22, portfolio.getShare("MSFT").getQuantity());
-    assertEquals(7, portfolio.getShare("AAPL").getQuantity());
+    assertEquals(29, portfolio.getShare("NFLX").getQuantity(), 0.01);
+    assertEquals(7, portfolio.getShare("GOOGL").getQuantity(), 0.01);
+    assertEquals(22, portfolio.getShare("MSFT").getQuantity(), 0.01);
+    assertEquals(7, portfolio.getShare("AAPL").getQuantity(), 0.01);
 
     // Check the rebalanced values
     assertEquals(435, portfolio.getShare("NFLX").getValueOnDate("2024-06-03"), 0.01);
@@ -210,7 +210,7 @@ public class StockPortfolioTest {
     assertEquals(210, portfolio.getShare("AAPL").getValueOnDate("2024-06-03"), 0.01);
   }
 
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testRebalanceInvalidDate() {
     // Set up the initial portfolio
     HashMap<String, StockRow> nflxData = new HashMap<>();
