@@ -11,10 +11,15 @@ import java.awt.event.ActionListener;
  * It is responsible for displaying the user interface components and interacting with the user.
  */
 public class StockSwingView extends JFrame implements ExtendedStockViewInterface {
-  private StockControllerInterface controller;
+  StockControllerInterface controller;
   private JTextArea displayArea;
-  private JButton createPortfolioButton, buyButton, sellButton, queryButton,
-          saveButton, retrieveButton, saveAndQuitButton;
+  JButton createPortfolioButton;
+  JButton buyButton;
+  JButton sellButton;
+  JButton queryButton;
+  JButton saveButton;
+  JButton retrieveButton;
+  JButton saveAndQuitButton;
 
   /**
    * Constructor to initialize the GUI components of the StockSwingView.

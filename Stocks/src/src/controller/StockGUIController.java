@@ -364,4 +364,20 @@ public class StockGUIController extends StockController implements ExtendedStock
 
     return details.toString();
   }
+
+  /**
+   * Set the portfolio
+   * @param portfolio portfolio to change to.
+   */
+  public void setCurrentPortfolio(Portfolio portfolio) {
+    this.currentPortfolio = portfolio;
+  }
+
+  /**
+   * Get the portfolio the controller is currently examining.
+   * @return Portfolio currently in the controller field.
+   */
+  public Portfolio getCurrentPortfolio() {
+    return this.currentPortfolio;
+  }
 }
