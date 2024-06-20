@@ -355,6 +355,10 @@ public class Portfolio {
 
     System.out.println("Rebalance completed for date: " + date);
   }
+
+  public Map<String, Share> getShares() {
+    return shares;
+  }
 }
 
 

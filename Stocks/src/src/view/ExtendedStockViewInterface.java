@@ -26,4 +26,6 @@ public interface ExtendedStockViewInterface extends StockViewInterface {
   void setRetrieveButtonActionListener(ActionListener listener);
 
   void setController(StockControllerInterface stockGUIController);
+
+  void setSaveAndQuitButtonActionListener(ActionListener listener);
 }

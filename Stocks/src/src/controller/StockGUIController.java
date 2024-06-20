@@ -1,6 +1,7 @@
 package src.controller;
 
 import src.model.Portfolio;
+import src.model.Share;
 import src.model.StockModelInterface;
 import src.view.ExtendedStockViewInterface;
 import src.view.StockView;
@@ -27,6 +28,7 @@ public class StockGUIController extends StockController implements ExtendedStock
     guiView.setQueryButtonActionListener(e -> queryPortfolio());
     guiView.setSaveButtonActionListener(e -> savePortfolio());
     guiView.setRetrieveButtonActionListener(e -> retrievePortfolio());
+    guiView.setSaveAndQuitButtonActionListener(e -> saveAndQuit()); // Register the new button
   }
 
   private void displayAllPortfolios() {
@@ -78,7 +80,7 @@ public class StockGUIController extends StockController implements ExtendedStock
       int shares = Integer.parseInt(sharesStr);
       getModel().addStockToPortfolio(stock, currentPortfolio, shares, date);
       guiView.printSuccessfulTransaction();
-      showPortfolio(currentPortfolio.getName());
+      guiView.showPortfolio(getPortfolioDetails(currentPortfolio));
     } catch (NumberFormatException e) {
       guiView.showPortfolio("Invalid number of shares.");
     } catch (Exception e) {
@@ -108,7 +110,7 @@ public class StockGUIController extends StockController implements ExtendedStock
       int shares = Integer.parseInt(sharesStr);
       getModel().sellStockFromPortfolio(stock, currentPortfolio, shares, date);
       guiView.printSuccessfulTransaction();
-      showPortfolio(currentPortfolio.getName());
+      guiView.showPortfolio(getPortfolioDetails(currentPortfolio));
     } catch (NumberFormatException e) {
       guiView.showPortfolio("Invalid number of shares.");
     } catch (Exception e) {
@@ -130,7 +132,7 @@ public class StockGUIController extends StockController implements ExtendedStock
     try {
       Double value = getModel().getPortfolioValue(currentPortfolio, date);
       guiView.printPortfolioValueResult(value);
-      showPortfolio(currentPortfolio.getName());
+      guiView.showPortfolio(getPortfolioDetails(currentPortfolio));
     } catch (Exception e) {
       guiView.showPortfolio(e.getMessage());
     }
@@ -153,6 +155,22 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  private void saveAndQuit() {
+    if (currentPortfolio == null) {
+      guiView.showPortfolio("No portfolio selected. Please create or select a portfolio first.");
+      return;
+    }
+
+    guiView.showPortfolio("Saving '" + currentPortfolio.getName() + "'...");
+
+    try {
+      getModel().writePortfolioToFile(currentPortfolio);
+      guiView.showPortfolio("Portfolio '" + currentPortfolio.getName() + "' saved successfully.");
+      System.exit(0); // Exit the program
+    } catch (Exception e) {
+      guiView.showPortfolio("Error saving portfolio: " + e.getMessage());
+    }
+  }
 
   @Override
   public void retrievePortfolio() {
@@ -179,7 +197,7 @@ public class StockGUIController extends StockController implements ExtendedStock
     try {
       currentPortfolio = getModel().getPortfolio(name);
       guiView.showPortfolio("Portfolio '" + name + "' retrieved successfully.");
-      showPortfolio(currentPortfolio.getName());
+      guiView.showPortfolio(getPortfolioDetails(currentPortfolio));
     } catch (Exception e) {
       guiView.showPortfolio("Portfolio not found.");
     }
@@ -230,21 +248,23 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
-  public void showPortfolio(String portfolio) {
-    if (currentPortfolio == null) {
-      guiView.showPortfolio("No portfolio selected. Please create or select a portfolio first.");
-      return;
+  private String getPortfolioDetails(Portfolio portfolio) {
+    StringBuilder details = new StringBuilder("Portfolio: " + portfolio.getName() + "\n");
+
+    for (String stock : portfolio.getStockNames()) {
+      try {
+        Share share = portfolio.getShare(stock);
+        double quantity = share.getQuantity();
+        details.append("Stock: ").append(stock)
+                .append(", Quantity: ").append(quantity).append("\n"); 
+      } catch (RuntimeException e) {
+        details.append("Error retrieving details for stock: ").append(stock).append("\n");
+      }
     }
 
-    StringBuilder portfolioDetails = new StringBuilder("Portfolio: " + portfolio + "\n");
-    portfolioDetails.append("Stocks:\n");
+    double totalValue = portfolio.getPortfolioValue();
+    details.append("Total Portfolio Value: ").append(totalValue).append("\n");
 
-    for (String stockName : currentPortfolio.getStockNames()) {
-      portfolioDetails.append(stockName).append(": ")
-              .append(currentPortfolio.getShare(stockName).getQuantity())
-              .append(" shares\n");
-    }
-
-    guiView.showPortfolio(portfolioDetails.toString());
+    return details.toString();
   }
 }

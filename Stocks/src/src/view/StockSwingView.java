@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class StockSwingView extends JFrame implements ExtendedStockViewInterface {
   private StockControllerInterface controller;
   private JTextArea displayArea;
-  private JButton createPortfolioButton, buyButton, sellButton, queryButton, saveButton, retrieveButton;
+  private JButton createPortfolioButton, buyButton, sellButton, queryButton, saveButton, retrieveButton, saveAndQuitButton;
 
   public StockSwingView() {
     setTitle("Stock Portfolio Manager");
@@ -20,13 +20,8 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
     displayArea.setEditable(false);
     add(new JScrollPane(displayArea), BorderLayout.CENTER);
 
-    JPanel inputPanel = new JPanel();
-    inputPanel.setLayout(new GridLayout(1, 2));
-
-    add(inputPanel, BorderLayout.NORTH);
-
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(2, 3));
+    buttonPanel.setLayout(new GridLayout(2, 4)); // Adjusted for additional button
 
     createPortfolioButton = new JButton("Create Portfolio");
     buyButton = new JButton("Buy Stock");
@@ -34,6 +29,7 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
     queryButton = new JButton("Query Portfolio");
     saveButton = new JButton("Save Portfolio");
     retrieveButton = new JButton("Retrieve Portfolio");
+    saveAndQuitButton = new JButton("Save and Quit"); // New button
 
     buttonPanel.add(createPortfolioButton);
     buttonPanel.add(buyButton);
@@ -41,18 +37,21 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
     buttonPanel.add(queryButton);
     buttonPanel.add(saveButton);
     buttonPanel.add(retrieveButton);
+    buttonPanel.add(saveAndQuitButton); // Add new button to the panel
 
     add(buttonPanel, BorderLayout.SOUTH);
+
+    setVisible(true);
   }
 
   @Override
-  public void showPortfolio(String portfolioDetails) {
-    displayArea.setText(portfolioDetails);
+  public void showPortfolio(String portfolio) {
+    displayArea.setText(portfolio);
   }
 
   @Override
   public void displayMessage(String message) {
-    displayArea.append(message + "\n"); // Append message to display area
+    JOptionPane.showMessageDialog(this, message);
   }
 
   @Override
@@ -77,7 +76,7 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
 
   @Override
   public void printWelcome() {
-    displayArea.setText("Welcome to the Stock Portfolio Manager!\n"); // Initial welcome message
+    displayMessage("Welcome to the Stock Portfolio Manager!");
   }
 
   @Override
@@ -159,7 +158,6 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
     displayMessage("Goodbye!");
   }
 
-  // Methods to register action listeners for buttons
   public void setCreatePortfolioButtonActionListener(ActionListener listener) {
     createPortfolioButton.addActionListener(listener);
   }
@@ -182,5 +180,9 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
 
   public void setRetrieveButtonActionListener(ActionListener listener) {
     retrieveButton.addActionListener(listener);
+  }
+
+  public void setSaveAndQuitButtonActionListener(ActionListener listener) {
+    saveAndQuitButton.addActionListener(listener);
   }
 }
