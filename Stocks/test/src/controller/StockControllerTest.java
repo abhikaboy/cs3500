@@ -27,7 +27,7 @@ public class StockControllerTest {
     model = new MockStockModel();
     ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     view = new MockStockView(new PrintStream(outContent));
-    controller = new StockController(model, view); // Initialize the controller here
+    controller = new StockController(model, view);
   }
 
   @Test

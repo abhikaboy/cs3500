@@ -2,7 +2,7 @@ package src.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Interface for the Model component of the Stock Portfolio Manager, adhering to the
@@ -34,9 +34,9 @@ public interface StockModelInterface {
 
   void queryStock(String symbol);
 
-  HashMap<String, StockRow> loadLocalStock(String stockSymbol);
+  Map<String, StockRow> loadLocalStock(String stockSymbol);
 
-  HashMap<String, StockRow> getStock(String symbol);
+  Map<String, StockRow> getStock(String symbol);
 
   void writePortfolioToFile(Portfolio portfolio);
 
@@ -44,10 +44,10 @@ public interface StockModelInterface {
 
   String graphPortfolio(Portfolio portfolio, String startDate, String endDate);
 
-  StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date);
+  StockRow findClosestRecordedDate(Map<String, StockRow> stock, String date);
 
   ArrayList<String> xDayCrossoverDays(String symbol, int x, String startDate,
-                                             String endDate);
+                                      String endDate);
 
   boolean isValidTicker(String ticker);
 

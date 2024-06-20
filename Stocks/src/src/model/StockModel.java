@@ -367,7 +367,7 @@ public class StockModel implements StockModelInterface {
    * @param date  the date
    * @return the closest recorded date
    */
-  public StockRow findClosestRecordedDate(HashMap<String, StockRow> stock, String date) {
+  public StockRow findClosestRecordedDate(Map<String, StockRow> stock, String date) {
     StockRow stockRow = stock.get(date);
     if (stockRow != null) {
       return stockRow;
