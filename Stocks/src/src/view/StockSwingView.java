@@ -5,11 +5,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * The StockSwingView class implements the ExtendedStockViewInterface and provides a graphical
+ * user interface for the Stock Portfolio Manager application.
+ * It is responsible for displaying the user interface components and interacting with the user.
+ */
 public class StockSwingView extends JFrame implements ExtendedStockViewInterface {
   private StockControllerInterface controller;
   private JTextArea displayArea;
-  private JButton createPortfolioButton, buyButton, sellButton, queryButton, saveButton, retrieveButton, saveAndQuitButton;
+  private JButton createPortfolioButton, buyButton, sellButton, queryButton,
+          saveButton, retrieveButton, saveAndQuitButton;
 
+  /**
+   * Constructor to initialize the GUI components of the StockSwingView.
+   */
   public StockSwingView() {
     setTitle("Stock Portfolio Manager");
     setSize(800, 600);
@@ -44,17 +53,31 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
     setVisible(true);
   }
 
+  /**
+   * Displays the specified portfolio details in the text area.
+   *
+   * @param portfolio the portfolio details to display.
+   */
   @Override
   public void showPortfolio(String portfolio) {
     displayArea.setText(portfolio);
   }
 
+  /**
+   * Displays a message dialog with the specified message.
+   *
+   * @param message the message to display.
+   */
   @Override
   public void displayMessage(String message) {
     JOptionPane.showMessageDialog(this, message);
   }
 
-  @Override
+  /**
+   * Sets the controller for the view.
+   *
+   * @param controller the controller to set.
+   */
   public void setController(StockControllerInterface controller) {
     this.controller = controller;
   }
@@ -158,30 +181,65 @@ public class StockSwingView extends JFrame implements ExtendedStockViewInterface
     displayMessage("Goodbye!");
   }
 
+  /**
+   * Sets the action listener for the Create Portfolio button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setCreatePortfolioButtonActionListener(ActionListener listener) {
     createPortfolioButton.addActionListener(listener);
   }
 
+  /**
+   * Sets the action listener for the Buy Stock button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setBuyButtonActionListener(ActionListener listener) {
     buyButton.addActionListener(listener);
   }
 
+  /**
+   * Sets the action listener for the Sell Stock button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setSellButtonActionListener(ActionListener listener) {
     sellButton.addActionListener(listener);
   }
 
+  /**
+   * Sets the action listener for the Query Portfolio button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setQueryButtonActionListener(ActionListener listener) {
     queryButton.addActionListener(listener);
   }
 
+  /**
+   * Sets the action listener for the Save Portfolio button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setSaveButtonActionListener(ActionListener listener) {
     saveButton.addActionListener(listener);
   }
 
+  /**
+   * Sets the action listener for the Retrieve Portfolio button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setRetrieveButtonActionListener(ActionListener listener) {
     retrieveButton.addActionListener(listener);
   }
 
+  /**
+   * Sets the action listener for the Save and Quit button.
+   *
+   * @param listener the action listener to set.
+   */
   public void setSaveAndQuitButtonActionListener(ActionListener listener) {
     saveAndQuitButton.addActionListener(listener);
   }
