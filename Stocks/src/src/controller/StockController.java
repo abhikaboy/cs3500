@@ -99,14 +99,29 @@ public class StockController implements StockControllerInterface {
 
   }
 
+  /**
+   * Returns the model associated with this controller.
+   *
+   * @return the StockModelInterface instance.
+   */
   public StockModelInterface getModel() {
     return model;
   }
 
+  /**
+   * Reads a single line of user input.
+   *
+   * @return the user input as a string.
+   */
   protected String getUserInput() {
     return scan.next();
   }
 
+  /**
+   * Reads an integer choice from user input.
+   *
+   * @return the user's choice as an integer.
+   */
   protected int getUserChoice() {
     while (!scan.hasNextInt()) {
       scan.next();
@@ -115,6 +130,13 @@ public class StockController implements StockControllerInterface {
     return scan.nextInt();
   }
 
+  /**
+   * Reads a validated user choice within a specified range.
+   *
+   * @param lowerb the lower bound of the valid range.
+   * @param upperb the upper bound of the valid range.
+   * @return the validated user choice.
+   */
   protected int getValidatedUserChoice(int lowerb, int upperb) {
     int choice;
     while (true) {
@@ -157,6 +179,11 @@ public class StockController implements StockControllerInterface {
     handleExitProgram();
   }
 
+  /**
+   * Creates the main menu for a specified portfolio.
+   *
+   * @param portfolio the portfolio to create the menu for.
+   */
   private void createMenu(Portfolio portfolio) {
     view.printMenu(portfolio);
     HashMap<Integer, Runnable> menuOptions = new HashMap<>();
@@ -184,16 +211,27 @@ public class StockController implements StockControllerInterface {
     }
   }
 
+  /**
+   * Saves the current portfolio.
+   */
   private void savePortfolio() {
     view.savePortfolio(portfolio.getName());
     model.writePortfolioToFile(portfolio);
     createMenu(portfolio);
   }
 
+  /**
+   * Handles an error by displaying the specified message.
+   *
+   * @param msg the error message to display.
+   */
   protected void handleError(String msg) {
     view.displayError(msg);
   }
 
+  /**
+   * Graphs the portfolio performance over a specified date range.
+   */
   private void graphPortfolio() {
     // get start and end date
     view.printSpecifyStartDate();
@@ -205,7 +243,10 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
-  void handleCreatePortfolio() {
+  /**
+   * Handles the creation of a new portfolio.
+   */
+  protected void handleCreatePortfolio() {
     view.printPortfolioMaker();
     String name = getUserInput();
 
@@ -224,6 +265,9 @@ public class StockController implements StockControllerInterface {
     }
   }
 
+  /**
+   * Handles rebalancing the portfolio.
+   */
   private void handleRebalance() {
     view.printSpecifyDate();
     view.printMustBeChronological();
@@ -256,6 +300,11 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
+  /**
+   * Reads a double input from the user.
+   *
+   * @return the user's input as a double.
+   */
   protected double getUserInputAsDouble() {
     while (!scan.hasNextDouble()) {
       scan.next();
@@ -264,18 +313,27 @@ public class StockController implements StockControllerInterface {
     return scan.nextDouble();
   }
 
-  void handleViewPortfolioValue() {
+  /**
+   * Handles viewing the portfolio value at a specific date.
+   */
+  protected void handleViewPortfolioValue() {
     view.printPortfolioValuePrompt();
     String date = getUserInput();
     view.printPortfolioValueResult(portfolio.getPortfolioValue(date));
     createMenu(portfolio);
   }
 
+  /**
+   * Handles viewing the contents of the portfolio.
+   */
   private void handleViewPortfolioContents() {
     view.printViewStocks(portfolio);
     createMenu(portfolio);
   }
 
+  /**
+   * Handles analyzing stocks in the portfolio.
+   */
   private void handleAnalyzeStocks() {
     view.printChooseStockOption();
     int choice = getValidatedUserChoice(1, 4);
@@ -299,6 +357,9 @@ public class StockController implements StockControllerInterface {
     }
   }
 
+  /**
+   * Handles viewing stock crossovers.
+   */
   private void handleViewStockCrossovers() {
     String ticker = handleSpecifyStock();
 
@@ -319,6 +380,9 @@ public class StockController implements StockControllerInterface {
     createMenu(portfolio);
   }
 
+  /**
+   * Handles viewing the stock moving average.
+   */
   private void handleViewStockMovingAverage() {
     String ticker = handleSpecifyStock();
 
@@ -355,6 +419,11 @@ public class StockController implements StockControllerInterface {
   }
 
 
+  /**
+   * Reads the number of shares to be bought or sold.
+   *
+   * @return the number of shares as an integer.
+   */
   protected int getNumberShares() {
     int shares = 0;
     view.printSpecifyQuantity();
@@ -373,6 +442,9 @@ public class StockController implements StockControllerInterface {
     return shares;
   }
 
+  /**
+   * Handles executing a transaction option.
+   */
   void handleTransaction() {
     view.printTransactionOptions(this.transactionOptions);
     String option = getUserInput();
@@ -381,9 +453,12 @@ public class StockController implements StockControllerInterface {
     view.printSuccessfulTransaction();
     createMenu(portfolio);
   }
-  // Abstract this method 
 
-
+  /**
+   * Handles changing the current portfolio.
+   *
+   * @param menu whether to display the menu after changing the portfolio.
+   */
   void handleChangePortfolio(boolean menu) {
     while (true) {
       String[] portfolioNames = model.getPortfolioNames();
@@ -406,6 +481,11 @@ public class StockController implements StockControllerInterface {
     }
   }
 
+  /**
+   * Handles specifying the stock ticker.
+   *
+   * @return the specified stock ticker as a string.
+   */
   protected String handleSpecifyStock() {
     view.printSpecifyStock();
     String ticker = getUserInput();
@@ -429,11 +509,21 @@ public class StockController implements StockControllerInterface {
     }
   }
 
+  /**
+   * Handles specifying the date.
+   *
+   * @return the specified date as a string.
+   */
   protected String handleSpecifyDate() {
     view.printSpecifyDate();
     return handleDate();
   }
 
+  /**
+   * Reads a date from user input.
+   *
+   * @return the specified date as a string.
+   */
   protected String handleDate() {
     String date = getUserInput();
     if (date.equalsIgnoreCase("Quit")) {
@@ -455,10 +545,16 @@ public class StockController implements StockControllerInterface {
     }
   }
 
+  /**
+   * Handles the process of exiting a program. Simply displays farewell message.
+   */
   protected void handleExitProgram() {
     view.displayFarewell();
   }
 
+  /**
+   * Handles the process of obtaining a portfolio state at a specific date.
+   */
   private void handleViewPortfolioOnSpecificDate() {
     view.printSpecifyDate();
     String date = handleDate();
