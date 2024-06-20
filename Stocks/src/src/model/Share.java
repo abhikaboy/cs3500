@@ -155,7 +155,7 @@ public class Share {
   public double getValueOnDate(String date) {
     double price = getPriceOnDate(date);
     if (price == 0) {
-      return 0; // Indicate that no data is available
+      return 0;
     }
     double quantityOnDate = getQuantityOnDate(date);
     return price * quantityOnDate;
@@ -262,6 +262,25 @@ public class Share {
    */
   public boolean boughtBefore(Date date) {
     return DateFormat.toDate(this.date).before(date);
+  }
+
+  /**
+   * Get the latest price of the stock.
+   *
+   * @return the latest closing price.
+   */
+  public double getLatestPrice() {
+    String latestDate = null;
+    for (String date : data.keySet()) {
+      if (latestDate == null || date.compareTo(latestDate) > 0) {
+        latestDate = date;
+      }
+    }
+    if (latestDate != null) {
+      return data.get(latestDate).getClose();
+    } else {
+      throw new IllegalStateException("No data available for the stock.");
+    }
   }
 }
 

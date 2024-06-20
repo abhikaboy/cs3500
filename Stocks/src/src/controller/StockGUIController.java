@@ -3,13 +3,13 @@ package src.controller;
 import src.helper.DateFormat;
 import src.model.Portfolio;
 import src.model.Share;
+import src.model.StockModel;
 import src.model.StockModelInterface;
 import src.view.ExtendedStockViewInterface;
 import src.view.StockView;
 
+import javax.swing.*;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
 
 /**
  * The StockGUIController class extends the StockController class to provide
@@ -20,7 +20,6 @@ public class StockGUIController extends StockController implements ExtendedStock
 
   private final ExtendedStockViewInterface guiView;
   private Portfolio currentPortfolio;
-
 
   /**
    * Constructor for the StockGUIController.
@@ -46,7 +45,7 @@ public class StockGUIController extends StockController implements ExtendedStock
     guiView.setQueryButtonActionListener(e -> queryPortfolio());
     guiView.setSaveButtonActionListener(e -> savePortfolio());
     guiView.setRetrieveButtonActionListener(e -> retrievePortfolio());
-    guiView.setSaveAndQuitButtonActionListener(e -> saveAndQuit()); // Register the new button
+    guiView.setSaveAndQuitButtonActionListener(e -> saveAndQuit());
   }
 
   /**
@@ -70,8 +69,7 @@ public class StockGUIController extends StockController implements ExtendedStock
    */
   @Override
   public void createPortfolio() {
-    guiView.printPortfolioMaker();
-    String name = JOptionPane.showInputDialog("Enter portfolio name:");
+    String name = getInput("Create Portfolio", "Enter portfolio name:");
     if (name != null && !name.trim().isEmpty()) {
       getModel().addPortfolio(name);
       currentPortfolio = getModel().getPortfolio(name); // Track the new portfolio
@@ -95,12 +93,10 @@ public class StockGUIController extends StockController implements ExtendedStock
     String stock = handleSpecifyStock();
     if (stock == null) return;
 
-    guiView.printSpecifyQuantity();
-    String sharesStr = JOptionPane.showInputDialog("Enter number of shares:");
+    String sharesStr = getInput("Buy Stock", "Enter number of shares:");
     if (sharesStr == null) return;
 
-    guiView.printSpecifyDate();
-    String date = JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
+    String date = handleSpecifyDate();
     if (date == null) return;
 
     try {
@@ -128,12 +124,10 @@ public class StockGUIController extends StockController implements ExtendedStock
     String stock = handleSpecifyStock();
     if (stock == null) return;
 
-    guiView.printSpecifyQuantity();
-    String sharesStr = JOptionPane.showInputDialog("Enter number of shares:");
+    String sharesStr = getInput("Sell Stock", "Enter number of shares:");
     if (sharesStr == null) return;
 
-    guiView.printSpecifyDate();
-    String date = JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
+    String date = handleSpecifyDate();
     if (date == null) return;
 
     try {
@@ -158,8 +152,7 @@ public class StockGUIController extends StockController implements ExtendedStock
       return;
     }
 
-    guiView.printPortfolioValuePrompt();
-    String dateInput = JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
+    String dateInput = handleSpecifyDate();
     if (dateInput == null) return;
 
     try {
@@ -185,12 +178,12 @@ public class StockGUIController extends StockController implements ExtendedStock
     for (String stock : portfolio.getStockNames()) {
       try {
         Share share = portfolio.getShare(stock);
-        double quantity = share.getQuantityOnDate(DateFormat.toString(date));
-        double price = share.getPriceOnDate(DateFormat.toString(date));
-        double value = price * quantity;
+        double quantity = share.getQuantityOnDate(DateFormat.toString(date));  // Get quantity on the specific date
+        double price = share.getPriceOnDate(DateFormat.toString(date));  // Get price on the specific date
+        double value = quantity * price;
         details.append("Stock: ").append(stock)
                 .append(", Quantity: ").append(quantity)
-                .append(", Price: ").append(price)
+                .append(", Price on ").append(date).append(": ").append(price)
                 .append(", Value: ").append(value).append("\n");
       } catch (RuntimeException e) {
         details.append("Error retrieving details for stock: ").append(stock).append("\n");
@@ -223,6 +216,9 @@ public class StockGUIController extends StockController implements ExtendedStock
     }
   }
 
+  /**
+   * Saves the current portfolio and exits the application.
+   */
   private void saveAndQuit() {
     if (currentPortfolio == null) {
       guiView.showPortfolio("No portfolio selected. Please create or select a portfolio first.");
@@ -281,8 +277,7 @@ public class StockGUIController extends StockController implements ExtendedStock
    */
   @Override
   protected String handleSpecifyStock() {
-    guiView.printSpecifyStock();
-    String ticker = JOptionPane.showInputDialog("Enter stock ticker symbol:");
+    String ticker = getInput("Specify Stock", "Enter stock ticker symbol:");
 
     if (ticker == null || ticker.equalsIgnoreCase("Quit")) {
       return null;
@@ -308,8 +303,7 @@ public class StockGUIController extends StockController implements ExtendedStock
    */
   @Override
   protected String handleSpecifyDate() {
-    guiView.printSpecifyDate();
-    return JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
+    return handleDate();
   }
 
   /**
@@ -319,7 +313,16 @@ public class StockGUIController extends StockController implements ExtendedStock
    */
   @Override
   protected String handleDate() {
-    return JOptionPane.showInputDialog("Enter date (YYYY-MM-DD):");
+    while (true) {
+      String date = getInput("Specify Date", "Enter date (YYYY-MM-DD):");
+      if (date == null || date.equalsIgnoreCase("Quit")) {
+        return null;
+      } else if (StockModel.isValidDate(date)) {
+        return date;
+      } else {
+        guiView.showPortfolio("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+      }
+    }
   }
 
   /**
@@ -330,7 +333,7 @@ public class StockGUIController extends StockController implements ExtendedStock
   @Override
   protected double getUserInputAsDouble() {
     while (true) {
-      String input = JOptionPane.showInputDialog("Enter a number:");
+      String input = getInput("Specify Number", "Enter a number:");
       try {
         return Double.parseDouble(input);
       } catch (NumberFormatException e) {
@@ -352,8 +355,10 @@ public class StockGUIController extends StockController implements ExtendedStock
       try {
         Share share = portfolio.getShare(stock);
         double quantity = share.getQuantity();
+        double latestPrice = share.getLatestPrice();
         details.append("Stock: ").append(stock)
-                .append(", Quantity: ").append(quantity).append("\n");
+                .append(", Quantity: ").append(quantity)
+                .append(", Latest Price Per Share: ").append(latestPrice).append("\n");
       } catch (RuntimeException e) {
         details.append("Error retrieving details for stock: ").append(stock).append("\n");
       }
@@ -379,5 +384,16 @@ public class StockGUIController extends StockController implements ExtendedStock
    */
   public Portfolio getCurrentPortfolio() {
     return this.currentPortfolio;
+  }
+
+  /**
+   * Helper method to get user input with a message.
+   *
+   * @param title   the title of the input dialog.
+   * @param message the message to display in the input dialog.
+   * @return the user input as a string.
+   */
+  private String getInput(String title, String message) {
+    return JOptionPane.showInputDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
   }
 }
